@@ -3,6 +3,11 @@ import '../constants/app_colors.dart';
 import '../constants/app_text_styles.dart';
 import '../constants/app_constants.dart';
 
+/// Widget que muestra el encabezado de la clínica FisioMap.
+/// 
+/// Incluye un gradiente de fondo, un ícono de hospital, el nombre de la clínica
+/// y un subtítulo con la descripción del servicio. Este widget es reutilizable
+/// en diferentes pantallas de la aplicación.
 class ClinicHeader extends StatelessWidget {
   const ClinicHeader({super.key});
 

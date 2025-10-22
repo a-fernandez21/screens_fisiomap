@@ -4,8 +4,20 @@ import '../constants/app_colors.dart';
 import '../constants/app_text_styles.dart';
 import '../constants/app_constants.dart';
 
+/// Widget que representa una tarjeta de paciente en la lista.
+/// 
+/// Muestra información del paciente incluyendo:
+/// - Avatar con iniciales del nombre
+/// - Nombre completo del paciente
+/// - Fecha de última visita
+/// - Indicador visual de interacción (flecha)
+/// 
+/// La tarjeta es clickeable y ejecuta el callback [onTap] cuando se presiona.
 class PatientCard extends StatelessWidget {
+  /// Datos del paciente a mostrar en la tarjeta.
   final Patient patient;
+  
+  /// Función que se ejecuta cuando se toca la tarjeta.
   final VoidCallback onTap;
 
   const PatientCard({
