@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/patient.dart';
+import 'medical_history_screen.dart';
 
 /// Pantalla de detalles del paciente seleccionado.
 ///
@@ -164,12 +165,6 @@ class _PatientInfoContainer extends StatelessWidget {
               color: Colors.teal[800],
             ),
           ),
-          const SizedBox(height: 20),
-          _InfoRowWidget(
-            icon: Icons.person,
-            label: 'ID Paciente',
-            value: '#${patient.id.toString().padLeft(3, '0')}',
-          ),
           const SizedBox(height: 16),
           _InfoRowWidget(
             icon: Icons.badge,
@@ -305,10 +300,9 @@ class _ActionButtonsWidget extends StatelessWidget {
   }
 
   void _onViewHistory(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Historial Clínico de ${patient.name}'),
-        backgroundColor: Colors.orange[600],
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MedicalHistoryScreen(patient: patient),
       ),
     );
   }
