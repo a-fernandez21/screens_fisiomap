@@ -2,35 +2,77 @@ import 'package:flutter/material.dart';
 import '../models/patient.dart';
 import '../models/medical_record.dart';
 import '../data/medical_records_data.dart';
+import 'record_session_screen.dart';
 
 /// Pantalla de detalles del paciente seleccionado.
 ///
 /// Muestra la información completa del paciente y proporciona acceso
 /// a las funcionalidades principales como anamnesis, seguimiento e historial clínico.
-class PatientDetailScreen extends StatelessWidget {
+class PatientDetailScreen extends StatefulWidget {
   /// Datos del paciente a mostrar.
   final Patient patient;
 
   const PatientDetailScreen({super.key, required this.patient});
 
   @override
+  State<PatientDetailScreen> createState() => _PatientDetailScreenState();
+}
+
+class _PatientDetailScreenState extends State<PatientDetailScreen> {
+  late List<MedicalRecord> _medicalRecords;
+
+  @override
+  void initState() {
+    super.initState();
+    _medicalRecords = MedicalRecordsData.getMedicalRecordsForPatient(
+      widget.patient.id,
+    );
+  }
+
+  void _updateRecordStatus(int recordId, String newStatus) {
+    print('🔄 Actualizando estado del registro $recordId a: $newStatus');
+    setState(() {
+      final index = _medicalRecords.indexWhere((r) => r.id == recordId);
+      print('📍 Índice encontrado: $index');
+      if (index != -1) {
+        print('✅ Estado anterior: ${_medicalRecords[index].status}');
+        _medicalRecords[index] = _medicalRecords[index].copyWith(
+          status: newStatus,
+        );
+        print('✅ Estado nuevo: ${_medicalRecords[index].status}');
+      } else {
+        print('❌ No se encontró el registro con ID: $recordId');
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: _PatientDetailAppBar(patientName: patient.name),
+      appBar: _PatientDetailAppBar(patientName: widget.patient.name),
       body: Column(
         children: [
           // Información del paciente en la parte superior (fija)
           Container(
             color: Colors.grey[50],
             padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-            child: _PatientInfoContainer(patient: patient),
+            child: _PatientInfoContainer(patient: widget.patient),
           ),
           // Lista scrolleable de historias clínicas
-          Expanded(child: _MedicalHistorySectionWidget(patient: patient)),
+          Expanded(
+            child: _MedicalHistorySectionWidget(
+              patient: widget.patient,
+              medicalRecords: _medicalRecords,
+              onUpdateStatus: _updateRecordStatus,
+            ),
+          ),
         ],
       ),
-      bottomNavigationBar: _BottomActionBar(patient: patient),
+      bottomNavigationBar: _BottomActionBar(
+        patient: widget.patient,
+        onUpdateStatus: _updateRecordStatus,
+      ),
     );
   }
 }
@@ -300,30 +342,47 @@ class _InfoRowWidget extends StatelessWidget {
 /// Widget que contiene la sección de historial médico del paciente.
 class _MedicalHistorySectionWidget extends StatelessWidget {
   final Patient patient;
+  final List<MedicalRecord> medicalRecords;
+  final Function(int, String) onUpdateStatus;
 
-  const _MedicalHistorySectionWidget({required this.patient});
+  const _MedicalHistorySectionWidget({
+    required this.patient,
+    required this.medicalRecords,
+    required this.onUpdateStatus,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final medicalRecords = MedicalRecordsData.getMedicalRecordsForPatient(
-      patient.id,
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: _SectionTitleWidget(
-            title: 'Historial Clínico',
-            subtitle: '${medicalRecords.length} registros',
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Historial Clínico',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.teal[800],
+                ),
+              ),
+              Text(
+                '${medicalRecords.length} registros',
+                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         Expanded(
           child: _MedicalRecordsListWidget(
             medicalRecords: medicalRecords,
             patient: patient,
+            onUpdateStatus: onUpdateStatus,
           ),
         ),
       ],
@@ -367,10 +426,12 @@ class _SectionTitleWidget extends StatelessWidget {
 class _MedicalRecordsListWidget extends StatelessWidget {
   final List<MedicalRecord> medicalRecords;
   final Patient patient;
+  final Function(int, String) onUpdateStatus;
 
   const _MedicalRecordsListWidget({
     required this.medicalRecords,
     required this.patient,
+    required this.onUpdateStatus,
   });
 
   @override
@@ -408,13 +469,30 @@ class _MedicalRecordsListWidget extends StatelessWidget {
   }
 
   /// Maneja el evento de tocar una tarjeta de historia clínica.
-  void _onRecordTap(BuildContext context, MedicalRecord record) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Registro ${record.type} - ${record.date}'),
-        backgroundColor: record.typeColor,
+  void _onRecordTap(BuildContext context, MedicalRecord record) async {
+    print(
+      '🎯 Tarjeta clickeada - ID: ${record.id}, Tipo: ${record.type}, Estado actual: ${record.status}',
+    );
+    final result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RecordSessionScreen(
+          patient: patient,
+          sessionType: record.type,
+          recordId: record.id,
+        ),
       ),
     );
+
+    print('🔙 Resultado recibido de RecordSessionScreen: $result');
+    if (result != null) {
+      print(
+        '📤 Llamando a onUpdateStatus con ID: ${record.id} y estado: $result',
+      );
+      onUpdateStatus(record.id, result);
+    } else {
+      print('⚠️ El resultado es null, no se actualiza el estado');
+    }
   }
 }
 
@@ -431,9 +509,6 @@ class MedicalRecordCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Para Anamnesis, mostramos un layout más simple
-    final isAnamnesis = record.type.toLowerCase() == 'anamnesis';
-    
     return Card(
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -446,10 +521,6 @@ class MedicalRecordCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _RecordHeaderWidget(record: record),
-              if (!isAnamnesis) ...[
-                const SizedBox(height: 12),
-                _RecordDescriptionWidget(description: record.description),
-              ],
               const SizedBox(height: 12),
               _RecordFooterWidget(record: record),
             ],
@@ -470,37 +541,45 @@ class _RecordHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.calendar_today, size: 16, color: Colors.grey[600]),
-        const SizedBox(width: 4),
-        Text(
-          record.date,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey[700],
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: record.typeColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: record.typeColor.withOpacity(0.3)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(record.typeIcon, size: 16, color: record.typeColor),
+              const SizedBox(width: 6),
+              Text(
+                record.type,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: record.typeColor,
+                ),
+              ),
+            ],
           ),
         ),
+        const Spacer(),
+        Row(
+          children: [
+            Icon(Icons.calendar_today, size: 16, color: Colors.grey[600]),
+            const SizedBox(width: 4),
+            Text(
+              record.date,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey[700],
+              ),
+            ),
+          ],
+        ),
       ],
-    );
-  }
-}
-
-/// Widget que muestra la descripción de la historia clínica.
-class _RecordDescriptionWidget extends StatelessWidget {
-  final String description;
-
-  const _RecordDescriptionWidget({required this.description});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      description,
-      style: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        color: Colors.black87,
-        height: 1.3,
-      ),
     );
   }
 }
@@ -547,13 +626,14 @@ class _RecordFooterWidget extends StatelessWidget {
 /// Widget que implementa la barra inferior con botones de acción.
 class _BottomActionBar extends StatelessWidget {
   final Patient patient;
+  final Function(int, String) onUpdateStatus;
 
-  const _BottomActionBar({required this.patient});
+  const _BottomActionBar({required this.patient, required this.onUpdateStatus});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 70,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -565,49 +645,58 @@ class _BottomActionBar extends StatelessWidget {
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: _BottomActionButton(
-                icon: Icons.trending_up,
-                text: 'Nuevo Seguimiento',
-                color: Colors.green,
-                onPressed: () => _onNewFollowUp(context),
-              ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            child: _BottomActionButton(
+              icon: Icons.trending_up,
+              text: 'Nuevo Seguimiento',
+              color: Colors.green,
+              onPressed: () => _onNewFollowUp(context),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _BottomActionButton(
-                icon: Icons.assignment,
-                text: 'Nueva Anamnesis',
-                color: Colors.blue,
-                onPressed: () => _onNewAnamnesis(context),
-              ),
+          ),
+          Expanded(
+            child: _BottomActionButton(
+              icon: Icons.assignment,
+              text: 'Nueva Anamnesis',
+              color: Colors.blue,
+              onPressed: () => _onNewAnamnesis(context),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  void _onNewFollowUp(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Nuevo Seguimiento para ${patient.name}'),
-        backgroundColor: Colors.green[600],
+  void _onNewFollowUp(BuildContext context) async {
+    final result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            RecordSessionScreen(patient: patient, sessionType: 'Seguimiento'),
       ),
     );
+
+    // Para nuevas sesiones, podemos ignorar el resultado o crear un nuevo registro
+    if (result != null) {
+      // Aquí se podría crear un nuevo registro en lugar de actualizar uno existente
+    }
   }
 
-  void _onNewAnamnesis(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Nueva Anamnesis para ${patient.name}'),
-        backgroundColor: Colors.blue[600],
+  void _onNewAnamnesis(BuildContext context) async {
+    final result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            RecordSessionScreen(patient: patient, sessionType: 'Anamnesis'),
       ),
     );
+
+    // Para nuevas sesiones, podemos ignorar el resultado o crear un nuevo registro
+    if (result != null) {
+      // Aquí se podría crear un nuevo registro en lugar de actualizar uno existente
+    }
   }
 }
 
@@ -627,31 +716,29 @@ class _BottomActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          foregroundColor: Colors.white,
-          elevation: 2,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-        child: Row(
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 20),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                text,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-                overflow: TextOverflow.ellipsis,
+            Icon(icon, size: 20, color: color),
+            const SizedBox(height: 2),
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: color,
               ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
+            const SizedBox(height: 2),
           ],
         ),
       ),

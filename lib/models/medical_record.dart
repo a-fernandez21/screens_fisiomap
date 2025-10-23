@@ -32,6 +32,25 @@ class MedicalRecord {
     required this.status,
   });
 
+  /// Crea una copia del registro con los campos especificados modificados.
+  MedicalRecord copyWith({
+    int? id,
+    String? date,
+    String? type,
+    String? description,
+    String? doctor,
+    String? status,
+  }) {
+    return MedicalRecord(
+      id: id ?? this.id,
+      date: date ?? this.date,
+      type: type ?? this.type,
+      description: description ?? this.description,
+      doctor: doctor ?? this.doctor,
+      status: status ?? this.status,
+    );
+  }
+
   /// Obtiene el color asociado al tipo de consulta.
   Color get typeColor {
     switch (type.toLowerCase()) {
