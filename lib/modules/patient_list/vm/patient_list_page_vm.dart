@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pumpun_core/pumpun_core.dart';
 import '../../../models/patient.dart';
 import '../../../data/patients_data.dart';
-import '../../../screens/patient_detail_screen.dart';
+import '../../patient_detail/page/patient_detail_page.dart';
 
 /// ViewModel para la pantalla de lista de pacientes.
 ///
@@ -47,7 +47,7 @@ class PatientListPageViewModel extends BaseVM {
   void navigateToPatientDetail(BuildContext context, Patient patient) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => PatientDetailScreen(patient: patient),
+        builder: (context) => PatientDetailPage(patient: patient),
       ),
     );
   }
@@ -71,10 +71,13 @@ class PatientListPageViewModel extends BaseVM {
     if (query.isEmpty) {
       _patients = PatientsData.samplePatients;
     } else {
-      _patients = PatientsData.samplePatients
-          .where((patient) =>
-              patient.name.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      _patients =
+          PatientsData.samplePatients
+              .where(
+                (patient) =>
+                    patient.name.toLowerCase().contains(query.toLowerCase()),
+              )
+              .toList();
     }
     if (_patients.isEmpty) {
       setEmpty(empty: true);

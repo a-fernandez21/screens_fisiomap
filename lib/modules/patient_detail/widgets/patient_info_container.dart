@@ -110,11 +110,49 @@ class _PatientInfoContainerState extends State<PatientInfoContainer>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Divider(),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Última visita: ${widget.patient.lastVisit}',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                  const SizedBox(height: 8),
+                  _buildInfoRow(Icons.calendar_today, 'Última visita',
+                      widget.patient.lastVisit),
+                  if (widget.patient.birthDate != null)
+                    _buildInfoRow(Icons.cake, 'Fecha de nacimiento',
+                        '${widget.patient.birthDate} (${widget.patient.age} años)'),
+                  if (widget.patient.gender != null)
+                    _buildInfoRow(
+                        Icons.person, 'Sexo', widget.patient.gender!),
+                  if (widget.patient.phone != null)
+                    _buildInfoRow(Icons.phone, 'Teléfono', widget.patient.phone!),
+                  if (widget.patient.email != null)
+                    _buildInfoRow(Icons.email, 'Email', widget.patient.email!),
+                  if (widget.patient.address != null)
+                    _buildInfoRow(
+                        Icons.location_on, 'Dirección', widget.patient.address!),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 16, color: Colors.teal[600]),
+          const SizedBox(width: 8),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                style: TextStyle(fontSize: 14, color: Colors.grey[800]),
+                children: [
+                  TextSpan(
+                    text: '$label: ',
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
+                  TextSpan(text: value),
                 ],
               ),
             ),

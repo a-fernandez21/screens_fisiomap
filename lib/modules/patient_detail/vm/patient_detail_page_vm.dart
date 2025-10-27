@@ -3,7 +3,7 @@ import 'package:pumpun_core/pumpun_core.dart';
 import '../../../models/patient.dart';
 import '../../../models/medical_record.dart';
 import '../../../data/medical_records_data.dart';
-import '../../../screens/record_session_screen.dart';
+import '../../record_session/page/record_session_page.dart';
 
 /// ViewModel for Patient Detail screen.
 ///
@@ -68,7 +68,7 @@ class PatientDetailPageViewModel extends BaseVM {
       context,
       MaterialPageRoute(
         builder:
-            (context) => RecordSessionScreen(
+            (context) => RecordSessionPage(
               patient: patient,
               sessionType: record.type,
               recordId: record.id,
@@ -76,7 +76,7 @@ class PatientDetailPageViewModel extends BaseVM {
       ),
     );
 
-    print('🔙 Resultado recibido de RecordSessionScreen: $result');
+    print('🔙 Resultado recibido de RecordSessionPage: $result');
     if (result != null) {
       print(
         '📤 Llamando a updateRecordStatus con ID: ${record.id} y estado: $result',
@@ -93,10 +93,8 @@ class PatientDetailPageViewModel extends BaseVM {
       context,
       MaterialPageRoute(
         builder:
-            (context) => RecordSessionScreen(
-              patient: patient,
-              sessionType: 'Seguimiento',
-            ),
+            (context) =>
+                RecordSessionPage(patient: patient, sessionType: 'Seguimiento'),
       ),
     );
 
@@ -113,7 +111,7 @@ class PatientDetailPageViewModel extends BaseVM {
       MaterialPageRoute(
         builder:
             (context) =>
-                RecordSessionScreen(patient: patient, sessionType: 'Anamnesis'),
+                RecordSessionPage(patient: patient, sessionType: 'Anamnesis'),
       ),
     );
 
