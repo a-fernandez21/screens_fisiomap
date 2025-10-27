@@ -173,31 +173,9 @@ class _RecordSessionAppBar extends StatelessWidget
   }
 }
 
-/// Widget que muestra información básica del paciente.
-class _PatientInfoWidget extends StatelessWidget {
-  final Patient patient;
-
-  const _PatientInfoWidget({required this.patient});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// Nota: `_PatientInfoWidget` se define y usa en `patients_list_screen.dart`.
+// Eliminamos la definición duplicada aquí para evitar advertencias del
+// analizador sobre declaraciones privadas no referenciadas.
 
 /// Widget que simula un reproductor de audio estilo iPhone.
 class _AudioRecorderWidget extends StatelessWidget {

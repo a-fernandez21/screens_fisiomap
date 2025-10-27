@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/patients_list_screen.dart';
+import 'modules/patient_list/page/patient_list_page.dart';
 import 'constants/app_constants.dart';
 import 'constants/app_colors.dart';
 
@@ -25,7 +25,7 @@ class FisioMapApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
         useMaterial3: true,
       ),
-      home: const PatientsListScreen(),
+      home: const PatientListPage(),
     );
   }
 }

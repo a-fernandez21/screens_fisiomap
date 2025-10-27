@@ -390,37 +390,10 @@ class _MedicalHistorySectionWidget extends StatelessWidget {
   }
 }
 
-/// Widget que muestra el título de la sección con un subtítulo opcional.
-class _SectionTitleWidget extends StatelessWidget {
-  final String title;
-  final String? subtitle;
-
-  const _SectionTitleWidget({required this.title, this.subtitle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.teal[800],
-          ),
-        ),
-        if (subtitle != null) ...[
-          const SizedBox(height: 4),
-          Text(
-            subtitle!,
-            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-          ),
-        ],
-      ],
-    );
-  }
-}
+// Nota: la clase _SectionTitleWidget se define en otros archivos
+// (por ejemplo, `patients_list_screen.dart` y `medical_history_screen.dart`).
+// Se ha eliminado la definición duplicada local para evitar advertencias del
+// analizador por declaraciones privadas no referenciadas.
 
 /// Widget privado que renderiza la lista de historias clínicas.
 class _MedicalRecordsListWidget extends StatelessWidget {
