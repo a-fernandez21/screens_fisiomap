@@ -342,7 +342,7 @@ packages:
     description:
       path: "."
       ref: timezone
-      resolved-ref: ded0f4283fe9a41496c99a742cf979f39c5cdaf1
+      resolved-ref: b1e9173f8cab284e52fdee51a6e79b5682aee1ae
       url: "https://pumpun:WwwPxFJhy9z_xFwh8rMz@gitlab.com/pumpun-dixital/pumpun-core.git"
     source: git
     version: "1.0.3"
