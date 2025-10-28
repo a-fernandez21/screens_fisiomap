@@ -122,7 +122,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
               const Divider(),
               const SizedBox(height: 8),
               // Filter options
@@ -243,13 +243,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   Widget _buildSectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.only(left: 4, bottom: 8, top: 8),
+      padding: const EdgeInsets.only(left: 4, bottom: 6, top: 2),
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w600,
-          color: Colors.grey,
+          color: Color.fromARGB(255, 0, 0, 0),
         ),
       ),
     );

@@ -54,7 +54,7 @@ class FilterOptionCheckbox extends StatelessWidget {
                 size: 20,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
             // Text
             Expanded(
               child: Column(
@@ -63,7 +63,7 @@ class FilterOptionCheckbox extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: isSelected
                           ? const Color.fromARGB(255, 45, 183, 221)
@@ -74,7 +74,7 @@ class FilterOptionCheckbox extends StatelessWidget {
                   Text(
                     subtitle,
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 12,
                       color: Colors.grey.shade600,
                     ),
                   ),
