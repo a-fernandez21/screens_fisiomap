@@ -11,12 +11,19 @@ class PatientListAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text(
-        'Pacientes',
+        'Lista de pacientes',
         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
       ),
       backgroundColor: const Color.fromARGB(255, 45, 183, 221),
       elevation: 4,
-      centerTitle: true,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.filter_alt_outlined, color: Colors.white),
+          onPressed: () {
+            // Implement search functionality here
+          },
+        ),
+      ],
     );
   }
 }

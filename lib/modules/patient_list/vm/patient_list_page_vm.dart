@@ -56,17 +56,6 @@ class PatientListPageViewModel extends BaseVM {
     );
   }
 
-  /// Handle add new patient event.
-  /// Currently shows a SnackBar for pending functionality.
-  void addNewPatient(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Funcionalidad de agregar paciente próximamente'),
-        backgroundColor: Colors.orange,
-      ),
-    );
-  }
-
   /// Filter patients by name (prepared for future search).
   void filterPatients(String query) {
     if (query.isEmpty) {

@@ -21,9 +21,6 @@ class PatientListPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 24),
-                  const SectionTitleWidget(title: 'Lista de Pacientes'),
-                  const SizedBox(height: 16),
                   // Display loading, empty state, or patient list
                   if (model.busy)
                     const Expanded(
