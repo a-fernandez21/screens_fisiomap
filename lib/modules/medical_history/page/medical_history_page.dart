@@ -28,7 +28,7 @@ class MedicalHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWidget<MedicalHistoryPageViewModel>(
       model: MedicalHistoryPageViewModel(patient: patient),
-      onModelReady: (model) => model.initialize(),
+      onModelReady: (model) => model.onInit(),
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.grey[50],
         appBar: MedicalHistoryAppBar(patientName: model.patient.name),

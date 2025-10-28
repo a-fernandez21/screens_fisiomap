@@ -12,28 +12,37 @@ import '../../../data/medical_records_data.dart';
 /// - Adding new records
 class MedicalHistoryPageViewModel extends BaseVM {
   final Patient patient;
+
+ 
   List<MedicalRecord> _medicalRecords = [];
 
-  MedicalHistoryPageViewModel({required this.patient});
 
   List<MedicalRecord> get medicalRecords => _medicalRecords;
 
-  /// Initialize ViewModel and load medical records.
-  void initialize() {
-    loadMedicalRecords();
+ 
+  set medicalRecords(List<MedicalRecord> value) {
+    _medicalRecords = value;
+    notifyListeners();
   }
 
-  /// Load medical records for the patient.
-  void loadMedicalRecords() {
+  MedicalHistoryPageViewModel({required this.patient});
+
+ 
+  Future<void> onInit() async {
+    await _loadMedicalRecords();
+  }
+
+
+  Future<void> _loadMedicalRecords() async {
     setBusy(true);
-    _medicalRecords = MedicalRecordsData.getMedicalRecordsForPatient(patient.id);
     
-    if (_medicalRecords.isEmpty) {
+    medicalRecords = MedicalRecordsData.getMedicalRecordsForPatient(patient.id);
+    
+    if (medicalRecords.isEmpty) {
       setEmpty(empty: true);
     }
     
     setBusy(false);
-    notifyListeners();
   }
 
   /// Handle tap on a medical record card.
@@ -46,7 +55,7 @@ class MedicalHistoryPageViewModel extends BaseVM {
     );
   }
 
-  /// Handle adding a new medical record.
+
   void addNewRecord(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
