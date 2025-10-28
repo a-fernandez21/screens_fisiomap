@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../models/patient.dart';
 
-/// Collapsible patient information container widget.
+/// Collapsible patient information card with animated expansion
 class PatientInfoContainer extends StatefulWidget {
   final Patient patient;
 

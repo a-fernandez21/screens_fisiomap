@@ -3,7 +3,7 @@ import '../../../models/patient.dart';
 import 'patient_name.dart';
 import 'patient_date.dart';
 
-/// Widget that groups the patient's textual information.
+/// Container grouping patient's name and last visit information
 class PatientInfoWidget extends StatelessWidget {
   final Patient patient;
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Bottom action bar with navigation buttons.
+/// Bottom action bar with quick access buttons for creating new sessions
 class BottomActionBar extends StatelessWidget {
   final VoidCallback onNewFollowUp;
   final VoidCallback onNewAnamnesis;
@@ -51,7 +51,7 @@ class BottomActionBar extends StatelessWidget {
   }
 }
 
-/// Individual action button in bottom bar.
+/// Individual action button within bottom bar
 class BottomActionButton extends StatelessWidget {
   final IconData icon;
   final String text;

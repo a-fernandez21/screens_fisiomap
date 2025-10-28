@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// AppBar widget for medical history screen.
-class MedicalHistoryAppBar extends StatelessWidget implements PreferredSizeWidget {
+/// AppBar for medical history screen with back navigation
+class MedicalHistoryAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   final String patientName;
 
-  const MedicalHistoryAppBar({
-    super.key,
-    required this.patientName,
-  });
+  const MedicalHistoryAppBar({super.key, required this.patientName});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -17,10 +15,7 @@ class MedicalHistoryAppBar extends StatelessWidget implements PreferredSizeWidge
     return AppBar(
       title: const Text(
         'Historial Clínico',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
+        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
       ),
       backgroundColor: const Color.fromARGB(255, 45, 183, 221),
       elevation: 4,

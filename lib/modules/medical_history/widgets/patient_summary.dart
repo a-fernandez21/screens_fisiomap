@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../../models/patient.dart';
 
-/// Widget that displays a patient summary at the top of the screen.
+/// Summary card displaying patient avatar, name and last visit
 class PatientSummaryWidget extends StatelessWidget {
   final Patient patient;
 
-  const PatientSummaryWidget({
-    super.key,
-    required this.patient,
-  });
+  const PatientSummaryWidget({super.key, required this.patient});
 
   @override
   Widget build(BuildContext context) {

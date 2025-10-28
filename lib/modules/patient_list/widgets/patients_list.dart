@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../models/patient.dart';
 import 'patient_card.dart';
 
-/// Widget rendering the complete patient list.
+/// Scrollable list widget rendering all patient cards
 class PatientsListWidget extends StatelessWidget {
   final List<Patient> patients;
   final Function(Patient) onPatientTap;

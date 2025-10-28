@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// iPhone-style audio player widget.
-///
-/// Features:
-/// - Gradient background (cyan to orange)
-/// - Timeline display (0:00 - 3:45)
-/// - Progress bar
-/// - Playback controls (skip back, play/pause, skip forward)
-/// - 10-second skip buttons
+/// Audio player widget with gradient background and playback controls
 class AudioPlayerWidget extends StatelessWidget {
   final bool isPlaying;
   final VoidCallback onPlayPause;
@@ -43,13 +36,10 @@ class AudioPlayerWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Timeline display
           const TimelineRow(),
           const SizedBox(height: 8),
-          // Progress bar
           ProgressBar(isPlaying: isPlaying),
           const SizedBox(height: 20),
-          // Playback controls
           PlaybackControls(isPlaying: isPlaying, onPlayPause: onPlayPause),
         ],
       ),
@@ -57,7 +47,7 @@ class AudioPlayerWidget extends StatelessWidget {
   }
 }
 
-/// Timeline row showing current and total duration.
+/// Timeline displaying current and total duration
 class TimelineRow extends StatelessWidget {
   const TimelineRow({super.key});
 
@@ -87,7 +77,7 @@ class TimelineRow extends StatelessWidget {
   }
 }
 
-/// Progress bar showing playback progress.
+/// Progress bar showing playback position
 class ProgressBar extends StatelessWidget {
   final bool isPlaying;
 
@@ -107,7 +97,7 @@ class ProgressBar extends StatelessWidget {
   }
 }
 
-/// Playback controls row with all buttons.
+/// Row containing all playback control buttons
 class PlaybackControls extends StatelessWidget {
   final bool isPlaying;
   final VoidCallback onPlayPause;
@@ -123,22 +113,17 @@ class PlaybackControls extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        // Skip back 10 seconds button
         PlayerButton(icon: Icons.replay_10, size: 28, onPressed: () {}),
-        // Previous track button
         PlayerButton(icon: Icons.skip_previous, size: 32, onPressed: () {}),
-        // Play/pause button (larger)
         PlayPauseButton(isPlaying: isPlaying, onPlayPause: onPlayPause),
-        // Next track button
         PlayerButton(icon: Icons.skip_next, size: 32, onPressed: () {}),
-        // Skip forward 10 seconds button
         PlayerButton(icon: Icons.forward_10, size: 28, onPressed: () {}),
       ],
     );
   }
 }
 
-/// Large circular play/pause button.
+/// Large circular play/pause button
 class PlayPauseButton extends StatelessWidget {
   final bool isPlaying;
   final VoidCallback onPlayPause;
@@ -178,7 +163,7 @@ class PlayPauseButton extends StatelessWidget {
   }
 }
 
-/// Standard player control button.
+/// Standard player control button
 class PlayerButton extends StatelessWidget {
   final IconData icon;
   final double size;

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Bottom action buttons for session management.
-///
-/// Two buttons:
-/// - Guardar Cambios (Green) - Save changes and return 'Pendiente'
-/// - Confirmar Revisión (Blue) - Confirm review and return 'Completado'
+/// Action buttons for saving changes or confirming session review
 class ActionButtonsWidget extends StatelessWidget {
   final VoidCallback onSaveChanges;
   final VoidCallback onConfirmReview;

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-/// Section title widget.
+/// Section title widget with bold styling
 class SectionTitleWidget extends StatelessWidget {
   final String title;
 
-  const SectionTitleWidget({
-    super.key,
-    required this.title,
-  });
+  const SectionTitleWidget({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

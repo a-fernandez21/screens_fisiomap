@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Widget displayed when medical records list is empty.
+/// Empty state widget when no medical records exist
 class EmptyMedicalRecordsWidget extends StatelessWidget {
   const EmptyMedicalRecordsWidget({super.key});
 

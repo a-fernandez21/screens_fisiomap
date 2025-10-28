@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// AppBar for RecordSessionPage.
-///
-/// Displays session type as title with back button.
+/// AppBar displaying session type with back navigation
 class RecordSessionAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final String sessionType;

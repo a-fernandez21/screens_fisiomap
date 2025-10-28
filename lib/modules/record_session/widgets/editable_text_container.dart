@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Editable text container for session notes.
-///
-/// Features:
-/// - White rounded container with shadow
-/// - Border changes color when editing (teal)
-/// - Header with edit icon and title
-/// - Expandable TextField filling available space
+/// Editable text container for session notes with visual editing feedback
 class EditableTextContainer extends StatelessWidget {
   final TextEditingController controller;
   final bool isEditing;

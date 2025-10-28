@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// Widget that displays section title with optional subtitle.
+/// Section header with title and optional subtitle
 class SectionTitleWidget extends StatelessWidget {
   final String title;
   final String? subtitle;
 
-  const SectionTitleWidget({
-    super.key,
-    required this.title,
-    this.subtitle,
-  });
+  const SectionTitleWidget({super.key, required this.title, this.subtitle});
 
   @override
   Widget build(BuildContext context) {
