@@ -14,110 +14,119 @@ import '../../record_session/page/record_session_page.dart';
 /// - Navigation to record session screen
 class PatientDetailPageViewModel extends BaseVM {
   final Patient patient;
+
+  // Private state variables
   List<MedicalRecord> _medicalRecords = [];
+
+  // Getters for state access
+  List<MedicalRecord> get medicalRecords => _medicalRecords;
+
+  // Setters with notifyListeners
+  set medicalRecords(List<MedicalRecord> value) {
+    _medicalRecords = value;
+    notifyListeners();
+  }
 
   PatientDetailPageViewModel({required this.patient});
 
-  List<MedicalRecord> get medicalRecords => _medicalRecords;
-
   /// Initialize ViewModel and load medical records.
-  void initialize() {
-    loadMedicalRecords();
+  /// Called from BaseWidget's onModelReady
+  Future<void> onInit() async {
+    await _loadMedicalRecords();
   }
 
   /// Load medical records for the patient.
-  void loadMedicalRecords() {
+  Future<void> _loadMedicalRecords() async {
     setBusy(true);
-    _medicalRecords = MedicalRecordsData.getMedicalRecordsForPatient(
-      patient.id,
-    );
 
-    if (_medicalRecords.isEmpty) {
+    medicalRecords = MedicalRecordsData.getMedicalRecordsForPatient(patient.id);
+
+    if (medicalRecords.isEmpty) {
       setEmpty(empty: true);
     }
 
     setBusy(false);
-    notifyListeners();
   }
 
   /// Update status of a medical record.
   void updateRecordStatus(int recordId, String newStatus) {
-    print('🔄 Actualizando estado del registro $recordId a: $newStatus');
-    final index = _medicalRecords.indexWhere((r) => r.id == recordId);
-    print('📍 Índice encontrado: $index');
+    debugPrint('🔄 Actualizando estado del registro $recordId a: $newStatus');
+    final int index = _medicalRecords.indexWhere((r) => r.id == recordId);
+    debugPrint('📍 Índice encontrado: $index');
 
     if (index != -1) {
-      print('✅ Estado anterior: ${_medicalRecords[index].status}');
+      debugPrint('✅ Estado anterior: ${_medicalRecords[index].status}');
       _medicalRecords[index] = _medicalRecords[index].copyWith(
         status: newStatus,
       );
-      print('✅ Estado nuevo: ${_medicalRecords[index].status}');
+      debugPrint('✅ Estado nuevo: ${_medicalRecords[index].status}');
       notifyListeners();
     } else {
-      print('❌ No se encontró el registro con ID: $recordId');
+      debugPrint('❌ No se encontró el registro con ID: $recordId');
     }
   }
 
   /// Handle tap on a medical record card.
-  void onRecordTap(BuildContext context, MedicalRecord record) async {
-    print(
+  Future<void> onRecordTap(BuildContext context, MedicalRecord record) async {
+    debugPrint(
       '🎯 Tarjeta clickeada - ID: ${record.id}, Tipo: ${record.type}, Estado actual: ${record.status}',
     );
 
-    final result = await Navigator.push<String>(
+    final String? result = await Navigator.push<String>(
       context,
       MaterialPageRoute(
-        builder:
-            (context) => RecordSessionPage(
-              patient: patient,
-              sessionType: record.type,
-              recordId: record.id,
-            ),
+        builder: (context) => RecordSessionPage(
+          patient: patient,
+          sessionType: record.type,
+          recordId: record.id,
+        ),
       ),
     );
 
-    print('🔙 Resultado recibido de RecordSessionPage: $result');
+    debugPrint('🔙 Resultado recibido de RecordSessionPage: $result');
     if (result != null) {
-      print(
+      debugPrint(
         '📤 Llamando a updateRecordStatus con ID: ${record.id} y estado: $result',
       );
       updateRecordStatus(record.id, result);
     } else {
-      print('⚠️ El resultado es null, no se actualiza el estado');
+      debugPrint('⚠️ El resultado es null, no se actualiza el estado');
     }
   }
 
   /// Navigate to new follow-up session.
-  void onNewFollowUp(BuildContext context) async {
-    final result = await Navigator.push<String>(
+  Future<void> onNewFollowUp(BuildContext context) async {
+    final String? result = await Navigator.push<String>(
       context,
       MaterialPageRoute(
-        builder:
-            (context) =>
-                RecordSessionPage(patient: patient, sessionType: 'Seguimiento'),
+        builder: (context) => RecordSessionPage(
+          patient: patient,
+          sessionType: 'Seguimiento',
+        ),
       ),
     );
 
     // For new sessions, could create a new record
     if (result != null) {
-      print('📝 Nueva sesión de seguimiento creada con estado: $result');
+      debugPrint('📝 Nueva sesión de seguimiento creada con estado: $result');
     }
   }
 
   /// Navigate to new anamnesis session.
-  void onNewAnamnesis(BuildContext context) async {
-    final result = await Navigator.push<String>(
+  Future<void> onNewAnamnesis(BuildContext context) async {
+    final String? result = await Navigator.push<String>(
       context,
       MaterialPageRoute(
-        builder:
-            (context) =>
-                RecordSessionPage(patient: patient, sessionType: 'Anamnesis'),
+        builder: (context) => RecordSessionPage(
+          patient: patient,
+          sessionType: 'Anamnesis',
+        ),
       ),
     );
 
     // For new sessions, could create a new record
     if (result != null) {
-      print('📝 Nueva sesión de anamnesis creada con estado: $result');
+      debugPrint('📝 Nueva sesión de anamnesis creada con estado: $result');
     }
   }
 }

@@ -17,16 +17,31 @@ class RecordSessionPageViewModel extends BaseVM {
   // Text controller for editable notes
   final TextEditingController textController = TextEditingController();
 
-  // Audio player state
+  // Private state variables
   bool _isPlaying = false;
-  bool get isPlaying => _isPlaying;
-
   String _audioStatus = 'Sin audio';
-  String get audioStatus => _audioStatus;
-
-  // Text editing state
   bool _isEditing = false;
+
+  // Getters for state access
+  bool get isPlaying => _isPlaying;
+  String get audioStatus => _audioStatus;
   bool get isEditing => _isEditing;
+
+  // Setters with notifyListeners
+  set isPlaying(bool value) {
+    _isPlaying = value;
+    notifyListeners();
+  }
+
+  set audioStatus(String value) {
+    _audioStatus = value;
+    notifyListeners();
+  }
+
+  set isEditing(bool value) {
+    _isEditing = value;
+    notifyListeners();
+  }
 
   RecordSessionPageViewModel({
     required this.patient,
@@ -35,24 +50,23 @@ class RecordSessionPageViewModel extends BaseVM {
   });
 
   /// Initialize the ViewModel with default text.
-  void initialize() {
+  /// Called from BaseWidget's onModelReady
+  Future<void> onInit() async {
     textController.text =
         'Haz clic aquí para empezar a escribir las notas de la sesión...';
   }
 
   /// Toggle play/pause audio playback.
   void togglePlayPause() {
-    _isPlaying = !_isPlaying;
-    _audioStatus = _isPlaying ? 'Reproduciendo...' : 'Pausado';
-    notifyListeners();
+    isPlaying = !isPlaying;
+    audioStatus = isPlaying ? 'Reproduciendo...' : 'Pausado';
 
     // Simulate audio playback finishing after 3 seconds
-    if (_isPlaying) {
+    if (isPlaying) {
       Future.delayed(const Duration(seconds: 3), () {
-        if (!disposed && _isPlaying) {
-          _isPlaying = false;
-          _audioStatus = 'Reproducción finalizada';
-          notifyListeners();
+        if (!disposed && isPlaying) {
+          isPlaying = false;
+          audioStatus = 'Reproducción finalizada';
         }
       });
     }
@@ -60,12 +74,11 @@ class RecordSessionPageViewModel extends BaseVM {
 
   /// Handle text field tap to start editing.
   void onTextFieldTap() {
-    _isEditing = true;
+    isEditing = true;
     if (textController.text ==
         'Haz clic aquí para empezar a escribir las notas de la sesión...') {
       textController.clear();
     }
-    notifyListeners();
   }
 
   /// Save changes and return 'Pendiente' status.

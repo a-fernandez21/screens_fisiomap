@@ -11,7 +11,7 @@ class PatientListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWidget<PatientListPageViewModel>(
       model: PatientListPageViewModel(),
-      onModelReady: (model) => model.initialize(),
+      onModelReady: (model) => model.onInit(),
       builder:
           (context, model, child) => Scaffold(
             backgroundColor: Colors.grey[50],

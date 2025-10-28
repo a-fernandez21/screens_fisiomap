@@ -25,9 +25,8 @@ class RecordSessionPage extends StatelessWidget {
         sessionType: sessionType,
         recordId: recordId,
       ),
-      onModelReady: (model) => model.initialize(),
-      builder:
-          (context, model, child) => Scaffold(
+      onModelReady: (model) => model.onInit(),
+      builder: (context, model, child) => Scaffold(
             backgroundColor: Colors.grey[100],
             appBar: RecordSessionAppBar(sessionType: model.sessionType),
             body: Padding(
