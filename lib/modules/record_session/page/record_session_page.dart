@@ -4,6 +4,7 @@ import '../vm/record_session_page_vm.dart';
 import '../widgets/record_session_widgets.dart';
 import '../../../models/patient.dart';
 
+
 /// Record Session Page - Audio recording/playback and session notes editing
 class RecordSessionPage extends StatelessWidget {
   final Patient patient;
@@ -51,8 +52,42 @@ class RecordSessionPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   // Action buttons
                   ActionButtonsWidget(
-                    onSaveChanges: () => model.saveChanges(context),
-                    onConfirmReview: () => model.confirmReview(context),
+                    onSaveChanges: () async {
+                      bool res = await model.saveChanges();
+                      if (res) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Cambios guardados para ${patient.name}'),
+                              backgroundColor: Colors.green[600],
+                            ),
+                          );
+                        }
+                      } else {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Error al guardar los cambios para ${patient.name}'),
+                              backgroundColor: Colors.red[600],
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    onConfirmReview: () {
+                      final String status = model.confirmReview();
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Revisión confirmada para ${patient.name}'),
+                            backgroundColor: Colors.blue[600],
+                          ),
+                        );
+                        Navigator.of(context).pop(status);
+                      }
+                    },
                   ),
                 ],
               ),

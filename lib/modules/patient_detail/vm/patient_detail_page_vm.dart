@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pumpun_core/pumpun_core.dart';
 import '../../../models/patient.dart';
 import '../../../models/medical_record.dart';
 import '../../../data/medical_records_data.dart';
-import '../../record_session/page/record_session_page.dart';
 
 /// ViewModel for Patient Detail screen.
 ///
@@ -66,65 +65,35 @@ class PatientDetailPageViewModel extends BaseVM {
     }
   }
 
-  /// Handle tap on a medical record card.
-  Future<void> onRecordTap(BuildContext context, MedicalRecord record) async {
+  /// Log record tap information.
+  void logRecordTap(MedicalRecord record) {
     debugPrint(
       '🎯 Tarjeta clickeada - ID: ${record.id}, Tipo: ${record.type}, Estado actual: ${record.status}',
     );
+  }
 
-    final String? result = await Navigator.push<String>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => RecordSessionPage(
-          patient: patient,
-          sessionType: record.type,
-          recordId: record.id,
-        ),
-      ),
-    );
-
+  /// Handle navigation result from record session.
+  void handleRecordSessionResult(int recordId, String? result) {
     debugPrint('🔙 Resultado recibido de RecordSessionPage: $result');
     if (result != null) {
       debugPrint(
-        '📤 Llamando a updateRecordStatus con ID: ${record.id} y estado: $result',
+        '📤 Llamando a updateRecordStatus con ID: $recordId y estado: $result',
       );
-      updateRecordStatus(record.id, result);
+      updateRecordStatus(recordId, result);
     } else {
       debugPrint('⚠️ El resultado es null, no se actualiza el estado');
     }
   }
 
-  /// Navigate to new follow-up session.
-  Future<void> onNewFollowUp(BuildContext context) async {
-    final String? result = await Navigator.push<String>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => RecordSessionPage(
-          patient: patient,
-          sessionType: 'Seguimiento',
-        ),
-      ),
-    );
-
-    // For new sessions, could create a new record
+  /// Handle result from new follow-up session.
+  void handleNewFollowUpResult(String? result) {
     if (result != null) {
       debugPrint('📝 Nueva sesión de seguimiento creada con estado: $result');
     }
   }
 
-  /// Navigate to new anamnesis session.
-  Future<void> onNewAnamnesis(BuildContext context) async {
-    final String? result = await Navigator.push<String>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => RecordSessionPage(
-          patient: patient,
-          sessionType: 'Anamnesis',
-        ),
-      ),
-    );
-
-    // For new sessions, could create a new record
+  /// Handle result from new anamnesis session.
+  void handleNewAnamnesisResult(String? result) {
     if (result != null) {
       debugPrint('📝 Nueva sesión de anamnesis creada con estado: $result');
     }

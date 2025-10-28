@@ -43,13 +43,29 @@ class MedicalHistoryPage extends StatelessWidget {
               else
                 MedicalRecordsListWidget(
                   medicalRecords: model.medicalRecords,
-                  onRecordTap: (record) => model.onRecordTap(context, record),
+                  onRecordTap: (record) {
+                    final info = model.getRecordInfo(record);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Registro ${info['type']} - ${info['date']}'),
+                        backgroundColor: info['color'],
+                      ),
+                    );
+                  },
                 ),
             ],
           ),
         ),
         floatingActionButton: AddRecordFAB(
-          onPressed: () => model.addNewRecord(context),
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                    'Agregar nueva historia clínica para ${model.getPatientName()}'),
+                backgroundColor: Colors.teal[600],
+              ),
+            );
+          },
         ),
       ),
     );

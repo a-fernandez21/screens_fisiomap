@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pumpun_core/view/base_widget.dart';
 import '../vm/patient_list_page_vm.dart';
 import '../widgets/patient_list_widgets.dart';
+import '../../patient_detail/page/patient_detail_page.dart';
 
 /// Patient List Page - Main screen displaying clinic patient list
 class PatientListPage extends StatelessWidget {
@@ -64,8 +65,14 @@ class PatientListPage extends StatelessWidget {
               else
                 PatientsListWidget(
                   patients: model.patients,
-                  onPatientTap: (patient) =>
-                      model.navigateToPatientDetail(context, patient),
+                  onPatientTap: (patient) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PatientDetailPage(patient: patient),
+                      ),
+                    );
+                  },
                   searchQuery: model.searchQuery,
                 ),
             ],

@@ -14,6 +14,16 @@ class RecordSessionPageViewModel extends BaseVM {
   final String sessionType;
   final int? recordId;
 
+///check for correct implementation of saved recording api call
+  bool _isRecordingSaved = false;
+
+  get isRecordingSaved => _isRecordingSaved;
+
+  set isRcordingSaved(bool value) {
+    _isRecordingSaved = value;
+    notifyListeners();
+  }
+
   // Text controller for editable notes
   final TextEditingController textController = TextEditingController();
 
@@ -81,34 +91,24 @@ class RecordSessionPageViewModel extends BaseVM {
     }
   }
 
-  /// Save changes and return 'Pendiente' status.
-  void saveChanges(BuildContext context) {
+  /// Save changes and return result.
+  /// Returns true if saved successfully, false otherwise.
+  Future<bool> saveChanges() async {
     debugPrint('💾 Botón Guardar Cambios presionado');
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Cambios guardados para ${patient.name}'),
-        backgroundColor: Colors.green[600],
-      ),
-    );
-
-    debugPrint('🚪 Cerrando pantalla con estado: Pendiente');
-    Navigator.of(context).pop('Pendiente');
+    // API call to save
+    if (isRecordingSaved) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /// Confirm review and return 'Completado' status.
-  void confirmReview(BuildContext context) {
+  /// Returns the status string to be used by the view for navigation.
+  String confirmReview() {
     debugPrint('✅ Botón Confirmar Revisión presionado');
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Revisión confirmada para ${patient.name}'),
-        backgroundColor: Colors.blue[600],
-      ),
-    );
-
-    debugPrint('🚪 Cerrando pantalla con estado: Completado');
-    Navigator.of(context).pop('Completado');
+    debugPrint('🚪 Devolviendo estado: Completado');
+    return 'Completado';
   }
 
   @override

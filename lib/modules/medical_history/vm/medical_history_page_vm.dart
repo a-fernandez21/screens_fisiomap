@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pumpun_core/pumpun_core.dart';
 import '../../../models/patient.dart';
 import '../../../models/medical_record.dart';
@@ -46,23 +45,18 @@ class MedicalHistoryPageViewModel extends BaseVM {
     setBusy(false);
   }
 
-  /// Handle tap on a medical record card.
-  void onRecordTap(BuildContext context, MedicalRecord record) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Registro ${record.type} - ${record.date}'),
-        backgroundColor: record.typeColor,
-      ),
-    );
+  /// Get record info for displaying in view.
+  /// Returns a map with type, date and color.
+  Map<String, dynamic> getRecordInfo(MedicalRecord record) {
+    return {
+      'type': record.type,
+      'date': record.date,
+      'color': record.typeColor,
+    };
   }
 
-  /// Handle adding a new medical record.
-  void addNewRecord(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Agregar nueva historia clínica para ${patient.name}'),
-        backgroundColor: Colors.teal[600],
-      ),
-    );
+  /// Get patient name for new record message.
+  String getPatientName() {
+    return patient.name;
   }
 }

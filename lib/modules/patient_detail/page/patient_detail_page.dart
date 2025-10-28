@@ -3,6 +3,7 @@ import 'package:pumpun_core/view/base_widget.dart';
 import '../vm/patient_detail_page_vm.dart';
 import '../widgets/patient_detail_widgets.dart';
 import '../../../models/patient.dart';
+import '../../record_session/page/record_session_page.dart';
 
 /// Patient Detail Page - Shows patient info and medical history
 class PatientDetailPage extends StatelessWidget {
@@ -49,7 +50,20 @@ class PatientDetailPage extends StatelessWidget {
                         else
                           MedicalRecordsListWidget(
                             medicalRecords: model.medicalRecords,
-                            onRecordTap: (record) => model.onRecordTap(context, record),
+                            onRecordTap: (record) async {
+                              model.logRecordTap(record);
+                              final String? result = await Navigator.push<String>(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RecordSessionPage(
+                                    patient: model.patient,
+                                    sessionType: record.type,
+                                    recordId: record.id,
+                                  ),
+                                ),
+                              );
+                              model.handleRecordSessionResult(record.id, result);
+                            },
                           ),
                       ],
                     ),
@@ -58,8 +72,30 @@ class PatientDetailPage extends StatelessWidget {
               ],
             ),
             bottomNavigationBar: BottomActionBar(
-              onNewFollowUp: () => model.onNewFollowUp(context),
-              onNewAnamnesis: () => model.onNewAnamnesis(context),
+              onNewFollowUp: () async {
+                final String? result = await Navigator.push<String>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecordSessionPage(
+                      patient: model.patient,
+                      sessionType: 'Seguimiento',
+                    ),
+                  ),
+                );
+                model.handleNewFollowUpResult(result);
+              },
+              onNewAnamnesis: () async {
+                final String? result = await Navigator.push<String>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecordSessionPage(
+                      patient: model.patient,
+                      sessionType: 'Anamnesis',
+                    ),
+                  ),
+                );
+                model.handleNewAnamnesisResult(result);
+              },
             ),
           ),
     );

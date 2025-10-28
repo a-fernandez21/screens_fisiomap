@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:pumpun_core/pumpun_core.dart';
 import '../../../models/patient.dart';
 import '../../../data/patients_data.dart';
-import '../../patient_detail/page/patient_detail_page.dart';
 
 /// Filter types for patient list
 enum PatientFilterType {
@@ -81,15 +79,6 @@ class PatientListPageViewModel extends BaseVM {
     }
 
     setBusy(false);
-  }
-
-  /// Navigate to patient detail screen.
-  void navigateToPatientDetail(BuildContext context, Patient patient) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => PatientDetailPage(patient: patient),
-      ),
-    );
   }
 
   /// Toggle a filter on/off.

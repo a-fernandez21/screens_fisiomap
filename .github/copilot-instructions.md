@@ -7,16 +7,50 @@
 - **SOLO**: BaseWidget + ViewModel pattern con Provider básico
 
 ### BaseWidget Pattern (ÚNICO permitido)
-- **NO** usar `StatefulWidget` para nuevas pantallas
+- **PROHIBIDO**: `StatefulWidget` para nuevas pantallas (código nuevo)
 - Vista: `BaseWidget` que inicializa ViewModel en `initState`
 - ViewModel: Extiende `BaseVM` (que extiende `ChangeNotifier`)
 - `BaseWidget` envuelve con `ChangeNotifierProvider` y expone `builder` + `onModelReady`
+- **EXCEPCIÓN**: `StatefulWidget` solo cuando el widget necesita estado completamente independiente del ViewModel (ej: SearchBarWidget con TextEditingController propio)
 
 ### BaseVM (Base ViewModel)
 - Extiende `ChangeNotifier`
 - Controla estados: `busy`, `error`, `empty`
 - Protege `notifyListeners()` verificando que no esté disposeado
 - **TODA** la lógica de negocio debe estar en el ViewModel
+
+### Estructura de ViewModels (OBLIGATORIA)
+- **Orden estricto**: 
+  1. Variables privadas (con underscore)
+  2. Getters inmediatamente debajo de cada variable
+  3. Setters inmediatamente debajo de cada getter
+  4. Constructor (vacío o solo con dependencias)
+  5. Método `onInit()`
+  6. Métodos públicos
+  7. Métodos privados (con underscore)
+- **Ejemplo**:
+  ```dart
+  // Variable
+  String _userName = '';
+  
+  // Getter inmediatamente debajo
+  String get userName => _userName;
+  
+  // Setter inmediatamente debajo del getter
+  set userName(String value) {
+    _userName = value;
+    notifyListeners();
+  }
+  ```
+
+### BuildContext Usage
+- **EVITAR** pasar `BuildContext` al ViewModel siempre que sea posible
+- **PREFERIR**: Métodos del ViewModel que devuelvan valores, y la Vista decide qué hacer (mostrar dialog, navegar, etc.)
+- **SOLO PERMITIDO** pasar `BuildContext` cuando:
+  - Navegación es absolutamente necesaria desde el ViewModel
+  - Mostrar dialogs que dependen del flujo de negocio
+- **NUNCA** almacenar `BuildContext` en variables del ViewModel
+- **SIEMPRE** pasar como parámetro en el método específico que lo necesita
 
 ### Separación Estricta
 - Vista y ViewModel en archivos separados siempre
@@ -26,9 +60,10 @@
 
 ### Provider Usage
 - **PROHIBIDO**: `Provider.of`, `context.read`, o pasar ViewModel entre widgets
-- **EXCEPCIÓN**: `Provider.of(context)` SOLO permitido para inicializar modelo en `BaseWidget`
+- **EXCEPCIÓN ÚNICA**: `Provider.of(context)` SOLO permitido para inicializar modelo en `BaseWidget`
 - **PROHIBIDO**: Acceder a `context` fuera del `builder` del `BaseWidget`
 - Cada widget debe recibir solo datos necesarios por parámetros nombrados
+- **IMPORTANTE**: Si un StatelessWidget necesita reaccionar a cambios del ViewModel, usar `ListenableBuilder` que escucha al ViewModel
 
 ### Arquitectura Actual (Legacy - Migrar progresivamente)
 - `AudioRecorderService`: Lógica de grabación con flutter_sound (Singleton)
@@ -61,6 +96,9 @@
 - **Código/Comentarios**: Inglés estricto (`userName`, `// Initialize audio stream`)
 - **Textos UI**: Español sin punto final (`"Grabación iniciada"`, `"Error al guardar"`)
 - Nombres claros, consistentes, autodescriptivos
+- Variables: camelCase en inglés
+- Clases/Widgets: PascalCase en inglés
+- Archivos: snake_case en inglés
 
 ### Estilo
 - Código limpio, profesional y serio
@@ -70,8 +108,10 @@
 ## Cumplimiento
 
 **TODAS estas reglas son OBLIGATORIAS sin excepciones**
-- Para código nuevo: Aplicar BaseWidget + BaseVM pattern
+- Para código nuevo: Aplicar BaseWidget + BaseVM pattern estrictamente
 - Para código legacy: Mantener consistencia actual hasta refactor planificado
+- **Zero tolerancia**: No crear código que viole estas reglas
+- Toda nueva pantalla/feature debe seguir el patrón establecido
 
 ## Workflows Críticos
 
@@ -122,23 +162,12 @@ void _updateWaveHeights() {
 - Recrear streams al resumir después de pausa
 - Verificar null antes de acceder a subscription
 
-## Archivos Críticos
-
-- `lib/screens/audio_recorder_screen.dart` (1014 líneas): Pantalla principal
-- `lib/services/recording_overlay_service.dart` (326 líneas): Widget flotante
-- `lib/services/audio_recorder_service.dart`: Lógica de grabación
-- `lib/widgets/audio_recorder_widgets.dart` (634 líneas): Componentes reutilizables
-
-## Dependencias Clave
-
-- `flutter_sound ^9.3.8`: Grabación AAC
-- `permission_handler ^12.0.1`: Permisos de micrófono
-- `path_provider ^2.0.16`: Almacenamiento de archivos
-
 ## Reglas de Edición
 
 1. **NO** llamar stopRecording() antes de confirmación del usuario
 2. **SIEMPRE** mantener sincronización entre RecordingOverlayService y AudioRecorderScreen
-3. **ELIMINAR** prints de debug antes de commits
+3. **ELIMINAR** prints de debug antes de commits (usar debugPrint solo para desarrollo)
 4. **EXTRAER** métodos cuando superen 20 líneas
 5. **USAR** const constructors siempre que sea posible
+6. **StatelessWidget** + `ListenableBuilder` para widgets que necesitan escuchar cambios del ViewModel
+7. **StatefulWidget** solo para estado completamente independiente (ej: controladores de TextField)
