@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Widget that displays an arrow icon as action indicator.
+/// Arrow icon indicating card interactivity
 class ArrowIconWidget extends StatelessWidget {
   const ArrowIconWidget({super.key});
 

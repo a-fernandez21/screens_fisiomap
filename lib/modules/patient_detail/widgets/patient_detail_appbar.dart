@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// AppBar for patient detail screen.
+/// AppBar displaying patient name with back navigation
 class PatientDetailAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final String patientName;

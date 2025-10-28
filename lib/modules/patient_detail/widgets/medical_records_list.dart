@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../models/medical_record.dart';
 
-/// List widget displaying medical records.
+/// Scrollable list displaying all medical records
 class MedicalRecordsListWidget extends StatelessWidget {
   final List<MedicalRecord> medicalRecords;
   final Function(MedicalRecord) onRecordTap;
@@ -33,7 +33,7 @@ class MedicalRecordsListWidget extends StatelessWidget {
   }
 }
 
-/// Card widget for individual medical record.
+/// Interactive card displaying individual medical record details
 class MedicalRecordCard extends StatelessWidget {
   final MedicalRecord record;
   final VoidCallback onTap;
@@ -68,7 +68,7 @@ class MedicalRecordCard extends StatelessWidget {
   }
 }
 
-/// Header section of medical record card (type badge and date).
+/// Header displaying record type badge and date
 class _RecordHeaderWidget extends StatelessWidget {
   final MedicalRecord record;
 
@@ -113,7 +113,7 @@ class _RecordHeaderWidget extends StatelessWidget {
   }
 }
 
-/// Footer section of medical record card (doctor and status).
+/// Footer displaying doctor name and status badge
 class _RecordFooterWidget extends StatelessWidget {
   final MedicalRecord record;
 

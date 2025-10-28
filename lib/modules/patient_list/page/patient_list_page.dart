@@ -12,39 +12,39 @@ class PatientListPage extends StatelessWidget {
     return BaseWidget<PatientListPageViewModel>(
       model: PatientListPageViewModel(),
       onModelReady: (model) => model.onInit(),
-      builder: (context, model, child) => Scaffold(
-        backgroundColor: Colors.grey[50],
-        appBar: const PatientListAppBar(),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 24),
-              const SectionTitleWidget(title: 'Lista de Pacientes'),
-              const SizedBox(height: 16),
-              // Display loading, empty state, or patient list
-              if (model.busy)
-                const Expanded(
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              else if (model.isEmpty)
-                const Expanded(
-                  child: EmptyStateWidget(),
-                )
-              else
-                PatientsListWidget(
-                  patients: model.patients,
-                  onPatientTap: (patient) =>
-                      model.navigateToPatientDetail(context, patient),
-                ),
-            ],
+      builder:
+          (context, model, child) => Scaffold(
+            backgroundColor: Colors.grey[50],
+            appBar: const PatientListAppBar(),
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 24),
+                  const SectionTitleWidget(title: 'Lista de Pacientes'),
+                  const SizedBox(height: 16),
+                  // Display loading, empty state, or patient list
+                  if (model.busy)
+                    const Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  else if (model.isEmpty)
+                    const Expanded(child: EmptyStateWidget())
+                  else
+                    PatientsListWidget(
+                      patients: model.patients,
+                      onPatientTap:
+                          (patient) =>
+                              model.navigateToPatientDetail(context, patient),
+                    ),
+                ],
+              ),
+            ),
+            floatingActionButton: AddPatientFAB(
+              onPressed: () => model.addNewPatient(context),
+            ),
           ),
-        ),
-        floatingActionButton: AddPatientFAB(
-          onPressed: () => model.addNewPatient(context),
-        ),
-      ),
     );
   }
 }

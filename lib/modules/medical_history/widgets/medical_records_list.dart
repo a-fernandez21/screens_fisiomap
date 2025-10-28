@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../models/medical_record.dart';
 import 'medical_record_card.dart';
 
-/// Widget rendering the complete medical records list.
+/// Scrollable list rendering all medical record cards
 class MedicalRecordsListWidget extends StatelessWidget {
   final List<MedicalRecord> medicalRecords;
   final Function(MedicalRecord) onRecordTap;

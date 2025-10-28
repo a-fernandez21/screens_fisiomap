@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Widget that displays the patient's name.
+/// Text widget displaying patient's name
 class PatientNameWidget extends StatelessWidget {
   final String name;
 

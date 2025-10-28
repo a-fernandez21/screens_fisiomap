@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Empty state widget when no patients.
+/// Empty state widget displayed when no patients exist
 class EmptyStateWidget extends StatelessWidget {
   const EmptyStateWidget({super.key});
 

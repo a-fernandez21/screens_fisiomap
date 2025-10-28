@@ -4,20 +4,11 @@ import 'patient_avatar.dart';
 import 'patient_arrow.dart';
 import 'patient_info.dart';
 
-/// Widget público que representa una tarjeta de paciente individual.
+/// Patient card widget displaying individual patient information
 ///
-/// Muestra información del paciente en un formato card con:
-/// - Avatar circular con iniciales
-/// - Nombre completo
-/// - Fecha de última visita con ícono
-/// - Indicador visual de interacción (flecha)
-///
-/// Es clickeable y ejecuta el callback [onTap] proporcionado.
+/// Shows patient data in a card format with avatar, name, last visit, and arrow indicator
 class PatientCard extends StatelessWidget {
-  /// Datos del paciente a mostrar.
   final Patient patient;
-
-  /// Callback ejecutado al tocar la tarjeta.
   final VoidCallback onTap;
 
   const PatientCard({super.key, required this.patient, required this.onTap});
@@ -45,10 +36,3 @@ class PatientCard extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-

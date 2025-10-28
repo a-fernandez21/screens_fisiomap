@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../models/patient.dart';
 
-/// Widget that displays the patient's circular avatar.
-///
-/// Shows the patient's initials in a colored CircleAvatar.
+/// Circular avatar displaying patient's initials
 class PatientAvatarWidget extends StatelessWidget {
   final Patient patient;
 

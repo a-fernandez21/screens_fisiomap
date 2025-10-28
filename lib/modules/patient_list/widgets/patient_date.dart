@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Widget that displays the patient's last visit date.
+/// Widget showing patient's last visit date with calendar icon
 class PatientLastVisitWidget extends StatelessWidget {
   final String lastVisit;
 

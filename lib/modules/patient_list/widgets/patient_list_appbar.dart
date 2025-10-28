@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// AppBar widget for patient screen.
+/// AppBar for patient list screen
 class PatientListAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PatientListAppBar({super.key});
 
