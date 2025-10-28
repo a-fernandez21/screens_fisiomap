@@ -15,58 +15,15 @@ class PatientListPage extends StatelessWidget {
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.grey[50],
         appBar: PatientListAppBar(
-          filterButton: PopupMenuButton<PatientFilterType>(
+          filterButton: IconButton(
             icon: Icon(
-              model.currentFilter != PatientFilterType.none
+              model.hasActiveFilters
                   ? Icons.filter_alt
                   : Icons.filter_alt_outlined,
               color: Colors.white,
             ),
             tooltip: 'Filtrar',
-            onSelected: (filterType) =>
-                model.onFilterSelected(filterType, context),
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: PatientFilterType.none,
-                child: Row(
-                  children: [
-                    Icon(Icons.clear),
-                    SizedBox(width: 12),
-                    Text('Sin filtro'),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
-                value: PatientFilterType.alphabetical,
-                child: Row(
-                  children: [
-                    Icon(Icons.sort_by_alpha),
-                    SizedBox(width: 12),
-                    Text('Orden alfabético'),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
-                value: PatientFilterType.lastVisit,
-                child: Row(
-                  children: [
-                    Icon(Icons.calendar_today),
-                    SizedBox(width: 12),
-                    Text('Última visita'),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
-                value: PatientFilterType.gender,
-                child: Row(
-                  children: [
-                    Icon(Icons.people),
-                    SizedBox(width: 12),
-                    Text('Por sexo'),
-                  ],
-                ),
-              ),
-            ],
+            onPressed: () => _showFilterBottomSheet(context, model),
           ),
         ),
         body: Padding(
@@ -74,13 +31,22 @@ class PatientListPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Display active filter indicator
-              if (model.currentFilter != PatientFilterType.none)
+              // Display active filter chips
+              if (model.hasActiveFilters)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: _FilterChip(
-                    label: _getFilterLabel(model),
-                    onClear: () => model.applyFilter(PatientFilterType.none),
+                  child: Wrap(
+                    spacing: 8.0,
+                    runSpacing: 4.0,
+                    children: model.activeFilters.map((filter) {
+                      return _FilterChip(
+                        label: _getFilterLabel(filter),
+                        onClear: () {
+                          model.toggleFilter(filter);
+                          model.applyFilters();
+                        },
+                      );
+                    }).toList(),
                   ),
                 ),
               // Display loading, empty state, or patient list
@@ -103,16 +69,36 @@ class PatientListPage extends StatelessWidget {
     );
   }
 
-  String _getFilterLabel(PatientListPageViewModel model) {
-    switch (model.currentFilter) {
-      case PatientFilterType.alphabetical:
-        return 'Filtro: Alfabético';
-      case PatientFilterType.lastVisit:
-        return 'Filtro: Última visita';
-      case PatientFilterType.gender:
-        return 'Filtro: ${model.selectedGender}';
-      case PatientFilterType.none:
-        return '';
+  /// Show filter bottom sheet
+  void _showFilterBottomSheet(
+    BuildContext context,
+    PatientListPageViewModel model,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => FilterBottomSheet(viewModel: model),
+    );
+  }
+
+  /// Get label text for filter chip
+  String _getFilterLabel(PatientFilterType filter) {
+    switch (filter) {
+      case PatientFilterType.alphabeticalAZ:
+        return 'A → Z';
+      case PatientFilterType.alphabeticalZA:
+        return 'Z → A';
+      case PatientFilterType.lastVisitNewest:
+        return 'Más reciente';
+      case PatientFilterType.lastVisitOldest:
+        return 'Más antigua';
+      case PatientFilterType.genderMale:
+        return 'Masculino';
+      case PatientFilterType.genderFemale:
+        return 'Femenino';
     }
   }
 }

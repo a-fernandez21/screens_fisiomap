@@ -6,10 +6,12 @@ import '../../patient_detail/page/patient_detail_page.dart';
 
 /// Filter types for patient list
 enum PatientFilterType {
-  none,
-  alphabetical,
-  lastVisit,
-  gender,
+  alphabeticalAZ,
+  alphabeticalZA,
+  lastVisitNewest,
+  lastVisitOldest,
+  genderMale,
+  genderFemale,
 }
 
 /// ViewModel for Patient List screen.
@@ -19,20 +21,19 @@ enum PatientFilterType {
 /// - Data loading
 /// - Navigation to detail screens
 /// - Add patient events
-/// - Filter functionality
+/// - Multiple filter functionality
 class PatientListPageViewModel extends BaseVM {
   // Private state variables
   List<Patient> _patients = [];
   List<Patient> _originalPatients = [];
-  PatientFilterType _currentFilter = PatientFilterType.none;
-  String? _selectedGender;
+  Set<PatientFilterType> _activeFilters = {};
 
   // Getters for state access
   List<Patient> get patients => _patients;
   bool get hasPatients => _patients.isNotEmpty;
   int get patientCount => _patients.length;
-  PatientFilterType get currentFilter => _currentFilter;
-  String? get selectedGender => _selectedGender;
+  Set<PatientFilterType> get activeFilters => _activeFilters;
+  bool get hasActiveFilters => _activeFilters.isNotEmpty;
 
   // Setters with notifyListeners
   set patients(List<Patient> value) {
@@ -40,13 +41,8 @@ class PatientListPageViewModel extends BaseVM {
     notifyListeners();
   }
 
-  set currentFilter(PatientFilterType value) {
-    _currentFilter = value;
-    notifyListeners();
-  }
-
-  set selectedGender(String? value) {
-    _selectedGender = value;
+  set activeFilters(Set<PatientFilterType> value) {
+    _activeFilters = value;
     notifyListeners();
   }
 
@@ -81,117 +77,97 @@ class PatientListPageViewModel extends BaseVM {
     );
   }
 
-  /// Handle filter selection from menu.
-  Future<void> onFilterSelected(
-    PatientFilterType filterType,
-    BuildContext context,
-  ) async {
-    if (filterType == PatientFilterType.gender) {
-      await _showGenderFilterDialog(context);
-    } else {
-      applyFilter(filterType);
-    }
-  }
-
-  /// Show gender selection dialog.
-  Future<void> _showGenderFilterDialog(BuildContext context) async {
-    final String? gender = await showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Seleccionar sexo'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: const Text('Masculino'),
-              onTap: () => Navigator.pop(context, 'Masculino'),
-            ),
-            ListTile(
-              title: const Text('Femenino'),
-              onTap: () => Navigator.pop(context, 'Femenino'),
-            ),
-          ],
-        ),
-      ),
-    );
-
-    if (gender != null) {
-      selectedGender = gender;
-      applyFilter(PatientFilterType.gender);
-    }
-  }
-
-  /// Apply selected filter to patient list.
-  void applyFilter(PatientFilterType filterType) {
-    currentFilter = filterType;
-    List<Patient> filteredList = List.from(_originalPatients);
-
+  /// Toggle a filter on/off.
+  void toggleFilter(PatientFilterType filterType) {
+    final Set<PatientFilterType> newFilters = Set.from(_activeFilters);
+    
+    // Handle mutually exclusive filters
     switch (filterType) {
-      case PatientFilterType.none:
-        patients = filteredList;
-        selectedGender = null;
+      case PatientFilterType.alphabeticalAZ:
+        newFilters.remove(PatientFilterType.alphabeticalZA);
         break;
-
-      case PatientFilterType.alphabetical:
-        filteredList.sort((a, b) => a.name.compareTo(b.name));
-        patients = filteredList;
+      case PatientFilterType.alphabeticalZA:
+        newFilters.remove(PatientFilterType.alphabeticalAZ);
         break;
-
-      case PatientFilterType.lastVisit:
-        filteredList.sort((a, b) {
-          // Parse dates in format "DD/MM/YYYY"
-          final List<String> datePartsA = a.lastVisit.split('/');
-          final List<String> datePartsB = b.lastVisit.split('/');
-          
-          final DateTime dateA = DateTime(
-            int.parse(datePartsA[2]),
-            int.parse(datePartsA[1]),
-            int.parse(datePartsA[0]),
-          );
-          final DateTime dateB = DateTime(
-            int.parse(datePartsB[2]),
-            int.parse(datePartsB[1]),
-            int.parse(datePartsB[0]),
-          );
-          
-          return dateB.compareTo(dateA); // Most recent first
-        });
-        patients = filteredList;
+      case PatientFilterType.lastVisitNewest:
+        newFilters.remove(PatientFilterType.lastVisitOldest);
         break;
-
-      case PatientFilterType.gender:
-        if (selectedGender != null) {
-          filteredList = filteredList
-              .where((patient) => patient.gender == selectedGender)
-              .toList();
-        }
-        patients = filteredList;
+      case PatientFilterType.lastVisitOldest:
+        newFilters.remove(PatientFilterType.lastVisitNewest);
         break;
-    }
-
-    if (patients.isEmpty) {
-      setEmpty(empty: true);
-    } else {
-      setEmpty(empty: false);
-    }
-  }
-
-  /// Filter patients by name (prepared for future search).
-  void filterPatients(String query) {
-    if (query.isEmpty) {
-      patients = PatientsData.samplePatients;
-    } else {
-      patients = PatientsData.samplePatients
-          .where(
-            (patient) =>
-                patient.name.toLowerCase().contains(query.toLowerCase()),
-          )
-          .toList();
+      case PatientFilterType.genderMale:
+        newFilters.remove(PatientFilterType.genderFemale);
+        break;
+      case PatientFilterType.genderFemale:
+        newFilters.remove(PatientFilterType.genderMale);
+        break;
     }
     
-    if (patients.isEmpty) {
-      setEmpty(empty: true);
+    // Toggle the selected filter
+    if (newFilters.contains(filterType)) {
+      newFilters.remove(filterType);
+    } else {
+      newFilters.add(filterType);
     }
+    
+    activeFilters = newFilters;
+  }
+
+  /// Clear all active filters.
+  void clearAllFilters() {
+    activeFilters = {};
+    patients = List.from(_originalPatients);
+    setEmpty(empty: patients.isEmpty);
+  }
+
+  /// Apply all active filters to patient list.
+  void applyFilters() {
+    List<Patient> filteredList = List.from(_originalPatients);
+
+    // Apply gender filters
+    if (activeFilters.contains(PatientFilterType.genderMale)) {
+      filteredList = filteredList
+          .where((patient) => patient.gender == 'Masculino')
+          .toList();
+    } else if (activeFilters.contains(PatientFilterType.genderFemale)) {
+      filteredList = filteredList
+          .where((patient) => patient.gender == 'Femenino')
+          .toList();
+    }
+
+    // Apply sorting filters
+    if (activeFilters.contains(PatientFilterType.alphabeticalAZ)) {
+      filteredList.sort((a, b) => a.name.compareTo(b.name));
+    } else if (activeFilters.contains(PatientFilterType.alphabeticalZA)) {
+      filteredList.sort((a, b) => b.name.compareTo(a.name));
+    }
+
+    if (activeFilters.contains(PatientFilterType.lastVisitNewest)) {
+      filteredList.sort((a, b) {
+        final DateTime dateA = _parseDate(a.lastVisit);
+        final DateTime dateB = _parseDate(b.lastVisit);
+        return dateB.compareTo(dateA); // Most recent first
+      });
+    } else if (activeFilters.contains(PatientFilterType.lastVisitOldest)) {
+      filteredList.sort((a, b) {
+        final DateTime dateA = _parseDate(a.lastVisit);
+        final DateTime dateB = _parseDate(b.lastVisit);
+        return dateA.compareTo(dateB); // Oldest first
+      });
+    }
+
+    patients = filteredList;
+    setEmpty(empty: patients.isEmpty);
+  }
+
+  /// Parse date string in format "DD/MM/YYYY".
+  DateTime _parseDate(String dateString) {
+    final List<String> parts = dateString.split('/');
+    return DateTime(
+      int.parse(parts[2]),
+      int.parse(parts[1]),
+      int.parse(parts[0]),
+    );
   }
 
   /// Refresh the patient list (prepared for pull-to-refresh).
