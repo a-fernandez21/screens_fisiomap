@@ -25,9 +25,8 @@ class PatientDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWidget<PatientDetailPageViewModel>(
       model: PatientDetailPageViewModel(patient: patient),
-      onModelReady: (model) => model.initialize(),
-      builder:
-          (context, model, child) => Scaffold(
+      onModelReady: (model) => model.onInit(),
+      builder: (context, model, child) => Scaffold(
             backgroundColor: Colors.grey[50],
             appBar: PatientDetailAppBar(patientName: model.patient.name),
             body: Column(
@@ -61,8 +60,7 @@ class PatientDetailPage extends StatelessWidget {
                         else
                           MedicalRecordsListWidget(
                             medicalRecords: model.medicalRecords,
-                            onRecordTap:
-                                (record) => model.onRecordTap(context, record),
+                            onRecordTap: (record) => model.onRecordTap(context, record),
                           ),
                       ],
                     ),
