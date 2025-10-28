@@ -4,19 +4,7 @@ import '../vm/record_session_page_vm.dart';
 import '../widgets/record_session_widgets.dart';
 import '../../../models/patient.dart';
 
-/// Main screen for recording/playing audio and editing session notes.
-///
-/// MVVM Architecture:
-/// - VIEW: This file (UI composition only)
-/// - LOGIC: RecordSessionPageViewModel (vm/)
-/// - WIDGETS: Reusable components (widgets/)
-///
-/// Used for both new anamnesis and new follow-up sessions.
-///
-/// Includes:
-/// - iPhone-style audio player
-/// - Editable text container for notes
-/// - Action buttons (Save Changes / Confirm Review)
+/// Record Session Page - Audio recording/playback and session notes editing
 class RecordSessionPage extends StatelessWidget {
   final Patient patient;
   final String sessionType;
@@ -46,13 +34,13 @@ class RecordSessionPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // iPhone-style audio player
+                  // Audio player widget
                   AudioPlayerWidget(
                     isPlaying: model.isPlaying,
                     onPlayPause: model.togglePlayPause,
                   ),
                   const SizedBox(height: 16),
-                  // Editable text container filling available space
+                  // Editable text container for session notes
                   Expanded(
                     child: EditableTextContainer(
                       controller: model.textController,
@@ -61,7 +49,7 @@ class RecordSessionPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // Action buttons at bottom
+                  // Action buttons
                   ActionButtonsWidget(
                     onSaveChanges: () => model.saveChanges(context),
                     onConfirmReview: () => model.confirmReview(context),

@@ -3,17 +3,7 @@ import 'package:pumpun_core/view/base_widget.dart';
 import '../vm/patient_list_page_vm.dart';
 import '../widgets/patient_list_widgets.dart';
 
-/// Main screen displaying FisioMap clinic patient list.
-///
-/// MVVM Architecture:
-/// - VIEW: This file (UI composition only)
-/// - LOGIC: PatientListPageViewModel (vm/)
-/// - WIDGETS: Reusable components (widgets/)
-///
-/// Includes:
-/// - AppBar with title
-/// - Scrollable patient list
-/// - Floating button to add patients
+/// Patient List Page - Main screen displaying clinic patient list
 class PatientListPage extends StatelessWidget {
   const PatientListPage({super.key});
 
@@ -33,7 +23,7 @@ class PatientListPage extends StatelessWidget {
               const SizedBox(height: 24),
               const SectionTitleWidget(title: 'Lista de Pacientes'),
               const SizedBox(height: 16),
-              // Display loading or list based on state
+              // Display loading, empty state, or patient list
               if (model.busy)
                 const Expanded(
                   child: Center(child: CircularProgressIndicator()),

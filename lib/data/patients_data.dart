@@ -1,11 +1,11 @@
 import '../models/patient.dart';
 
 /// Clase que contiene datos de ejemplo para pacientes.
-/// 
+///
 /// Esta es una clase utilitaria que proporciona una lista estática de pacientes
 /// para propósitos de prueba y demostración. En una aplicación real, estos datos
 /// provendrían de una base de datos o API.
-/// 
+///
 /// El constructor es privado para prevenir la instanciación de esta clase,
 /// ya que solo contiene miembros estáticos.
 class PatientsData {
@@ -13,7 +13,7 @@ class PatientsData {
   PatientsData._();
 
   /// Lista de pacientes de ejemplo con datos de prueba.
-  /// 
+  ///
   /// Contiene 10 pacientes ficticios con sus respectivos IDs, nombres y
   /// fechas de última visita.
   static const List<Patient> samplePatients = [

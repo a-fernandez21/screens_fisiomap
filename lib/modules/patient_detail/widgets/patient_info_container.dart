@@ -111,21 +111,33 @@ class _PatientInfoContainerState extends State<PatientInfoContainer>
                 children: [
                   const Divider(),
                   const SizedBox(height: 8),
-                  _buildInfoRow(Icons.calendar_today, 'Última visita',
-                      widget.patient.lastVisit),
+                  _buildInfoRow(
+                    Icons.calendar_today,
+                    'Última visita',
+                    widget.patient.lastVisit,
+                  ),
                   if (widget.patient.birthDate != null)
-                    _buildInfoRow(Icons.cake, 'Fecha de nacimiento',
-                        '${widget.patient.birthDate} (${widget.patient.age} años)'),
-                  if (widget.patient.gender != null)
                     _buildInfoRow(
-                        Icons.person, 'Sexo', widget.patient.gender!),
+                      Icons.cake,
+                      'Fecha de nacimiento',
+                      '${widget.patient.birthDate} (${widget.patient.age} años)',
+                    ),
+                  if (widget.patient.gender != null)
+                    _buildInfoRow(Icons.person, 'Sexo', widget.patient.gender!),
                   if (widget.patient.phone != null)
-                    _buildInfoRow(Icons.phone, 'Teléfono', widget.patient.phone!),
+                    _buildInfoRow(
+                      Icons.phone,
+                      'Teléfono',
+                      widget.patient.phone!,
+                    ),
                   if (widget.patient.email != null)
                     _buildInfoRow(Icons.email, 'Email', widget.patient.email!),
                   if (widget.patient.address != null)
                     _buildInfoRow(
-                        Icons.location_on, 'Dirección', widget.patient.address!),
+                      Icons.location_on,
+                      'Dirección',
+                      widget.patient.address!,
+                    ),
                 ],
               ),
             ),

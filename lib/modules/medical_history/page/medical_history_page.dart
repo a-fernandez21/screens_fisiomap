@@ -4,25 +4,11 @@ import '../vm/medical_history_page_vm.dart';
 import '../widgets/medical_history_widgets.dart';
 import '../../../models/patient.dart';
 
-/// Main screen displaying patient's medical history.
-///
-/// MVVM Architecture:
-/// - VIEW: This file (UI composition only)
-/// - LOGIC: MedicalHistoryPageViewModel (vm/)
-/// - WIDGETS: Reusable components (widgets/)
-///
-/// Includes:
-/// - AppBar with patient name
-/// - Patient summary card
-/// - Scrollable medical records list
-/// - Floating button to add records
+/// Medical History Page - Shows patient's medical records
 class MedicalHistoryPage extends StatelessWidget {
   final Patient patient;
 
-  const MedicalHistoryPage({
-    super.key,
-    required this.patient,
-  });
+  const MedicalHistoryPage({super.key, required this.patient});
 
   @override
   Widget build(BuildContext context) {
