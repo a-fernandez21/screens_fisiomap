@@ -27,6 +27,7 @@ class PatientListPageViewModel extends BaseVM {
   List<Patient> _patients = [];
   List<Patient> _originalPatients = [];
   Set<PatientFilterType> _activeFilters = {};
+  Set<PatientFilterType> _tempFilters = {};
   String _searchQuery = '';
 
   // Getters for state access
@@ -36,6 +37,8 @@ class PatientListPageViewModel extends BaseVM {
   Set<PatientFilterType> get activeFilters => _activeFilters;
   bool get hasActiveFilters => _activeFilters.isNotEmpty;
   String get searchQuery => _searchQuery;
+  Set<PatientFilterType> get tempFilters => _tempFilters;
+  bool get hasTempFilters => _tempFilters.isNotEmpty;
 
   // Setters with notifyListeners
   set patients(List<Patient> value) {
@@ -50,6 +53,11 @@ class PatientListPageViewModel extends BaseVM {
 
   set searchQuery(String value) {
     _searchQuery = value;
+    notifyListeners();
+  }
+
+  set tempFilters(Set<PatientFilterType> value) {
+    _tempFilters = value;
     notifyListeners();
   }
 
@@ -124,6 +132,59 @@ class PatientListPageViewModel extends BaseVM {
   void clearAllFilters() {
     activeFilters = {};
     _applySearchAndFilters();
+  }
+
+  /// Initialize temp filters with current active filters.
+  void initTempFilters() {
+    _tempFilters = Set.from(_activeFilters);
+    notifyListeners();
+  }
+
+  /// Toggle a temporary filter on/off (for filter sheet preview).
+  void toggleTempFilter(PatientFilterType filterType) {
+    final Set<PatientFilterType> newFilters = Set.from(_tempFilters);
+    
+    // Handle mutually exclusive filters
+    switch (filterType) {
+      case PatientFilterType.alphabeticalAZ:
+        newFilters.remove(PatientFilterType.alphabeticalZA);
+        break;
+      case PatientFilterType.alphabeticalZA:
+        newFilters.remove(PatientFilterType.alphabeticalAZ);
+        break;
+      case PatientFilterType.lastVisitNewest:
+        newFilters.remove(PatientFilterType.lastVisitOldest);
+        break;
+      case PatientFilterType.lastVisitOldest:
+        newFilters.remove(PatientFilterType.lastVisitNewest);
+        break;
+      case PatientFilterType.genderMale:
+        newFilters.remove(PatientFilterType.genderFemale);
+        break;
+      case PatientFilterType.genderFemale:
+        newFilters.remove(PatientFilterType.genderMale);
+        break;
+    }
+    
+    // Toggle the selected filter
+    if (newFilters.contains(filterType)) {
+      newFilters.remove(filterType);
+    } else {
+      newFilters.add(filterType);
+    }
+    
+    tempFilters = newFilters;
+  }
+
+  /// Clear all temporary filters.
+  void clearAllTempFilters() {
+    tempFilters = {};
+  }
+
+  /// Apply temporary filters to active filters.
+  void applyTempFilters() {
+    activeFilters = Set.from(_tempFilters);
+    applyFilters();
   }
 
   /// Search patients by name, phone, or email.

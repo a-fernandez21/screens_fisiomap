@@ -80,6 +80,9 @@ class PatientListPage extends StatelessWidget {
     BuildContext context,
     PatientListPageViewModel model,
   ) {
+    // Initialize temp filters with current active filters
+    model.initTempFilters();
+    
     showGeneralDialog(
       context: context,
       barrierDismissible: true,
