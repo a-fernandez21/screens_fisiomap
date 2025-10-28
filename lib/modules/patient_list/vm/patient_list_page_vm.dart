@@ -27,6 +27,7 @@ class PatientListPageViewModel extends BaseVM {
   List<Patient> _patients = [];
   List<Patient> _originalPatients = [];
   Set<PatientFilterType> _activeFilters = {};
+  String _searchQuery = '';
 
   // Getters for state access
   List<Patient> get patients => _patients;
@@ -34,6 +35,7 @@ class PatientListPageViewModel extends BaseVM {
   int get patientCount => _patients.length;
   Set<PatientFilterType> get activeFilters => _activeFilters;
   bool get hasActiveFilters => _activeFilters.isNotEmpty;
+  String get searchQuery => _searchQuery;
 
   // Setters with notifyListeners
   set patients(List<Patient> value) {
@@ -43,6 +45,11 @@ class PatientListPageViewModel extends BaseVM {
 
   set activeFilters(Set<PatientFilterType> value) {
     _activeFilters = value;
+    notifyListeners();
+  }
+
+  set searchQuery(String value) {
+    _searchQuery = value;
     notifyListeners();
   }
 
@@ -116,13 +123,49 @@ class PatientListPageViewModel extends BaseVM {
   /// Clear all active filters.
   void clearAllFilters() {
     activeFilters = {};
-    patients = List.from(_originalPatients);
-    setEmpty(empty: patients.isEmpty);
+    _applySearchAndFilters();
   }
 
-  /// Apply all active filters to patient list.
-  void applyFilters() {
+  /// Search patients by name, phone, or email.
+  void searchPatients(String query) {
+    _searchQuery = query;
+    _applySearchAndFilters();
+  }
+
+  /// Apply search and filters together.
+  void _applySearchAndFilters() {
     List<Patient> filteredList = List.from(_originalPatients);
+
+    // Apply search filter first (even with single character)
+    final String trimmedQuery = _searchQuery.trim();
+    if (trimmedQuery.isNotEmpty) {
+      final String lowerQuery = trimmedQuery.toLowerCase();
+      
+      // Filter patients that match the query ONLY in name
+      filteredList = filteredList.where((patient) {
+        final String lowerName = patient.name.toLowerCase();
+        // Only search in name to ensure we can highlight matches
+        return lowerName.contains(lowerQuery);
+      }).toList();
+      
+      // Sort by position of match (earlier match = higher priority)
+      filteredList.sort((a, b) {
+        final String lowerNameA = a.name.toLowerCase();
+        final String lowerNameB = b.name.toLowerCase();
+        
+        // Get position of match in name
+        final int nameIndexA = lowerNameA.indexOf(lowerQuery);
+        final int nameIndexB = lowerNameB.indexOf(lowerQuery);
+        
+        // Compare positions (earlier = higher priority)
+        if (nameIndexA != nameIndexB) {
+          return nameIndexA.compareTo(nameIndexB);
+        }
+        
+        // Same position, alphabetical order
+        return lowerNameA.compareTo(lowerNameB);
+      });
+    }
 
     // Apply gender filters
     if (activeFilters.contains(PatientFilterType.genderMale)) {
@@ -158,6 +201,11 @@ class PatientListPageViewModel extends BaseVM {
 
     patients = filteredList;
     setEmpty(empty: patients.isEmpty);
+  }
+
+  /// Apply all active filters to patient list.
+  void applyFilters() {
+    _applySearchAndFilters();
   }
 
   /// Parse date string in format "DD/MM/YYYY".

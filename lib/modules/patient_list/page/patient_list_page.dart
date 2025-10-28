@@ -31,6 +31,11 @@ class PatientListPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Search bar
+              SearchBarWidget(
+                onSearch: (query) => model.searchPatients(query),
+              ),
+              const SizedBox(height: 12),
               // Display active filter chips
               if (model.hasActiveFilters)
                 Padding(
@@ -61,6 +66,7 @@ class PatientListPage extends StatelessWidget {
                   patients: model.patients,
                   onPatientTap: (patient) =>
                       model.navigateToPatientDetail(context, patient),
+                  searchQuery: model.searchQuery,
                 ),
             ],
           ),
@@ -74,13 +80,33 @@ class PatientListPage extends StatelessWidget {
     BuildContext context,
     PatientListPageViewModel model,
   ) {
-    showModalBottomSheet(
+    showGeneralDialog(
       context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => FilterBottomSheet(viewModel: model),
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Align(
+          alignment: Alignment.centerRight,
+          child: Material(
+            elevation: 16,
+            child: FilterBottomSheet(viewModel: model),
+          ),
+        );
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeInOut,
+          )),
+          child: child,
+        );
+      },
     );
   }
 

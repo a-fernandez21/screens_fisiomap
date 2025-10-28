@@ -6,8 +6,13 @@ import 'patient_date.dart';
 /// Container grouping patient's name and last visit information
 class PatientInfoWidget extends StatelessWidget {
   final Patient patient;
+  final String? searchQuery;
 
-  const PatientInfoWidget({super.key, required this.patient});
+  const PatientInfoWidget({
+    super.key,
+    required this.patient,
+    this.searchQuery,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,10 @@ class PatientInfoWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PatientNameWidget(name: patient.name),
+          PatientNameWidget(
+            name: patient.name,
+            searchQuery: searchQuery,
+          ),
           const SizedBox(height: 4),
           PatientLastVisitWidget(lastVisit: patient.lastVisit),
         ],

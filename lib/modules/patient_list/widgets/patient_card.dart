@@ -10,8 +10,14 @@ import 'patient_info.dart';
 class PatientCard extends StatelessWidget {
   final Patient patient;
   final VoidCallback onTap;
+  final String? searchQuery;
 
-  const PatientCard({super.key, required this.patient, required this.onTap});
+  const PatientCard({
+    super.key,
+    required this.patient,
+    required this.onTap,
+    this.searchQuery,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,10 @@ class PatientCard extends StatelessWidget {
             children: [
               PatientAvatarWidget(patient: patient),
               const SizedBox(width: 16),
-              PatientInfoWidget(patient: patient),
+              PatientInfoWidget(
+                patient: patient,
+                searchQuery: searchQuery,
+              ),
               const ArrowIconWidget(),
             ],
           ),

@@ -6,11 +6,13 @@ import 'patient_card.dart';
 class PatientsListWidget extends StatelessWidget {
   final List<Patient> patients;
   final Function(Patient) onPatientTap;
+  final String? searchQuery;
 
   const PatientsListWidget({
     super.key,
     required this.patients,
     required this.onPatientTap,
+    this.searchQuery,
   });
 
   @override
@@ -25,6 +27,7 @@ class PatientsListWidget extends StatelessWidget {
             child: PatientCard(
               patient: patient,
               onTap: () => onPatientTap(patient),
+              searchQuery: searchQuery,
             ),
           );
         },

@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 /// Text widget displaying patient's name
 class PatientNameWidget extends StatelessWidget {
   final String name;
+  final String? searchQuery;
 
-  const PatientNameWidget({super.key, required this.name});
+  const PatientNameWidget({
+    super.key,
+    required this.name,
+    this.searchQuery,
+  });
 
   @override
   Widget build(BuildContext context) {
