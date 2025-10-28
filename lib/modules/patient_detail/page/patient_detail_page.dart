@@ -4,18 +4,7 @@ import '../vm/patient_detail_page_vm.dart';
 import '../widgets/patient_detail_widgets.dart';
 import '../../../models/patient.dart';
 
-/// Main screen displaying patient details and medical history.
-///
-/// MVVM Architecture:
-/// - VIEW: This file (UI composition only)
-/// - LOGIC: PatientDetailPageViewModel (vm/)
-/// - WIDGETS: Reusable components (widgets/)
-///
-/// Includes:
-/// - AppBar with patient name
-/// - Collapsible patient info container
-/// - Scrollable medical records list
-/// - Bottom navigation bar with action buttons
+/// Patient Detail Page - Shows patient info and medical history
 class PatientDetailPage extends StatelessWidget {
   final Patient patient;
 
@@ -51,7 +40,7 @@ class PatientDetailPage extends StatelessWidget {
                           subtitle: '${model.medicalRecords.length} registros',
                         ),
                         const SizedBox(height: 8),
-                        // Display loading, empty state, or list
+                        // Display loading, empty state, or records list
                         if (model.busy)
                           const Expanded(
                             child: Center(child: CircularProgressIndicator()),
