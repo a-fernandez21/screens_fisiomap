@@ -12,32 +12,39 @@ import '../../patient_detail/page/patient_detail_page.dart';
 /// - Navegación a pantallas
 /// - Manejo de eventos (agregar paciente, etc.)
 class PatientListPageViewModel extends BaseVM {
-  // Private state
+  // Private state variables
   List<Patient> _patients = [];
 
-  // Public getters
+  // Getters for state access
   List<Patient> get patients => _patients;
   bool get hasPatients => _patients.isNotEmpty;
   int get patientCount => _patients.length;
 
+  // Setters with notifyListeners
+  set patients(List<Patient> value) {
+    _patients = value;
+    notifyListeners();
+  }
+
   /// Initialize and load patients data.
-  void initialize() {
-    loadPatients();
+  /// Called from BaseWidget's onModelReady
+  Future<void> onInit() async {
+    await _loadPatients();
   }
 
   /// Loads the list of patients from data source.
-  void loadPatients() {
+  Future<void> _loadPatients() async {
     setBusy(true);
 
     // Load data (currently from static data)
-    _patients = PatientsData.samplePatients;
+    patients = PatientsData.samplePatients;
 
     // Set empty state if no patients
-    if (_patients.isEmpty) {
+    if (patients.isEmpty) {
       setEmpty(empty: true);
-    } else {
-      setBusy(false);
     }
+
+    setBusy(false);
   }
 
   /// Navigates to patient detail screen.
@@ -69,20 +76,18 @@ class PatientListPageViewModel extends BaseVM {
   /// [query] - Search text
   void filterPatients(String query) {
     if (query.isEmpty) {
-      _patients = PatientsData.samplePatients;
+      patients = PatientsData.samplePatients;
     } else {
-      _patients =
-          PatientsData.samplePatients
-              .where(
-                (patient) =>
-                    patient.name.toLowerCase().contains(query.toLowerCase()),
-              )
-              .toList();
+      patients = PatientsData.samplePatients
+          .where(
+            (patient) =>
+                patient.name.toLowerCase().contains(query.toLowerCase()),
+          )
+          .toList();
     }
-    if (_patients.isEmpty) {
+    
+    if (patients.isEmpty) {
       setEmpty(empty: true);
-    } else {
-      notifyListeners();
     }
   }
 
@@ -90,6 +95,6 @@ class PatientListPageViewModel extends BaseVM {
   Future<void> refreshPatients() async {
     // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 500));
-    loadPatients();
+    await _loadPatients();
   }
 }
