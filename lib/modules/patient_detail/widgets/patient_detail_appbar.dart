@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../models/patient.dart';
 
 /// AppBar for patient detail screen.
 class PatientDetailAppBar extends StatelessWidget
