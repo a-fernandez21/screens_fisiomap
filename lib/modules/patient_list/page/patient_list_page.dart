@@ -41,9 +41,6 @@ class PatientListPage extends StatelessWidget {
                 ],
               ),
             ),
-            floatingActionButton: AddPatientFAB(
-              onPressed: () => model.addNewPatient(context),
-            ),
           ),
     );
   }
