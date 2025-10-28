@@ -4,13 +4,13 @@ import '../../../models/patient.dart';
 import '../../../data/patients_data.dart';
 import '../../patient_detail/page/patient_detail_page.dart';
 
-/// ViewModel para la pantalla de lista de pacientes.
+/// ViewModel for Patient List screen.
 ///
-/// Gestiona toda la lógica de negocio separada de la vista:
-/// - Estado de la lista de pacientes
-/// - Carga de datos
-/// - Navegación a pantallas
-/// - Manejo de eventos (agregar paciente, etc.)
+/// Manages:
+/// - Patient list state
+/// - Data loading
+/// - Navigation to detail screens
+/// - Add patient events
 class PatientListPageViewModel extends BaseVM {
   // Private state variables
   List<Patient> _patients = [];
@@ -32,7 +32,7 @@ class PatientListPageViewModel extends BaseVM {
     await _loadPatients();
   }
 
-  /// Loads the list of patients from data source.
+  /// Load the list of patients from data source.
   Future<void> _loadPatients() async {
     setBusy(true);
 
@@ -47,10 +47,7 @@ class PatientListPageViewModel extends BaseVM {
     setBusy(false);
   }
 
-  /// Navigates to patient detail screen.
-  ///
-  /// [context] - BuildContext for navigation
-  /// [patient] - Selected patient
+  /// Navigate to patient detail screen.
   void navigateToPatientDetail(BuildContext context, Patient patient) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -59,8 +56,7 @@ class PatientListPageViewModel extends BaseVM {
     );
   }
 
-  /// Handles add new patient event.
-  ///
+  /// Handle add new patient event.
   /// Currently shows a SnackBar for pending functionality.
   void addNewPatient(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -71,9 +67,7 @@ class PatientListPageViewModel extends BaseVM {
     );
   }
 
-  /// Filters patients by name (prepared for future search).
-  ///
-  /// [query] - Search text
+  /// Filter patients by name (prepared for future search).
   void filterPatients(String query) {
     if (query.isEmpty) {
       patients = PatientsData.samplePatients;
@@ -91,7 +85,7 @@ class PatientListPageViewModel extends BaseVM {
     }
   }
 
-  /// Refreshes the patient list (prepared for pull-to-refresh).
+  /// Refresh the patient list (prepared for pull-to-refresh).
   Future<void> refreshPatients() async {
     // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 500));
