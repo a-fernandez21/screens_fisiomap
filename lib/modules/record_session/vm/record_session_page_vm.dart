@@ -14,7 +14,7 @@ class RecordSessionPageViewModel extends BaseVM {
   final String sessionType;
   final int? recordId;
 
-///check for correct implementation of saved recording api call
+  ///check for correct implementation of saved recording api call
   bool _isRecordingSaved = false;
 
   get isRecordingSaved => _isRecordingSaved;
@@ -31,11 +31,15 @@ class RecordSessionPageViewModel extends BaseVM {
   bool _isPlaying = false;
   String _audioStatus = 'Sin audio';
   bool _isEditing = false;
+  String _htmlContent = '';
+  bool _isEditorFocused = false;
 
   // Getters for state access
   bool get isPlaying => _isPlaying;
   String get audioStatus => _audioStatus;
   bool get isEditing => _isEditing;
+  String get htmlContent => _htmlContent;
+  bool get isEditorFocused => _isEditorFocused;
 
   // Setters with notifyListeners
   set isPlaying(bool value) {
@@ -50,6 +54,16 @@ class RecordSessionPageViewModel extends BaseVM {
 
   set isEditing(bool value) {
     _isEditing = value;
+    notifyListeners();
+  }
+
+  set htmlContent(String value) {
+    _htmlContent = value;
+    notifyListeners();
+  }
+
+  set isEditorFocused(bool value) {
+    _isEditorFocused = value;
     notifyListeners();
   }
 
@@ -88,6 +102,39 @@ class RecordSessionPageViewModel extends BaseVM {
     if (textController.text ==
         'Haz clic aquí para empezar a escribir las notas de la sesión...') {
       textController.clear();
+    }
+  }
+
+  /// Handle HTML content changes from the editor
+  void onHtmlContentChanged(String content) {
+    htmlContent = content;
+    debugPrint('📝 HTML content updated: ${content.length} characters');
+  }
+
+  /// Handle when HTML editor gains focus
+  void onEditorFocused() {
+    isEditorFocused = true;
+    debugPrint('🎯 Editor focused - hiding audio player');
+  }
+
+  /// Handle when HTML editor loses focus
+  void onEditorUnfocused() {
+    isEditorFocused = false;
+    debugPrint('🎯 Editor unfocused - showing audio player');
+  }
+
+  /// Save HTML content
+  Future<bool> saveHtmlContent() async {
+    debugPrint('💾 Saving HTML content: ${htmlContent.length} characters');
+    try {
+      // In a real app, this would save to a file or send to server
+      // For now, we'll simulate success
+      await Future.delayed(const Duration(milliseconds: 500));
+      isRcordingSaved = true;
+      return true;
+    } catch (e) {
+      debugPrint('❌ Error saving HTML content: $e');
+      return false;
     }
   }
 
