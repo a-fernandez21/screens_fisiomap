@@ -7,17 +7,19 @@ import 'playback_controls.dart';
 class AudioPlayerWidget extends StatelessWidget {
   final bool isPlaying;
   final VoidCallback onPlayPause;
+  final bool isCompact;
 
   const AudioPlayerWidget({
     super.key,
     required this.isPlaying,
     required this.onPlayPause,
+    this.isCompact = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(isCompact ? 8 : 10),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
@@ -27,7 +29,7 @@ class AudioPlayerWidget extends StatelessWidget {
             Color.fromARGB(255, 255, 184, 85),
           ],
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(isCompact ? 12 : 20),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.3),
@@ -37,15 +39,57 @@ class AudioPlayerWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          const TimelineRow(),
-          const SizedBox(height: 8),
-          AudioProgressBar(isPlaying: isPlaying),
-          const SizedBox(height: 20),
-          PlaybackControls(isPlaying: isPlaying, onPlayPause: onPlayPause),
-        ],
-      ),
+      child: isCompact ? _buildCompactLayout() : _buildNormalLayout(),
+    );
+  }
+
+  // Compact layout for when keyboard is open
+  Widget _buildCompactLayout() {
+    return Row(
+      children: [
+        // Play/Pause button
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              isPlaying ? Icons.pause : Icons.play_arrow,
+              color: const Color.fromARGB(255, 122, 239, 255),
+              size: 24,
+            ),
+            onPressed: onPlayPause,
+          ),
+        ),
+        const SizedBox(width: 12),
+        // Progress bar
+        Expanded(child: AudioProgressBar(isPlaying: isPlaying)),
+      ],
+    );
+  }
+
+  // Normal layout for when keyboard is closed
+  Widget _buildNormalLayout() {
+    return Column(
+      children: [
+        const TimelineRow(),
+        const SizedBox(height: 8),
+        AudioProgressBar(isPlaying: isPlaying),
+        const SizedBox(height: 20),
+        PlaybackControls(isPlaying: isPlaying, onPlayPause: onPlayPause),
+      ],
     );
   }
 }

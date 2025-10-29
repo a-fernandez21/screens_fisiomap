@@ -38,10 +38,11 @@ class RecordSessionPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Audio player widget - Always visible
+                  // Audio player widget - Always visible, compact when keyboard open
                   AudioPlayerWidget(
                     isPlaying: model.isPlaying,
                     onPlayPause: model.togglePlayPause,
+                    isCompact: isKeyboardVisible,
                   ),
                   const SizedBox(height: 16),
                   // HTML Editor widget for session notes
