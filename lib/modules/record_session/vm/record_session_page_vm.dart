@@ -1,6 +1,6 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:pumpun_core/pumpun_core.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:screens_fisiomap/models/patient.dart';
 
 /// ViewModel for RecordSessionPage.
@@ -11,6 +11,7 @@ import 'package:screens_fisiomap/models/patient.dart';
 /// - Session actions (save changes, confirm review)
 /// - Navigation with result return
 class RecordSessionPageViewModel extends BaseVM {
+  // Final fields
   final Patient patient;
   final String sessionType;
   final int? recordId;
@@ -18,7 +19,10 @@ class RecordSessionPageViewModel extends BaseVM {
   // Text controller for editable notes
   final TextEditingController textController = TextEditingController();
 
-  // Private state variables with their getters and setters
+  // Audio player instance
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  // Private state variables with getters and setters immediately below
   /// Check for correct implementation of saved recording api call
   bool _isRecordingSaved = false;
   bool get isRecordingSaved => _isRecordingSaved;
@@ -28,26 +32,7 @@ class RecordSessionPageViewModel extends BaseVM {
   }
 
   bool _isPlaying = false;
-  String _audioStatus = 'Sin audio';
-  bool _isEditing = false;
-  String _htmlContent = '';
-  bool _isEditorFocused = false;
-  Duration _currentPosition = Duration.zero;
-  Duration _totalDuration = Duration.zero;
-
-  // Audio player instance
-  final AudioPlayer _audioPlayer = AudioPlayer();
-
-  // Getters for state access
   bool get isPlaying => _isPlaying;
-  String get audioStatus => _audioStatus;
-  bool get isEditing => _isEditing;
-  String get htmlContent => _htmlContent;
-  bool get isEditorFocused => _isEditorFocused;
-  Duration get currentPosition => _currentPosition;
-  Duration get totalDuration => _totalDuration;
-
-  // Setters with notifyListeners
   set isPlaying(bool value) {
     _isPlaying = value;
     notifyListeners();
@@ -67,21 +52,29 @@ class RecordSessionPageViewModel extends BaseVM {
     notifyListeners();
   }
 
+  String _htmlContent = '';
+  String get htmlContent => _htmlContent;
   set htmlContent(String value) {
     _htmlContent = value;
     notifyListeners();
   }
 
+  bool _isEditorFocused = false;
+  bool get isEditorFocused => _isEditorFocused;
   set isEditorFocused(bool value) {
     _isEditorFocused = value;
     notifyListeners();
   }
 
+  Duration _currentPosition = Duration.zero;
+  Duration get currentPosition => _currentPosition;
   set currentPosition(Duration value) {
     _currentPosition = value;
     notifyListeners();
   }
 
+  Duration _totalDuration = Duration.zero;
+  Duration get totalDuration => _totalDuration;
   set totalDuration(Duration value) {
     _totalDuration = value;
     notifyListeners();
@@ -98,7 +91,7 @@ class RecordSessionPageViewModel extends BaseVM {
   Future<void> onInit() async {
     textController.text =
         'Haz clic aquí para empezar a escribir las notas de la sesión...';
-
+    
     // Initialize audio player
     await _initializeAudioPlayer();
   }
@@ -109,21 +102,20 @@ class RecordSessionPageViewModel extends BaseVM {
       // Load audio from assets (path relative to pubspec assets declaration)
       await _audioPlayer.setSource(AssetSource('lib/data/audio-prueba-hc.mp3'));
       debugPrint('🎵 Audio source set');
-
+      
       // Listen to player state changes
       _audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
         if (!disposed) {
           isPlaying = state == PlayerState.playing;
-          audioStatus =
-              state == PlayerState.playing
-                  ? 'Reproduciendo...'
-                  : state == PlayerState.paused
-                  ? 'Pausado'
+          audioStatus = state == PlayerState.playing 
+              ? 'Reproduciendo...' 
+              : state == PlayerState.paused 
+                  ? 'Pausado' 
                   : 'Detenido';
           debugPrint('🎵 Player state changed: $state, isPlaying: $isPlaying');
         }
       });
-
+      
       // Listen to duration changes
       _audioPlayer.onDurationChanged.listen((Duration duration) {
         if (!disposed) {
@@ -131,14 +123,14 @@ class RecordSessionPageViewModel extends BaseVM {
           debugPrint('📊 Audio duration: ${duration.inSeconds}s');
         }
       });
-
+      
       // Listen to position changes
       _audioPlayer.onPositionChanged.listen((Duration position) {
         if (!disposed) {
           currentPosition = position;
         }
       });
-
+      
       audioStatus = 'Audio cargado';
       debugPrint('🎵 Audio player initialized successfully');
     } catch (e) {
@@ -199,7 +191,7 @@ class RecordSessionPageViewModel extends BaseVM {
       // In a real app, this would save to a file or send to server
       // For now, we'll simulate success
       await Future.delayed(const Duration(milliseconds: 500));
-      isRcordingSaved = true;
+      isRecordingSaved = true;
       return true;
     } catch (e) {
       debugPrint('❌ Error saving HTML content: $e');
@@ -219,12 +211,12 @@ class RecordSessionPageViewModel extends BaseVM {
     }
   }
 
-  /// Confirm review and return 'Revisado' status.
+  /// Confirm review and return 'Completado' status.
   /// Returns the status string to be used by the view for navigation.
   String confirmReview() {
     debugPrint('✅ Botón Confirmar Revisión presionado');
-    debugPrint('🚪 Devolviendo estado: Revisado');
-    return 'Revisado';
+    debugPrint('🚪 Devolviendo estado: Completado');
+    return 'Completado';
   }
 
   @override
