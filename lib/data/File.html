@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <style>
+        :root {
+            color-scheme: light !important;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #00badb;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2em;
+            font-weight: 600;
+        }
+
+        header p {
+            margin: 5px 0;
+            opacity: 0.95;
+        }
+
+        nav {
+            background-color: #e3f7fa;
+            padding: 20px;
+            border-bottom: 3px solid #00badb;
+        }
+
+        nav h2 {
+            margin: 0 0 15px 0;
+            color: #212121;
+            font-size: 1.3em;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        nav li {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+            display: inline-block;
+            background-color: #00badb;
+            border: 2px solid #00badb;
+            transform: translateY(-2px);
+        }
+
+        nav a:hover,
+        nav a:focus {
+            background-color: #fff;
+            color: #00badb;
+            transform: translateY(0);
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        section {
+            background-color: #ffffff;
+            margin: 25px 0;
+            padding: 30px;
+            border: 1px solid #e3f7fa;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        section:nth-child(even) {
+            background-color: #e3f7fa;
+        }
+
+        h2 {
+            color: #212121;
+            border-bottom: 3px solid #f7bb43;
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        h3 {
+            color: #212121;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            border-left: 4px solid #f7bb43;
+            padding-left: 12px;
+        }
+
+        p {
+            color: #2c3e50;
+            margin: 10px 0;
+            line-height: 1.7;
+        }
+
+        .pendent,
+        .verificar {
+            background-color: #FFF7E0;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border-left: 4px solid #f7bb43;
+            margin: 8px 0;
+            display: inline-block;
+            color: #8B6C1E;
+            font-weight: 500;
+            margin-left: 3%;
+        }
+
+        .critic {
+            background-color: #F8D7DA;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border-left: 4px solid #FF4444;
+            margin: 8px 0;
+            display: inline-block;
+            color: #721c24;
+            font-weight: 600;
+        }
+
+        .complet {
+            background-color: #e3f7fa;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border-left: 4px solid #00badb;
+            margin: 8px 0;
+            display: inline-block;
+            color: #006A7C;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            border: 1px solid #e3f7fa;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #00badb;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            background-color: #ffffff;
+            color: #2c3e50;
+        }
+
+
+        tr:hover td {
+            background-color: #B2DEE4;
+        }
+
+        ul,
+        ol {
+            margin: 15px 0;
+            padding-left: 25px;
+            color: #2c3e50;
+        }
+
+        li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .warning {
+            background-color: #FFF7E0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 5px solid #f7bb43;
+            margin: 15px 0;
+            color: #8B6C1E;
+            font-weight: 500;
+        }
+
+        .alert-info {
+            background-color: #e3f7fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 5px solid #00badb;
+            margin: 15px 0;
+            color: #006A7C;
+            font-weight: 500;
+        }
+
+        .section-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-complet {
+            background-color: #00badb;
+            color: white;
+        }
+
+        .status-pendent {
+            background-color: #f7bb43;
+            color: #000;
+        }
+
+        .status-parcial {
+            background-color: #e3f7fa;
+            color: #006A7C;
+        }
+
+        footer {
+            background-color: #00badb;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        strong {
+            color: #212121;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e3f7fa;
+            margin: 25px 0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 0;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav a {
+                display: block;
+                text-align: center;
+            }
+
+            .main-content {
+                padding: 10px;
+            }
+
+            section {
+                margin: 15px 0;
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.3em;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th,
+            td {
+                padding: 8px 10px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+
+            nav,
+            footer {
+                display: none;
+            }
+
+            section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Història Clínica de Fisioteràpia</title>
+
+
+
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>HISTÒRIA CLÍNICA DE FISIOTERÀPIA</h1>
+            <p>Generada automàticament a partir de transcripció de consulta</p>
+            <p class="warning">[Requereix revisió i validació per fisioterapeuta responsable]</p>
+        </header>
+
+        <nav>
+            <h2>Índex de Navegació</h2>
+            <ul>
+                <li><a href="#seccio1">Secció 1: Identificació del Pacient</a></li>
+                <li><a href="#seccio2">Secció 2: Motiu de Consulta</a></li>
+                <li><a href="#seccio3">Secció 3: Història de la Malaltia Actual</a></li>
+                <li><a href="#seccio4">Secció 4: Antecedents Personals i Familiars</a></li>
+                <li><a href="#seccio5">Secció 5: Examen Físic / Objectiu</a></li>
+                <li><a href="#seccio6">Secció 6: Diagnòstic Fisioterapèutic</a></li>
+                <li><a href="#seccio7">Secció 7: Pla Terapèutic</a></li>
+                <li><a href="#seccio8">Secció 8: Seguiment i Evolució</a></li>
+                <li><a href="#seccio9">Secció 9: Notes Addicionals / Observacions</a></li>
+                <li><a href="#seccio10">Secció 10: Firma i Validació</a></li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <section id="seccio1">
+                <h2>SECCIÓ 1 :: IDENTIFICACIÓ DEL PACIENT <span class="section-status status-parcial">PARCIAL</span>
+                </h2>
+                <table>
+                    <tr>
+                        <th>Camp</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td>Data de la consulta</td>
+                        <td class="pendent">[NO ESPECIFICADA - INFERIR DEL SISTEMA]</td>
+                    </tr>
+                    <tr>
+                        <td>Nom del pacient</td>
+                        <td class="pendent">[NO ESPECIFICAT EN LA TRANSCRIPCIÓ]</td>
+                    </tr>
+                    <tr>
+                        <td>Edat</td>
+                        <td>[NO MENCIONADA EXPLÍCITAMENTE; INFERIDA COM A "JOVE" SEGONS DESCRIPCIÓ DEL PACIENT]</td>
+                    </tr>
+                    <tr>
+                        <td>Sexe</td>
+                        <td>F [INFERIT DEL LLENGUATGE I CONTEXT DEL DIÀLEG]</td>
+                    </tr>
+                    <tr>
+                        <td>Ocupació / Activitat principal</td>
+                        <td>Comunicadora (possiblement en infraestructures o treball de despatx, amb activitats
+                            sedentàries i càrrega postural) [INFERIT DE "SOC COMUNICADORA, O D'HI-HI, PERÒ COM
+                            COMUNICADORA"]</td>
+                    </tr>
+                    <tr>
+                        <td>Lloc d'atenció</td>
+                        <td>Consulta [INFERIT DEL CONTEXT]</td>
+                    </tr>
+                    <tr>
+                        <td>Fisioterapeuta responsable</td>
+                        <td class="pendent">[NO ESPECIFICAT EN LA TRANSCRIPCIÓ]</td>
+                    </tr>
+                </table>
+            </section>
+
+            <section id="seccio2">
+                <h2>SECCIÓ 2 :: MOTIU DE CONSULTA <span class="section-status status-complet">COMPLET</span></h2>
+                <h3>Símptoma principal</h3>
+                <p>Dolor</p>
+                <h3>Localització</h3>
+                <p>Cadera (possiblement zona sacro o lumbària, amb referències a "xacra de la cadera" i "zona de la
+                    lactància" que podria ser interpretació errònia de "lumbàrgia" o "zona lumbar") [PARCIAL: Descripció
+                    fragmentada]</p>
+                <h3>Temps d'evolució</h3>
+                <p>2 anys (inici fa dos anys, amb remissions i recaigudes relacionades amb treball)</p>
+                <h3>Causa aparent</h3>
+                <p>Relacionat amb treball (càrrega de pes, postures prolongades, activitats al final del dia); no
+                    traumàtica, inici insidiós [INFERIT DE "BEN RELACIONAT AL CIU, DESPRÉS VA MARXAR QUAN VAIG PODER
+                    L'ACCIÓ"]</p>
+                <h3>Limitacions funcionals</h3>
+                <ul>
+                    <li>Dificultat per moure's després de períodes prolongats de sedentarisme o càrrega (ex.: al final
+                        del dia, escales, dies amb "càrrega")</li>
+                    <li>Dolor que accentua amb postures específiques (estar dret, moure's, carregar pes)</li>
+                    <li>Interferència en activitats físiques intenses i diàries (ex.: "posar-me en forma", activitats
+                        regulars)</li>
+                </ul>
+                <h3>Expectatives del pacient</h3>
+                <p>Reduir el dolor per poder realitzar activitats sense accentuació ("que no accentui de la d'un barç"),
+                    millorar postura, aprendre exercicis per corregir hàbits, recuperar capacitat per activitats
+                    físiques intenses i regulars (ex.: "posar-me en forma", "activitat física molt més intensa"), i
+                    eliminar la dependència de tractaments previs com massatges.</p>
+            </section>
+
+            <section id="seccio3">
+                <h2>SECCIÓ 3 :: HISTÒRIA DE LA MALALTIA ACTUAL (HMA) <span
+                        class="section-status status-complet">COMPLET</span></h2>
+                <h3>Inici i evolució</h3>
+                <p>Inici fa aproximadament 2 anys, relacionat amb activitats laborals (càrrega de pes, postures). Ha
+                    tingut períodes de millora ("va marxar quan vaig poder l'acció") però recaigudes quan es reprenen
+                    ritmes laborals o activitats ("quan et torna de com el senyor, es pot intentar recuperar el ritme").
+                    Evolució crònica amb exacerbacions al final del dia o amb càrregues. No es menciona progressió
+                    severa recent, però persisteix des de fa un mes aproximadament en la forma actual [PARCIAL: Temps
+                    recent "fa un mes sol" o "fa dos setmanes"].</p>
+                <h3>Característiques del dolor o disfunció</h3>
+                <table>
+                    <tr>
+                        <th>Aspecte</th>
+                        <th>Descripció</th>
+                    </tr>
+                    <tr>
+                        <td>Intensitat (EVA 0–10)</td>
+                        <td>[NO ESPECIFICADA NUMÈRICAMENTE; DESCRITA COM A "NOTÒRIA" O "FA MAL" QUAN ES MOU O CARREGA,
+                            PERÒ NO CONSTANT EN REPOSO]</td>
+                    </tr>
+                    <tr>
+                        <td>Tipus</td>
+                        <td>No especificat detalladament; sembla mecànic (aguditzat amb moviment i càrrega, millor en
+                            repòs o estirada) [INFERIT DE "NO ÉS UN DOLOR CONSTANT, PERÒ QUAN EM MOGUI"]</td>
+                    </tr>
+                    <tr>
+                        <td>Freqüència</td>
+                        <td>Intermitent, exacerbada al final del dia, amb dies bons i dolents ("un bon dia d'obst, o que
+                            ho heu no no m'agrada, que no m'agrada molt i un dia de casa")</td>
+                    </tr>
+                    <tr>
+                        <td>Irradiació</td>
+                        <td>[NO MENCIONADA]</td>
+                    </tr>
+                </table>
+                <h3>Factors agreujants</h3>
+                <ul>
+                    <li>Moviments i postures prolongades (ex.: estar dret, moure's després de sedentarisme)</li>
+                    <li>Càrrega de pes al treball ("carregada a la feina", "tot el pes aquí")</li>
+                    <li>Activitats com escales, dies amb "càrrega" o al matí/nocturn (contradictori: "al matí fa mal,
+                        no")</li>
+                    <li>Activitat física intensa o irregular</li>
+                </ul>
+                <h3>Factors atenuants</h3>
+                <ul>
+                    <li>Repòs o posicions estires ("quan estic de concertar tan poc")</li>
+                    <li>Tractaments previs com massatges o exercicis (millora parcial)</li>
+                </ul>
+                <h3>Impacte funcional</h3>
+                <ul>
+                    <li><strong>Son:</strong> [NO MENCIONAT]</li>
+                    <li><strong>AVD:</strong> Interferència en "posar-se en forma" i activitats regulars; desig de
+                        tornar a activitats físiques intenses sense dolor</li>
+                    <li><strong>Laboral/esportiu:</strong> Relacionat amb treball sedentari/postural, amb necessitat de
+                        "continuar la retaula bé"</li>
+                </ul>
+                <h3>Tractaments previs</h3>
+                <ul>
+                    <li>Massatges i exercicis (menció a "havia fet molt esperàpies, els que hi ha tapes, t'ha havia fet
+                        una mica massatge")</li>
+                    <li>Altres: No especificats, però menció a "pràctic" o condicions que no han resolt completament el
+                        problema</li>
+                </ul>
+                <h3>Comentaris subjectius</h3>
+                <p>Pacient expressa frustració per la persistència crònica ("és una ràbia"), però motivació per millorar
+                    ("molt més", "sí, sí, sí"). Desig d'aprendre exercicis i corregir postures. No es detecten signes
+                    evidents de kinesiofòbia, però possible catastrofisme lleu per recaigudes recurrents [INFERIT DE
+                    CONTEXT].</p>
+            </section>
+
+            <section id="seccio4">
+                <h2>SECCIÓ 4 :: ANTECEDENTS PERSONALS I FAMILIARS <span
+                        class="section-status status-parcial">PARCIAL</span></h2>
+                <h3>Antecedents mèdics rellevants</h3>
+                <ul>
+                    <li>No patologies importants com asma o altres ("No" a preguntes sobre òrgans, ull, etc.)</li>
+                    <li>Possible lesió o símptoma a "zona de la lactància" o "notcutània" (interpretació incerta,
+                        possible referència a zona lumbar o cutània; [PARCIAL: NO CLAR])</li>
+                    <li>Operació o prova mèdica prèvia ("vaig anar perquè tenia l'úlim, per venir per ser... i va amb el
+                        que tenia una operació de l'úlim") [FRAGMENTAT: NO ESPECIFICAT]</li>
+                </ul>
+                <h3>Antecedents quirúrgics</h3>
+                <p class="verificar">[NO MENCIONATS EXPLÍCITAMENTE; POSSIBLE OPERACIÓ PRÈVIA [VERIFICAR: INFORMACIÓ
+                    CONTRADICTÒRIA O FRAGMENTADA]]</p>
+                <h3>Medicació actual</h3>
+                <p class="pendent">[NO MENCIONADA]</p>
+                <h3>Hàbits de vida</h3>
+                <p>Activa en activitats físiques però irregular (desig de "posar-me en forma", activitats com tantra o
+                    escola de vella per activitat física intensa); treballa bastant, possible sedentarisme [INFERIT]. No
+                    fumatge o alcohol esmentats.</p>
+                <h3>Antecedents familiars</h3>
+                <ul>
+                    <li class="pendent">[NO MENCIONATS; Menció vaga a "la meva mare et troba" però no rellevant
+                        clínicament]</li>
+                </ul>
+            </section>
+
+            <section id="seccio5">
+                <h2>SECCIÓ 5 :: EXAMEN FÍSIC / OBJECTIU <span class="section-status status-pendent">PENDENT</span></h2>
+                <h3>Inspecció i postura</h3>
+                <p class="pendent">[NO DESCRITA EN LA TRANSCRIPCIÓ; Menció a "corregir postura" com a expectativa,
+                    suggerint possible disfunció postural]</p>
+                <h3>Rang de moviment (ROM)</h3>
+                <p class="pendent">[NO AVALUAT O NO DESCRIT EN LA TRANSCRIPCIÓ]</p>
+                <h3>Força muscular</h3>
+                <p class="pendent">[NO AVALUADA FORMALMENTE]</p>
+                <h3>Palpació</h3>
+                <p class="pendent">[NO REALITZADA O NO DESCRITA]</p>
+                <h3>Tests específics</h3>
+                <p class="pendent">[NO REALITZATS EN LA TRANSCRIPCIÓ; Només anamnesi]</p>
+                <h3>Examen neurològic</h3>
+                <p class="pendent">[NO REALITZAT]</p>
+                <h3>Altres observacions</h3>
+                <p class="pendent">[NINGUNA ADICIONAL; Transcripció centrada en anamnesi, sense exploració física
+                    descrita]</p>
+            </section>
+
+            <section id="seccio6">
+                <h2>SECCIÓ 6 :: DIAGNÒSTIC FISIOTERAPÈUTIC <span class="section-status status-complet">COMPLET</span>
+                </h2>
+                <h3>Diagnòstic principal</h3>
+                <p>Lumbàlgia crònica o disfunció sacroilíaca/sacra amb component postural (basat en dolor mecànic
+                    relacionat amb treball i postures, evolució de 2 anys) [DIAGNÒSTIC INFERIT SEGONS CRITERIS DE LA
+                    GUÍA DE DIAGNÒSTIC FISIOTERÀPIA: Secció de trastorns musculoesquelètics, lumbàlgia no específica
+                    crònica, amb factors ergonòmics]</p>
+                <h3>Diagnòstics diferencials</h3>
+                <ul>
+                    <li>Disfunció de la articulación sacroilíaca (dolor a "xacra de la cadera")</li>
+                    <li>Tendinopatia o sobrecàrrega muscular per postures laborals</li>
+                    <li>[SEGONS GUÍA: Descartar radiculopatia si irradiació, però no esmentada]</li>
+                </ul>
+                <h3>Classificació funcional</h3>
+                <p>Moderada (dolor intermitent que limita activitats laborals i físiques, però no constant ni
+                    incapacitant total)</p>
+                <ul>
+                    <li>Dolor mecànic EVA [ESTIMAT 4-7/10 SEGONS DESCRIPCIÓ VERBAL DE "FA MAL" QUAN ES MOU]</li>
+                    <li>Impacte en AVD i laboral significatiu</li>
+                </ul>
+                <h3>Raonament clínic</h3>
+                <p>Pacient jove amb dolor crònic de 2 anys a zona de cadera/lumbar, inici insidiós relacionat amb
+                    treball (postures, càrrega). Factors agravants mecànics (moviment, final del dia) suggereixen origen
+                    musculoesquelètic/postural, sense banderes roges evidents (no pèrdua de forca, irradiació o
+                    símptomes sistèmics). Compatible amb lumbàlgia no específica crònica [SEGONS GUÍA DE DIAGNÒSTIC,
+                    capítol 3: Criterios per lumbàlgia amb factors biopsicosocials, on el treball sedentari és factor de
+                    risc]. Ausència d'exploració física limita confirmació; requeriria tests com ROM lumbar, palpació
+                    sacroilíaca. Factors pronòstics: Positius (jove, motivada); negatius (crònic, recaigudes
+                    recurrents).</p>
+            </section>
+
+            <section id="seccio7">
+                <h2>SECCIÓ 7 :: PLA TERAPÈUTIC <span class="section-status status-complet">COMPLET</span></h2>
+                <h3>Objectius a curt termini (1–3 setmanes)</h3>
+                <ul>
+                    <li>Reduir exacerbacions de dolor a activitats diàries (EVA <4 /10 al final del dia)</li>
+                    <li>Educar en correcció postural i hàbits ergonòmics laborals</li>
+                    <li>Iniciar exercicis bàsics per millorar mobilitat lumbar/cadera sense dolor</li>
+                </ul>
+                <h3>Objectius a llarg termini (3–6 mesos)</h3>
+                <ul>
+                    <li>Recuperar activitats físiques intenses sense dolor (ex.: "posar-se en forma")</li>
+                    <li>Independència en exercicis domiciliaris per manteniment postural</li>
+                    <li>Reducció de recaigudes relacionades amb treball (dolor <3 /10 amb càrregues)</li>
+                </ul>
+                <h3>Intervencions programades</h3>
+                <ul>
+                    <li>Educació postural i ergonòmica (adaptacions laborals)</li>
+                    <li>Exercicis terapèutics: Fortaleciment core, estiraments lumbar/sacroilíac, mobilització suau</li>
+                    <li>Teràpia manual: Massatge tissular, mobilitzacions sacroilíaques grau I-II</li>
+                    <li>[SUGGERIT SEGONS GUÍA: Programa biopsicosocial per lumbàlgia crònica]</li>
+                </ul>
+                <h3>Freqüència i durada</h3>
+                <p class="pendent">[PENDENT DE DEFINIR - No especificat]; Suggerència: 1-2 sessions/setmana per 6-8
+                    setmanes, amb reevaluació.</p>
+                <h3>Educació al pacient</h3>
+                <p>Explicació de l'origen mecànic/postural del dolor, importància de postures i activitat regular.
+                    Expectatives: Millora progressiva amb adherència, sense curació immediata per cronicitat.</p>
+                <h3>Recomanacions domiciliàries</h3>
+                <p>Exercicis diaris (estiraments, caminades), pausas posturals al treball, diari de dolor per
+                    monitoritzar desencadenants.</p>
+            </section>
+
+            <section id="seccio8">
+                <h2>SECCIÓ 8 :: SEGUIMENT I EVOLUCIÓ <span class="section-status status-pendent">PENDENT</span></h2>
+                <h3>Data de reavaluació</h3>
+                <p class="pendent">[PENDENT DE PROGRAMAR]</p>
+                <h3>Indicadors de progrés</h3>
+                <ul>
+                    <li>Dolor (EVA diari, especialment al final del dia)</li>
+                    <li>Capacitat per activitats laborals i físiques (escala Oswestry per lumbàlgia)</li>
+                    <li>Adherència a exercicis i canvis posturals</li>
+                </ul>
+                <h3>Adherència al tractament</h3>
+                <p class="pendent">[PENDENT D'EVALUAR]</p>
+                <h3>Canvis en el pla</h3>
+                <p class="pendent">[NO APLICA - PRIMERA CONSULTA]</p>
+                <h3>Pronòstic</h3>
+                <p><strong>{{PRONOSTIC_TITOL}}</strong></p>
+                <p>Favorable amb intervenció precoç [SEGONS GUÍA: Lumbàlgia crònica respon bé a fisioteràpia en pacients
+                    joves motivats; risc de persistència si no s'aborden factors laborals].</p>
+                <h3>Criteris d'alta</h3>
+                <ul>
+                    <li>Dolor <2 /10 en activitats diàries</li>
+                    <li>ROM i força funcional normal</li>
+                    <li>Independència en programa domiciliari</li>
+                    <li>Absència de recaigudes en 3 mesos</li>
+                </ul>
+            </section>
+
+            <section id="seccio9">
+                <h2>SECCIÓ 9 :: NOTES ADDICIONALS / OBSERVACIONS <span
+                        class="section-status status-parcial">PARCIAL</span></h2>
+                <h3>Aspectes emocionals o comunicatius</h3>
+                <ul>
+                    <li>Pacient motivada i col·laboradora ("sí, sí, sí"), amb expectatives realistes de millora gradual.
+                    </li>
+                    <li>Frustració per cronicitat ("és una ràbia"), però sense signes de depressió o kinesiofòbia
+                        evidents.</li>
+                    <li>[EVALUAR EN SEGUIMENT: Autoeficàcia i suport social]</li>
+                </ul>
+                <h3>Coordinació interdisciplinària</h3>
+                <ul>
+                    <li>Recomanació: Valorar ergonòmia laboral amb metge de empresa si possible.</li>
+                    <li>Si no millora en 4-6 setmanes, derivar a reumatòleg per descartar patologia subjacent [SEGONS
+                        GUÍA: Banderes grogues per lumbàlgia crònica].</li>
+                </ul>
+                <h3>Altres comentaris</h3>
+                <div class="warning"><strong>ANAMNESI INCOMPLETA - INFORMACIÓ PENDENT:</strong></div>
+                <ol>
+                    <li class="critic">[CRÍTIC] Edat exacta i antecedents quirúrgics precisos. Pregunta suggerida:
+                        "¿Recordes l'edat exacta i detalls de qualsevol operació prèvia?" Relevància: Per avaluar
+                        factors de risc i contraindicacions.</li>
+                    <li>[IMPORTANT] Intensitat numèrica del dolor (EVA) i irradiació. Pregunta: "¿Com qualificaries el
+                        dolor del 0 al 10?" Relevància: Per classificar severitat i descartar neural.</li>
+                    <li>[DESEABLE] Detalls laborals (hores sedentàries, tipus de càrrega). Pregunta: "¿Com és la teva
+                        jornada laboral diària?" Relevància: Per personalitzar ergonòmia.</li>
+                </ol>
+                <p>- **INFORMACIÓ INCOMPLETA PER QUALITAT DE TRANSCRIPCIÓN:** Fragments inaudibles o confusos (ex.:
+                    "zona de la lactància", "travania"); [REQUIERE EVALUACIÓN DIRECTA] per clarificar.</p>
+                <p>- **INCONGRUÈNCIA DETECTADA:** Temps d'evolució (2 anys general, però "fa un mes sol" recent); <span
+                        class="verificar">[VERIFICAR CON PACIENTE]</span>.</p>
+                <p>- Transcripció altament fragmentada, centrada en anamnesi; manca exploració física completa.</p>
+                <p>**CONSIDERACIÓ CLÍNICA IMPORTANTE:**</p>
+                <p>Risc de persistència per factors laborals; educar en prevenció de recaigudes. Monitoritzar per
+                    banderes roges (ex.: pèrdua de pes, febre) en seguiments.</p>
+            </section>
+
+            <section id="seccio10">
+                <h2>SECCIÓ 10 :: FIRMA I VALIDACIÓ <span class="section-status status-pendent">PENDENT</span></h2>
+                <table>
+                    <tr>
+                        <th>Camp</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td>Fisioterapeuta</td>
+                        <td class="pendent">[PENDENT - No especificat]</td>
+                    </tr>
+                    <tr>
+                        <td>Nº Col·legiat</td>
+                        <td class="pendent">[PENDENT]</td>
+                    </tr>
+                    <tr>
+                        <td>Centre / Servei</td>
+                        <td class="pendent">[PENDENT]</td>
+                    </tr>
+                    <tr>
+                        <td>Firma digital / Validació</td>
+                        <td class="pendent">[PENDENT DE VALIDACIÓ PER FISIOTERAPEUTA RESPONSABLE]</td>
+                    </tr>
+                </table>
+                <hr>
+                <div class="warning">
+                    <strong>NOTA FINAL IMPORTANT:</strong> Aquesta història clínica ha estat generada automàticament
+                    mitjançant intel·ligència artificial a partir de la transcripció d'àudio de la consulta. El
+                    contingut ha de ser revisat, completat i validat per l'fisioterapeuta col·legiat responsable abans
+                    de ser considerat document clínic oficial. La responsabilitat professional i legal del contingut
+                    final recau exclusivament en l'fisioterapeuta signant.
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>&copy; Document generat automàticament. Revisió requerida.</p>
+        </footer>
+    </div>
+</body>
+
+</html>

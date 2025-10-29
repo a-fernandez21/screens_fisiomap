@@ -86,6 +86,39 @@ class RecordSessionPageViewModel extends BaseVM {
     }
   }
 
+  /// Handle HTML content changes from the editor
+  void onHtmlContentChanged(String content) {
+    htmlContent = content;
+    debugPrint('📝 HTML content updated: ${content.length} characters');
+  }
+
+  /// Handle when HTML editor gains focus
+  void onEditorFocused() {
+    isEditorFocused = true;
+    debugPrint('🎯 Editor focused - hiding audio player');
+  }
+
+  /// Handle when HTML editor loses focus
+  void onEditorUnfocused() {
+    isEditorFocused = false;
+    debugPrint('🎯 Editor unfocused - showing audio player');
+  }
+
+  /// Save HTML content
+  Future<bool> saveHtmlContent() async {
+    debugPrint('💾 Saving HTML content: ${htmlContent.length} characters');
+    try {
+      // In a real app, this would save to a file or send to server
+      // For now, we'll simulate success
+      await Future.delayed(const Duration(milliseconds: 500));
+      isRcordingSaved = true;
+      return true;
+    } catch (e) {
+      debugPrint('❌ Error saving HTML content: $e');
+      return false;
+    }
+  }
+
   /// Save changes and return result.
   /// Returns true if saved successfully, false otherwise.
   Future<bool> saveChanges() async {

@@ -8,4 +8,5 @@ export 'playback_controls.dart';
 export 'play_pause_button.dart';
 export 'player_button.dart';
 export 'editable_text_container.dart';
+export 'html_editor_widget.dart';
 export 'action_buttons_widget.dart';

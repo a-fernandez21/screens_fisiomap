@@ -4,7 +4,6 @@ import 'package:screens_fisiomap/modules/record_session/vm/record_session_page_v
 import 'package:screens_fisiomap/modules/record_session/widgets/record_session_widgets.dart';
 import 'package:screens_fisiomap/models/patient.dart';
 
-
 /// Record Session Page - Audio recording/playback and session notes editing
 class RecordSessionPage extends StatelessWidget {
   final Patient patient;
@@ -27,7 +26,8 @@ class RecordSessionPage extends StatelessWidget {
         recordId: recordId,
       ),
       onModelReady: (model) => model.onInit(),
-      builder: (context, model, child) => Scaffold(
+      builder:
+          (context, model, child) => Scaffold(
             backgroundColor: Colors.grey[100],
             appBar: RecordSessionAppBar(sessionType: model.sessionType),
             body: Padding(
@@ -35,31 +35,50 @@ class RecordSessionPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Audio player widget
-                  AudioPlayerWidget(
-                    isPlaying: model.isPlaying,
-                    onPlayPause: model.togglePlayPause,
-                  ),
-                  const SizedBox(height: 16),
-                  // Editable text container for session notes
+                  // Audio player widget - Hide when editor is focused
+                  if (!model.isEditorFocused) ...[
+                    AudioPlayerWidget(
+                      isPlaying: model.isPlaying,
+                      onPlayPause: model.togglePlayPause,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  // HTML Editor widget for session notes
                   Expanded(
-                    child: EditableTextContainer(
-                      controller: model.textController,
-                      isEditing: model.isEditing,
-                      onTap: model.onTextFieldTap,
+                    child: HtmlEditorWidget(
+                      onContentChanged: model.onHtmlContentChanged,
+                      onFocused: model.onEditorFocused,
+                      onUnfocused: model.onEditorUnfocused,
+                      onSave: () async {
+                        bool success = await model.saveHtmlContent();
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                success
+                                    ? 'Documento guardado correctamente'
+                                    : 'Error al guardar el documento',
+                              ),
+                              backgroundColor:
+                                  success ? Colors.green[600] : Colors.red[600],
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                   const SizedBox(height: 16),
                   // Action buttons
                   ActionButtonsWidget(
                     onSaveChanges: () async {
-                      bool res = await model.saveChanges();
+                      bool res = await model.saveHtmlContent();
                       if (res) {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                  'Cambios guardados para ${patient.name}'),
+                                'Historia clínica guardada para ${patient.name}',
+                              ),
                               backgroundColor: Colors.green[600],
                             ),
                           );
@@ -69,7 +88,8 @@ class RecordSessionPage extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                  'Error al guardar los cambios para ${patient.name}'),
+                                'Error al guardar la historia clínica para ${patient.name}',
+                              ),
                               backgroundColor: Colors.red[600],
                             ),
                           );
@@ -81,7 +101,9 @@ class RecordSessionPage extends StatelessWidget {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Revisión confirmada para ${patient.name}'),
+                            content: Text(
+                              'Revisión confirmada para ${patient.name}',
+                            ),
                             backgroundColor: Colors.blue[600],
                           ),
                         );
