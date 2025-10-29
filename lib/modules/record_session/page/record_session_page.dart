@@ -19,6 +19,9 @@ class RecordSessionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final isKeyboardVisible = keyboardHeight > 0;
+
     return BaseWidget<RecordSessionPageViewModel>(
       model: RecordSessionPageViewModel(
         patient: patient,
@@ -66,49 +69,50 @@ class RecordSessionPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // Action buttons
-                  ActionButtonsWidget(
-                    onSaveChanges: () async {
-                      bool res = await model.saveHtmlContent();
-                      if (res) {
+                  // Action buttons - Hide when keyboard is visible
+                  if (!isKeyboardVisible)
+                    ActionButtonsWidget(
+                      onSaveChanges: () async {
+                        bool res = await model.saveHtmlContent();
+                        if (res) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Historia clínica guardada para ${patient.name}',
+                                ),
+                                backgroundColor: Colors.green[600],
+                              ),
+                            );
+                          }
+                        } else {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Error al guardar la historia clínica para ${patient.name}',
+                                ),
+                                backgroundColor: Colors.red[600],
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      onConfirmReview: () {
+                        final String status = model.confirmReview();
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                'Historia clínica guardada para ${patient.name}',
+                                'Revisión confirmada para ${patient.name}',
                               ),
-                              backgroundColor: Colors.green[600],
+                              backgroundColor: Colors.blue[600],
                             ),
                           );
+                          Navigator.of(context).pop(status);
                         }
-                      } else {
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Error al guardar la historia clínica para ${patient.name}',
-                              ),
-                              backgroundColor: Colors.red[600],
-                            ),
-                          );
-                        }
-                      }
-                    },
-                    onConfirmReview: () {
-                      final String status = model.confirmReview();
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Revisión confirmada para ${patient.name}',
-                            ),
-                            backgroundColor: Colors.blue[600],
-                          ),
-                        );
-                        Navigator.of(context).pop(status);
-                      }
-                    },
-                  ),
+                      },
+                    ),
                 ],
               ),
             ),
