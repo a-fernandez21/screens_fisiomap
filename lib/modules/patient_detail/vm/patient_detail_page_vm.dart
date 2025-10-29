@@ -8,7 +8,7 @@ import '../../../data/medical_records_data.dart';
 ///
 /// Manages:
 /// - Loading medical records for a patient
-/// - Updating record status (Pendiente/Completado)
+/// - Updating record status (Pendiente/Revisado)
 /// - Handling record tap events
 /// - Navigation to record session screen
 class PatientDetailPageViewModel extends BaseVM {

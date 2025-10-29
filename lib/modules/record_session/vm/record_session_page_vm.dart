@@ -103,12 +103,12 @@ class RecordSessionPageViewModel extends BaseVM {
     }
   }
 
-  /// Confirm review and return 'Completado' status.
+  /// Confirm review and return 'Revisado' status.
   /// Returns the status string to be used by the view for navigation.
   String confirmReview() {
     debugPrint('✅ Botón Confirmar Revisión presionado');
-    debugPrint('🚪 Devolviendo estado: Completado');
-    return 'Completado';
+    debugPrint('🚪 Devolviendo estado: Revisado');
+    return 'Revisado';
   }
 
   @override

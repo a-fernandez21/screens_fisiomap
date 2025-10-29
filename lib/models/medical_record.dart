@@ -19,7 +19,7 @@ class MedicalRecord {
   /// Nombre del profesional que atendió la consulta.
   final String doctor;
 
-  /// Estado del tratamiento (En curso, Completado, Pendiente).
+  /// Estado del tratamiento (Revisado, Pendiente).
   final String status;
 
   /// Constructor para crear una instancia de [MedicalRecord].
@@ -58,12 +58,8 @@ class MedicalRecord {
         return const Color(0xFF2196F3); // Azul
       case 'seguimiento':
         return const Color(0xFF4CAF50); // Verde
-      case 'revisión':
-        return const Color(0xFFFF9800); // Naranja
-      case 'urgencia':
-        return const Color(0xFFF44336); // Rojo
       default:
-        return const Color(0xFF607D8B); // Gris azulado
+        return const Color(0xFF2196F3); // Azul por defecto
     }
   }
 
@@ -74,26 +70,20 @@ class MedicalRecord {
         return Icons.assignment;
       case 'seguimiento':
         return Icons.trending_up;
-      case 'revisión':
-        return Icons.visibility;
-      case 'urgencia':
-        return Icons.emergency;
       default:
-        return Icons.medical_services;
+        return Icons.assignment;
     }
   }
 
   /// Obtiene el color asociado al estado del tratamiento.
   Color get statusColor {
     switch (status.toLowerCase()) {
-      case 'completado':
+      case 'revisado':
         return const Color(0xFF4CAF50); // Verde
-      case 'en curso':
-        return const Color(0xFF2196F3); // Azul
       case 'pendiente':
         return const Color(0xFFFF9800); // Naranja
       default:
-        return const Color(0xFF757575); // Gris
+        return const Color(0xFFFF9800); // Naranja por defecto
     }
   }
 }
