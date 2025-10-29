@@ -34,12 +34,10 @@ class MedicalRecordHeader extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            record.date,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-          ),
+        const Spacer(),
+        Text(
+          record.date,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ],
     );
