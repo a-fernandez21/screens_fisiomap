@@ -45,6 +45,9 @@ dependencies:
   
   # HTML Editor
   html_editor_enhanced: ^2.5.1
+  
+  # Audio Player
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:

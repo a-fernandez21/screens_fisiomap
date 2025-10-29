@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pumpun_core/pumpun_core.dart';
+import 'package:audioplayers/audioplayers.dart';
 import '../../../models/patient.dart';
 
 /// ViewModel for RecordSessionPage.
@@ -33,6 +34,11 @@ class RecordSessionPageViewModel extends BaseVM {
   bool _isEditing = false;
   String _htmlContent = '';
   bool _isEditorFocused = false;
+  Duration _currentPosition = Duration.zero;
+  Duration _totalDuration = Duration.zero;
+
+  // Audio player instance
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   // Getters for state access
   bool get isPlaying => _isPlaying;
@@ -40,6 +46,8 @@ class RecordSessionPageViewModel extends BaseVM {
   bool get isEditing => _isEditing;
   String get htmlContent => _htmlContent;
   bool get isEditorFocused => _isEditorFocused;
+  Duration get currentPosition => _currentPosition;
+  Duration get totalDuration => _totalDuration;
 
   // Setters with notifyListeners
   set isPlaying(bool value) {
@@ -67,6 +75,16 @@ class RecordSessionPageViewModel extends BaseVM {
     notifyListeners();
   }
 
+  set currentPosition(Duration value) {
+    _currentPosition = value;
+    notifyListeners();
+  }
+
+  set totalDuration(Duration value) {
+    _totalDuration = value;
+    notifyListeners();
+  }
+
   RecordSessionPageViewModel({
     required this.patient,
     required this.sessionType,
@@ -78,21 +96,69 @@ class RecordSessionPageViewModel extends BaseVM {
   Future<void> onInit() async {
     textController.text =
         'Haz clic aquí para empezar a escribir las notas de la sesión...';
+    
+    // Initialize audio player
+    await _initializeAudioPlayer();
+  }
+
+  /// Initialize audio player with listeners
+  Future<void> _initializeAudioPlayer() async {
+    try {
+      // Load audio from assets (path relative to pubspec assets declaration)
+      await _audioPlayer.setSource(AssetSource('lib/data/audio-prueba-hc.mp3'));
+      debugPrint('🎵 Audio source set');
+      
+      // Listen to player state changes
+      _audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+        if (!disposed) {
+          isPlaying = state == PlayerState.playing;
+          audioStatus = state == PlayerState.playing 
+              ? 'Reproduciendo...' 
+              : state == PlayerState.paused 
+                  ? 'Pausado' 
+                  : 'Detenido';
+          debugPrint('🎵 Player state changed: $state, isPlaying: $isPlaying');
+        }
+      });
+      
+      // Listen to duration changes
+      _audioPlayer.onDurationChanged.listen((Duration duration) {
+        if (!disposed) {
+          totalDuration = duration;
+          debugPrint('📊 Audio duration: ${duration.inSeconds}s');
+        }
+      });
+      
+      // Listen to position changes
+      _audioPlayer.onPositionChanged.listen((Duration position) {
+        if (!disposed) {
+          currentPosition = position;
+        }
+      });
+      
+      audioStatus = 'Audio cargado';
+      debugPrint('🎵 Audio player initialized successfully');
+    } catch (e) {
+      debugPrint('❌ Error initializing audio player: $e');
+      audioStatus = 'Error al cargar audio';
+    }
   }
 
   /// Toggle play/pause audio playback.
-  void togglePlayPause() {
-    isPlaying = !isPlaying;
-    audioStatus = isPlaying ? 'Reproduciendo...' : 'Pausado';
-
-    // Simulate audio playback finishing after 3 seconds
-    if (isPlaying) {
-      Future.delayed(const Duration(seconds: 3), () {
-        if (!disposed && isPlaying) {
-          isPlaying = false;
-          audioStatus = 'Reproducción finalizada';
-        }
-      });
+  void togglePlayPause() async {
+    try {
+      debugPrint('🎵 togglePlayPause called, current isPlaying: $isPlaying');
+      if (isPlaying) {
+        await _audioPlayer.pause();
+        debugPrint('⏸️ Audio paused');
+      } else {
+        // Use play() to start or resume playback
+        await _audioPlayer.play(AssetSource('lib/data/audio-prueba-hc.mp3'));
+        debugPrint('▶️ Audio playing');
+      }
+    } catch (e) {
+      debugPrint('❌ Error toggling audio: $e');
+      audioStatus = 'Error de reproducción';
     }
   }
 
@@ -160,6 +226,7 @@ class RecordSessionPageViewModel extends BaseVM {
 
   @override
   void dispose() {
+    _audioPlayer.dispose();
     textController.dispose();
     super.dispose();
   }
