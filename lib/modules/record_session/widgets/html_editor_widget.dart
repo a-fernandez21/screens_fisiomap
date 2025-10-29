@@ -99,42 +99,6 @@ class _HtmlEditorWidgetState extends State<HtmlEditorWidget> {
       ),
       child: Column(
         children: [
-          // Header with icon and title
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.teal[50],
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.medical_information,
-                  color: Colors.teal[600],
-                  size: 24,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Història Clínica de Fisioteràpia',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.teal[800],
-                  ),
-                ),
-                const Spacer(),
-                if (widget.onSave != null)
-                  IconButton(
-                    onPressed: widget.onSave,
-                    icon: const Icon(Icons.save, color: Colors.teal),
-                    tooltip: 'Guardar cambios',
-                  ),
-              ],
-            ),
-          ),
           // HTML Editor
           Expanded(
             child: Padding(
@@ -152,58 +116,10 @@ class _HtmlEditorWidgetState extends State<HtmlEditorWidget> {
                       spellCheck: true,
                       autoAdjustHeight: false,
                     ),
-                    htmlToolbarOptions: HtmlToolbarOptions(
+                    htmlToolbarOptions: const HtmlToolbarOptions(
                       toolbarPosition: ToolbarPosition.aboveEditor,
                       toolbarType: ToolbarType.nativeGrid,
-                      defaultToolbarButtons: [
-                        const StyleButtons(style: true),
-                        const FontSettingButtons(fontSize: true),
-                        const FontButtons(
-                          bold: true,
-                          italic: true,
-                          underline: true,
-                          clearAll: false,
-                          strikethrough: false,
-                          superscript: false,
-                          subscript: false,
-                        ),
-                        const ColorButtons(
-                          foregroundColor: true,
-                          highlightColor: true,
-                        ),
-                        const ListButtons(
-                          ul: true,
-                          ol: true,
-                          listStyles: false,
-                        ),
-                        const ParagraphButtons(
-                          textDirection: false,
-                          lineHeight: false,
-                          caseConverter: false,
-                          alignCenter: true,
-                          alignJustify: true,
-                          alignLeft: true,
-                          alignRight: true,
-                          increaseIndent: true,
-                          decreaseIndent: true,
-                        ),
-                        const InsertButtons(
-                          link: true,
-                          picture: false,
-                          audio: false,
-                          video: false,
-                          otherFile: false,
-                          table: true,
-                          hr: true,
-                        ),
-                        const OtherButtons(
-                          fullscreen: false,
-                          codeview: true,
-                          undo: true,
-                          redo: true,
-                          help: false,
-                        ),
-                      ],
+                      defaultToolbarButtons: [],
                     ),
                     otherOptions: const OtherOptions(
                       height: 400,
