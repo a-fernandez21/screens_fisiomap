@@ -35,14 +35,12 @@ class RecordSessionPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Audio player widget - Hide when editor is focused
-                  if (!model.isEditorFocused) ...[
-                    AudioPlayerWidget(
-                      isPlaying: model.isPlaying,
-                      onPlayPause: model.togglePlayPause,
-                    ),
-                    const SizedBox(height: 16),
-                  ],
+                  // Audio player widget - Always visible
+                  AudioPlayerWidget(
+                    isPlaying: model.isPlaying,
+                    onPlayPause: model.togglePlayPause,
+                  ),
+                  const SizedBox(height: 16),
                   // HTML Editor widget for session notes
                   Expanded(
                     child: HtmlEditorWidget(

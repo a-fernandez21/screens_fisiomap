@@ -26,6 +26,7 @@ class _HtmlEditorWidgetState extends State<HtmlEditorWidget> {
   final HtmlEditorController _controller = HtmlEditorController();
   bool _isLoading = true;
   String _initialContent = '';
+  double _previousKeyboardHeight = 0;
 
   @override
   void initState() {
@@ -67,6 +68,19 @@ class _HtmlEditorWidgetState extends State<HtmlEditorWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    debugPrint('⌨️ Keyboard height: $keyboardHeight');
+
+    // Detect keyboard closing and unfocus editor
+    if (_previousKeyboardHeight > 0 && keyboardHeight == 0) {
+      debugPrint('⌨️ Keyboard closed, unfocusing editor...');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onUnfocused?.call();
+        FocusScope.of(context).unfocus();
+      });
+    }
+    _previousKeyboardHeight = keyboardHeight;
+
     if (_isLoading) {
       return const Center(
         child: Column(
@@ -101,18 +115,23 @@ class _HtmlEditorWidgetState extends State<HtmlEditorWidget> {
         children: [
           // HTML Editor
           Expanded(
+            key: ValueKey('editor_$keyboardHeight'),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  height: 400,
-                  child: HtmlEditor(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final editorHeight = constraints.maxHeight;
+                  debugPrint(
+                    '🔧 LayoutBuilder rebuilt - constraints: ${constraints.maxHeight}, keyboard: $keyboardHeight',
+                  );
+
+                  return HtmlEditor(
                     controller: _controller,
                     htmlEditorOptions: HtmlEditorOptions(
                       hint: 'Edita el contenido de la história clínica...',
                       initialText: _initialContent,
                       shouldEnsureVisible: true,
-                      adjustHeightForKeyboard: true,
+                      adjustHeightForKeyboard: false,
                       spellCheck: true,
                       autoAdjustHeight: false,
                     ),
@@ -121,9 +140,9 @@ class _HtmlEditorWidgetState extends State<HtmlEditorWidget> {
                       toolbarType: ToolbarType.nativeGrid,
                       defaultToolbarButtons: [],
                     ),
-                    otherOptions: const OtherOptions(
-                      height: 400,
-                      decoration: BoxDecoration(
+                    otherOptions: OtherOptions(
+                      height: editorHeight - 16,
+                      decoration: const BoxDecoration(
                         border: Border.fromBorderSide(
                           BorderSide(color: Colors.grey, width: 1),
                         ),
@@ -179,8 +198,8 @@ class _HtmlEditorWidgetState extends State<HtmlEditorWidget> {
                         widget.onUnfocused?.call();
                       },
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
           ),
