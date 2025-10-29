@@ -15,12 +15,12 @@ class BottomActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: 74,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: const Color.fromARGB(255, 139, 139, 139).withOpacity(0.3),
             spreadRadius: 1,
             blurRadius: 8,
             offset: const Offset(0, -2),
@@ -29,22 +29,22 @@ class BottomActionBar extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: BottomActionButton(
-              icon: Icons.trending_up,
-              text: 'Nuevo Seguimiento',
-              color: Colors.green,
-              onPressed: onNewFollowUp,
-            ),
+          BottomActionButton(
+            icon: Icons.trending_up,
+            text: 'Nuevo Seguimiento',
+            color: Colors.green,
+            onPressed: onNewFollowUp,
           ),
-          Expanded(
-            child: BottomActionButton(
-              icon: Icons.assignment,
-              text: 'Nueva Anamnesis',
-              color: Colors.blue,
-              onPressed: onNewAnamnesis,
-            ),
+
+          SizedBox(width: 8),
+
+          BottomActionButton(
+            icon: Icons.assignment,
+            text: 'Nueva Anamnesis',
+            color: Colors.blue,
+            onPressed: onNewAnamnesis,
           ),
         ],
       ),

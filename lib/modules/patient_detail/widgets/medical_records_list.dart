@@ -17,7 +17,6 @@ class MedicalRecordsListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         itemCount: medicalRecords.length,
         itemBuilder: (context, index) {
           final record = medicalRecords[index];

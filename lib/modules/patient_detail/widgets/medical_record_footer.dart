@@ -14,7 +14,7 @@ class MedicalRecordFooter extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            'Dr: ${record.doctor}',
+            record.doctor,
             style: TextStyle(fontSize: 13, color: Colors.grey[600]),
           ),
         ),
