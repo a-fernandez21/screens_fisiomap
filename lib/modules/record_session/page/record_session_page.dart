@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pumpun_core/view/base_widget.dart';
-import '../vm/record_session_page_vm.dart';
-import '../widgets/record_session_widgets.dart';
-import '../../../models/patient.dart';
+import 'package:screens_fisiomap/modules/record_session/vm/record_session_page_vm.dart';
+import 'package:screens_fisiomap/modules/record_session/widgets/record_session_widgets.dart';
+import 'package:screens_fisiomap/models/patient.dart';
 
 /// Record Session Page - Audio recording/playback and session notes editing
 class RecordSessionPage extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../models/patient.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_text_styles.dart';
-import '../../constants/app_constants.dart';
+import 'package:screens_fisiomap/models/patient.dart';
+import 'package:screens_fisiomap/constants/app_colors.dart';
+import 'package:screens_fisiomap/constants/app_text_styles.dart';
+import 'package:screens_fisiomap/constants/app_constants.dart';
 
 /// Widget que representa una tarjeta de paciente en la lista.
 /// 

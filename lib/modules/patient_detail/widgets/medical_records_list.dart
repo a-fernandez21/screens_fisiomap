@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/medical_record.dart';
+import 'package:screens_fisiomap/models/medical_record.dart';
 import 'medical_record_card.dart';
 
 /// Scrollable list displaying all medical records
@@ -17,7 +17,6 @@ class MedicalRecordsListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         itemCount: medicalRecords.length,
         itemBuilder: (context, index) {
           final record = medicalRecords[index];

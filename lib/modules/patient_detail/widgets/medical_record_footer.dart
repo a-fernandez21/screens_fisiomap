@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/medical_record.dart';
+import 'package:screens_fisiomap/models/medical_record.dart';
 
 /// Footer displaying doctor name and status badge
 class MedicalRecordFooter extends StatelessWidget {
@@ -14,7 +14,7 @@ class MedicalRecordFooter extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            'Dr: ${record.doctor}',
+            record.doctor,
             style: TextStyle(fontSize: 13, color: Colors.grey[600]),
           ),
         ),

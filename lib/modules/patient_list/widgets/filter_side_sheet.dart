@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../vm/patient_list_page_vm.dart';
+import 'package:screens_fisiomap/modules/patient_list/vm/patient_list_page_vm.dart';
 import 'filter_option_checkbox.dart';
 
 /// Filter side panel widget for patient list

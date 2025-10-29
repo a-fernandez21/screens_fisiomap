@@ -1,4 +1,4 @@
-import '../models/medical_record.dart';
+import 'package:screens_fisiomap/models/medical_record.dart';
 
 /// Clase que contiene datos de ejemplo para historias clínicas.
 ///
@@ -19,7 +19,7 @@ class MedicalRecordsData {
       type: 'Anamnesis',
       description: 'Primera consulta - Dolor lumbar crónico',
       doctor: 'Dr. García Martínez',
-      status: 'Completado',
+      status: 'Revisado',
     ),
     MedicalRecord(
       id: 2,
@@ -27,15 +27,15 @@ class MedicalRecordsData {
       type: 'Seguimiento',
       description: 'Evolución del tratamiento de rehabilitación',
       doctor: 'Dra. López Fernández',
-      status: 'En curso',
+      status: 'Pendiente',
     ),
     MedicalRecord(
       id: 3,
       date: '18/10/2024',
-      type: 'Revisión',
-      description: 'Control post-operatorio de rodilla izquierda',
+      type: 'Seguimiento',
+      description: 'Control de progreso - rodilla izquierda',
       doctor: 'Dr. Ruiz Santos',
-      status: 'Completado',
+      status: 'Revisado',
     ),
     MedicalRecord(
       id: 4,
@@ -43,7 +43,7 @@ class MedicalRecordsData {
       type: 'Anamnesis',
       description: 'Evaluación de lesión deportiva - Hombro derecho',
       doctor: 'Dra. Moreno Castro',
-      status: 'Completado',
+      status: 'Revisado',
     ),
     MedicalRecord(
       id: 5,
@@ -51,20 +51,20 @@ class MedicalRecordsData {
       type: 'Seguimiento',
       description: 'Sesión de fisioterapia - Fortalecimiento muscular',
       doctor: 'Dr. Jiménez Torres',
-      status: 'En curso',
+      status: 'Pendiente',
     ),
     MedicalRecord(
       id: 6,
       date: '10/10/2024',
-      type: 'Urgencia',
+      type: 'Anamnesis',
       description: 'Dolor agudo cervical - Contractura muscular',
       doctor: 'Dra. Sánchez Pérez',
-      status: 'Completado',
+      status: 'Revisado',
     ),
     MedicalRecord(
       id: 7,
       date: '08/10/2024',
-      type: 'Revisión',
+      type: 'Seguimiento',
       description: 'Evaluación de progreso en tratamiento',
       doctor: 'Dr. García Martínez',
       status: 'Pendiente',
@@ -75,7 +75,7 @@ class MedicalRecordsData {
       type: 'Seguimiento',
       description: 'Terapia manual para fascitis plantar',
       doctor: 'Dra. López Fernández',
-      status: 'En curso',
+      status: 'Revisado',
     ),
   ];
 

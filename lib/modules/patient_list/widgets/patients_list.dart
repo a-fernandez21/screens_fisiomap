@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/patient.dart';
+import 'package:screens_fisiomap/models/patient.dart';
 import 'patient_card.dart';
 
 /// Scrollable list widget rendering all patient cards

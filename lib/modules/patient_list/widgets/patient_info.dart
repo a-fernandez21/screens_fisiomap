@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/patient.dart';
+import 'package:screens_fisiomap/models/patient.dart';
 import 'patient_name.dart';
 import 'patient_date.dart';
 

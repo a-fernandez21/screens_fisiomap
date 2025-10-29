@@ -1,6 +1,6 @@
 import 'package:pumpun_core/pumpun_core.dart';
-import '../../../models/patient.dart';
-import '../../../data/patients_data.dart';
+import 'package:screens_fisiomap/models/patient.dart';
+import 'package:screens_fisiomap/data/patients_data.dart';
 
 /// Filter types for patient list
 enum PatientFilterType {
@@ -21,43 +21,45 @@ enum PatientFilterType {
 /// - Add patient events
 /// - Multiple filter functionality
 class PatientListPageViewModel extends BaseVM {
-  // Private state variables
+  // Private state variables with their getters and setters
   List<Patient> _patients = [];
-  List<Patient> _originalPatients = [];
-  Set<PatientFilterType> _activeFilters = {};
-  Set<PatientFilterType> _tempFilters = {};
-  String _searchQuery = '';
-
-  // Getters for state access
   List<Patient> get patients => _patients;
-  bool get hasPatients => _patients.isNotEmpty;
-  int get patientCount => _patients.length;
-  Set<PatientFilterType> get activeFilters => _activeFilters;
-  bool get hasActiveFilters => _activeFilters.isNotEmpty;
-  String get searchQuery => _searchQuery;
-  Set<PatientFilterType> get tempFilters => _tempFilters;
-  bool get hasTempFilters => _tempFilters.isNotEmpty;
-
-  // Setters with notifyListeners
   set patients(List<Patient> value) {
     _patients = value;
     notifyListeners();
   }
 
+  List<Patient> _originalPatients = [];
+
+  Set<PatientFilterType> _activeFilters = {};
+  Set<PatientFilterType> get activeFilters => _activeFilters;
   set activeFilters(Set<PatientFilterType> value) {
     _activeFilters = value;
     notifyListeners();
   }
 
+  Set<PatientFilterType> _tempFilters = {};
+  Set<PatientFilterType> get tempFilters => _tempFilters;
+  set tempFilters(Set<PatientFilterType> value) {
+    _tempFilters = value;
+    notifyListeners();
+  }
+
+  String _searchQuery = '';
+  String get searchQuery => _searchQuery;
   set searchQuery(String value) {
     _searchQuery = value;
     notifyListeners();
   }
 
-  set tempFilters(Set<PatientFilterType> value) {
-    _tempFilters = value;
-    notifyListeners();
-  }
+  // Computed getters
+  bool get hasPatients => _patients.isNotEmpty;
+  int get patientCount => _patients.length;
+  bool get hasActiveFilters => _activeFilters.isNotEmpty;
+  bool get hasTempFilters => _tempFilters.isNotEmpty;
+
+  // Constructor
+  PatientListPageViewModel();
 
   /// Initialize and load patients data.
   /// Called from BaseWidget's onModelReady

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/medical_record.dart';
+import 'package:screens_fisiomap/models/medical_record.dart';
 
 /// Header displaying record type badge and date
 class MedicalRecordHeader extends StatelessWidget {
@@ -34,12 +34,10 @@ class MedicalRecordHeader extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            record.date,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-          ),
+        const Spacer(),
+        Text(
+          record.date,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ],
     );

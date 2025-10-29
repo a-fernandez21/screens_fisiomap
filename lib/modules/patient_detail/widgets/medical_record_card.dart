@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/medical_record.dart';
+import 'package:screens_fisiomap/models/medical_record.dart';
 import 'medical_record_header.dart';
 import 'medical_record_footer.dart';
 

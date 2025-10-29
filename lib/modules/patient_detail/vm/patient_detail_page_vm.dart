@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:pumpun_core/pumpun_core.dart';
-import '../../../models/patient.dart';
-import '../../../models/medical_record.dart';
-import '../../../data/medical_records_data.dart';
+import 'package:screens_fisiomap/models/patient.dart';
+import 'package:screens_fisiomap/models/medical_record.dart';
+import 'package:screens_fisiomap/data/medical_records_data.dart';
 
 /// ViewModel for Patient Detail screen.
 ///
 /// Manages:
 /// - Loading medical records for a patient
-/// - Updating record status (Pendiente/Completado)
+/// - Updating record status (Pendiente/Revisado)
 /// - Handling record tap events
 /// - Navigation to record session screen
 class PatientDetailPageViewModel extends BaseVM {
