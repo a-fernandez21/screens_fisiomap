@@ -14,45 +14,40 @@ class RecordSessionPageViewModel extends BaseVM {
   final String sessionType;
   final int? recordId;
 
-///check for correct implementation of saved recording api call
+  // Text controller for editable notes
+  final TextEditingController textController = TextEditingController();
+
+  // Private state variables with their getters and setters
+  /// Check for correct implementation of saved recording api call
   bool _isRecordingSaved = false;
-
-  get isRecordingSaved => _isRecordingSaved;
-
-  set isRcordingSaved(bool value) {
+  bool get isRecordingSaved => _isRecordingSaved;
+  set isRecordingSaved(bool value) {
     _isRecordingSaved = value;
     notifyListeners();
   }
 
-  // Text controller for editable notes
-  final TextEditingController textController = TextEditingController();
-
-  // Private state variables
   bool _isPlaying = false;
-  String _audioStatus = 'Sin audio';
-  bool _isEditing = false;
-
-  // Getters for state access
   bool get isPlaying => _isPlaying;
-  String get audioStatus => _audioStatus;
-  bool get isEditing => _isEditing;
-
-  // Setters with notifyListeners
   set isPlaying(bool value) {
     _isPlaying = value;
     notifyListeners();
   }
 
+  String _audioStatus = 'Sin audio';
+  String get audioStatus => _audioStatus;
   set audioStatus(String value) {
     _audioStatus = value;
     notifyListeners();
   }
 
+  bool _isEditing = false;
+  bool get isEditing => _isEditing;
   set isEditing(bool value) {
     _isEditing = value;
     notifyListeners();
   }
 
+  // Constructor
   RecordSessionPageViewModel({
     required this.patient,
     required this.sessionType,
