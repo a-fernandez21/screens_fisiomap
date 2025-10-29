@@ -31,10 +31,16 @@ class RecordSessionPage extends StatelessWidget {
       onModelReady: (model) => model.onInit(),
       builder:
           (context, model, child) => Scaffold(
+            resizeToAvoidBottomInset: true,
             backgroundColor: Colors.grey[100],
             appBar: RecordSessionAppBar(sessionType: model.sessionType),
             body: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.only(
+                left: 16.0,
+                right: 16.0,
+                top: 16.0,
+                bottom: isKeyboardVisible ? 16.0 : 16.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
