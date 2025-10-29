@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pumpun_core/view/base_widget.dart';
 import 'package:screens_fisiomap/modules/patient_detail/widgets/bottom_action_bar.dart';
-import '../vm/patient_detail_page_vm.dart';
-import '../widgets/patient_detail_widgets.dart';
-import '../../../models/patient.dart';
-import '../../record_session/page/record_session_page.dart';
+import 'package:screens_fisiomap/modules/patient_detail/vm/patient_detail_page_vm.dart';
+import 'package:screens_fisiomap/modules/patient_detail/widgets/patient_detail_widgets.dart';
+import 'package:screens_fisiomap/models/patient.dart';
+import 'package:screens_fisiomap/modules/record_session/page/record_session_page.dart';
 
 /// Patient Detail Page - Shows patient info and medical history
 class PatientDetailPage extends StatelessWidget {

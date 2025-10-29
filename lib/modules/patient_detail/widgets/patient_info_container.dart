@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/patient.dart';
+import 'package:screens_fisiomap/models/patient.dart';
 
 /// Collapsible patient information card with animated expansion
 class PatientInfoContainer extends StatefulWidget {

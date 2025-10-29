@@ -1,6 +1,6 @@
 import 'package:pumpun_core/pumpun_core.dart';
-import '../../../models/patient.dart';
-import '../../../data/patients_data.dart';
+import 'package:screens_fisiomap/models/patient.dart';
+import 'package:screens_fisiomap/data/patients_data.dart';
 
 /// Filter types for patient list
 enum PatientFilterType {

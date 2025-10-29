@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pumpun_core/pumpun_core.dart';
-import '../../../models/patient.dart';
+import 'package:screens_fisiomap/models/patient.dart';
 
 /// ViewModel for RecordSessionPage.
 ///

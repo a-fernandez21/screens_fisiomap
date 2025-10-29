@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/patient.dart';
+import 'package:screens_fisiomap/models/patient.dart';
 
 /// Circular avatar displaying patient's initials
 class PatientAvatarWidget extends StatelessWidget {

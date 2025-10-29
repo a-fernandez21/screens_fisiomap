@@ -1,4 +1,4 @@
-import '../models/patient.dart';
+import 'package:screens_fisiomap/models/patient.dart';
 
 /// Clase que contiene datos de ejemplo para pacientes.
 ///

@@ -1,4 +1,4 @@
-import '../models/medical_record.dart';
+import 'package:screens_fisiomap/models/medical_record.dart';
 
 /// Clase que contiene datos de ejemplo para historias clínicas.
 ///
