@@ -4,6 +4,7 @@ import 'package:screens_fisiomap/modules/patient_detail/vm/patient_detail_page_v
 import 'package:screens_fisiomap/modules/patient_detail/widgets/patient_detail_widgets.dart';
 import 'package:screens_fisiomap/models/patient.dart';
 import 'package:screens_fisiomap/modules/record_session/page/record_session_page.dart';
+import 'package:screens_fisiomap/modules/voice_recorder/page/voice_recorder_page.dart';
 
 /// Patient Detail Page - Shows patient info and medical history
 class PatientDetailPage extends StatelessWidget {
@@ -115,17 +116,17 @@ class PatientDetailPage extends StatelessWidget {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
-                final String? result = await Navigator.push<String>(
+                final String? audioPath = await Navigator.push<String>(
                   context,
                   MaterialPageRoute(
-                    builder:
-                        (context) => RecordSessionPage(
-                          patient: model.patient,
-                          sessionType: 'Anamnesis',
-                        ),
+                    builder: (context) => const VoiceRecorderPage(),
                   ),
                 );
-                model.handleNewAnamnesisResult(result);
+                
+                if (audioPath != null) {
+                  debugPrint('Audio saved at: $audioPath');
+                  // TODO: Save audio path to anamnesis record
+                }
               },
               backgroundColor: const Color.fromARGB(255, 13, 175, 229),
               child: const Icon(Icons.add, color: Colors.white),

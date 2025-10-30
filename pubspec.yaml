@@ -48,6 +48,11 @@ dependencies:
   
   # Audio Player
   audioplayers: ^6.1.0
+  
+  # Audio Recorder
+  record: ^6.1.2
+  path_provider: ^2.1.4
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

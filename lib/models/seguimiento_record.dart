@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 
-/// Model representing a Seguimiento record (follow-up session)
 class SeguimientoRecord {
-  /// Unique identifier
+  /// Identificador único de la historia clínica.
   final int id;
 
-  /// Date in String format
+  /// Fecha de la consulta en formato String.
   final String date;
 
-  /// Professional's name who attended
+  /// Nombre del profesional que atendió la consulta.
   final String doctor;
 
-  /// Treatment status (Completado, Pendiente)
+  /// Estado del tratamiento (Revisado, Pendiente).
   final String status;
-  
-  /// ID of the anamnesis this seguimiento belongs to
+
+  /// ID de la anamnesis asociada a este seguimiento.
   final int anamnesisId;
 
   SeguimientoRecord({
