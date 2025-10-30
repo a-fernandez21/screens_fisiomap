@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:screens_fisiomap/models/medical_record.dart';
+import 'package:screens_fisiomap/models/anamnesis_record.dart';
+import 'package:screens_fisiomap/models/seguimiento_record.dart';
 import 'medical_record_header.dart';
 
-/// Collapsible medical record card with follow-ups
+/// Collapsible anamnesis card with follow-ups (seguimientos)
 class MedicalRecordCard extends StatefulWidget {
-  final MedicalRecord record;
+  final AnamnesisRecord record;
+  final List<SeguimientoRecord> seguimientos;
   final VoidCallback onTap;
   final VoidCallback? onNewFollowUp;
+  final Function(SeguimientoRecord)? onSeguimientoTap;
 
   const MedicalRecordCard({
     super.key,
     required this.record,
+    required this.seguimientos,
     required this.onTap,
     this.onNewFollowUp,
+    this.onSeguimientoTap,
   });
 
   @override
@@ -140,31 +145,36 @@ class _MedicalRecordCardState extends State<MedicalRecordCard>
                         ],
                       ),
                       const SizedBox(height: 8),
-                      // Follow-ups list (placeholder for now)
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.description_outlined,
-                              size: 16,
-                              color: Colors.grey[600],
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'No hay seguimientos',
-                              style: TextStyle(
-                                fontSize: 13,
+                      // Seguimientos list
+                      if (widget.seguimientos.isEmpty)
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.description_outlined,
+                                size: 16,
                                 color: Colors.grey[600],
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 8),
+                              Text(
+                                'No hay seguimientos',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      else
+                        ...widget.seguimientos.map(
+                          (seguimiento) => _buildSeguimientoItem(seguimiento),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -172,6 +182,59 @@ class _MedicalRecordCardState extends State<MedicalRecordCard>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // Build seguimiento item widget
+  Widget _buildSeguimientoItem(SeguimientoRecord seguimiento) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: InkWell(
+        onTap: () => widget.onSeguimientoTap?.call(seguimiento),
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.description_outlined,
+                size: 16,
+                color: Colors.grey[600],
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      seguimiento.date,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF2D3142),
+                      ),
+                    ),
+                    if (seguimiento.description.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        seguimiento.description,
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right, size: 20, color: Colors.grey[400]),
+            ],
+          ),
+        ),
       ),
     );
   }

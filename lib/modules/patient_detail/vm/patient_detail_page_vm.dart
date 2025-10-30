@@ -1,8 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:pumpun_core/pumpun_core.dart';
 import 'package:screens_fisiomap/models/patient.dart';
-import 'package:screens_fisiomap/models/medical_record.dart';
-import 'package:screens_fisiomap/data/medical_records_data.dart';
+import 'package:screens_fisiomap/models/anamnesis_record.dart';
+import 'package:screens_fisiomap/models/seguimiento_record.dart';
+import 'package:screens_fisiomap/data/anamnesis_data.dart' as anamnesis_data;
+import 'package:screens_fisiomap/data/seguimientos_data.dart'
+    as seguimientos_data;
 
 /// ViewModel for Patient Detail screen.
 ///
@@ -15,14 +19,21 @@ class PatientDetailPageViewModel extends BaseVM {
   final Patient patient;
 
   // Private state variables
-  List<MedicalRecord> _medicalRecords = [];
+  List<AnamnesisRecord> _anamnesisRecords = [];
+  List<SeguimientoRecord> _allSeguimientos = [];
 
   // Getters for state access
-  List<MedicalRecord> get medicalRecords => _medicalRecords;
+  List<AnamnesisRecord> get anamnesisRecords => _anamnesisRecords;
+  List<SeguimientoRecord> get allSeguimientos => _allSeguimientos;
 
   // Setters with notifyListeners
-  set medicalRecords(List<MedicalRecord> value) {
-    _medicalRecords = value;
+  set anamnesisRecords(List<AnamnesisRecord> value) {
+    _anamnesisRecords = value;
+    notifyListeners();
+  }
+
+  set allSeguimientos(List<SeguimientoRecord> value) {
+    _allSeguimientos = value;
     notifyListeners();
   }
 
@@ -38,50 +49,57 @@ class PatientDetailPageViewModel extends BaseVM {
   Future<void> _loadMedicalRecords() async {
     setBusy(true);
 
-    medicalRecords = MedicalRecordsData.getMedicalRecordsForPatient(patient.id);
+    // Load all anamnesis and seguimientos from mock data
+    _anamnesisRecords = anamnesis_data.anamnesisRecords;
+    _allSeguimientos = seguimientos_data.seguimientoRecords;
 
-    if (medicalRecords.isEmpty) {
+    if (_anamnesisRecords.isEmpty) {
       setEmpty(empty: true);
     }
 
     setBusy(false);
   }
 
-  /// Update status of a medical record.
-  void updateRecordStatus(int recordId, String newStatus) {
-    debugPrint('🔄 Actualizando estado del registro $recordId a: $newStatus');
-    final int index = _medicalRecords.indexWhere((r) => r.id == recordId);
-    debugPrint('📍 Índice encontrado: $index');
-
-    if (index != -1) {
-      debugPrint('✅ Estado anterior: ${_medicalRecords[index].status}');
-      _medicalRecords[index] = _medicalRecords[index].copyWith(
-        status: newStatus,
-      );
-      debugPrint('✅ Estado nuevo: ${_medicalRecords[index].status}');
-      notifyListeners();
-    } else {
-      debugPrint('❌ No se encontró el registro con ID: $recordId');
-    }
+  /// Get seguimientos for a specific anamnesis
+  List<SeguimientoRecord> getSeguimientosForAnamnesis(int anamnesisId) {
+    return _allSeguimientos
+        .where((seguimiento) => seguimiento.anamnesisId == anamnesisId)
+        .toList();
   }
 
-  /// Log record tap information.
-  void logRecordTap(MedicalRecord record) {
+  /// Log anamnesis tap information.
+  void logAnamnesisRecordTap(AnamnesisRecord record) {
     debugPrint(
-      '🎯 Tarjeta clickeada - ID: ${record.id}, Tipo: ${record.type}, Estado actual: ${record.status}',
+      '🎯 Anamnesis clickeada - ID: ${record.id}, Fecha: ${record.date}, Estado: ${record.status}',
     );
   }
 
-  /// Handle navigation result from record session.
-  void handleRecordSessionResult(int recordId, String? result) {
-    debugPrint('🔙 Resultado recibido de RecordSessionPage: $result');
+  /// Log seguimiento tap information.
+  void logSeguimientoTap(SeguimientoRecord seguimiento) {
+    debugPrint(
+      '🎯 Seguimiento clickeado - ID: ${seguimiento.id}, Anamnesis ID: ${seguimiento.anamnesisId}',
+    );
+  }
+
+  /// Handle navigation result from anamnesis session.
+  void handleAnamnesisSessionResult(int anamnesisId, String? result) {
+    debugPrint('🔙 Resultado recibido de Anamnesis: $result');
+    if (result != null) {
+      debugPrint('� Anamnesis $anamnesisId actualizada con estado: $result');
+      // TODO: Update anamnesis status in list
+      notifyListeners();
+    }
+  }
+
+  /// Handle navigation result from seguimiento session.
+  void handleSeguimientoSessionResult(int seguimientoId, String? result) {
+    debugPrint('🔙 Resultado recibido de Seguimiento: $result');
     if (result != null) {
       debugPrint(
-        '📤 Llamando a updateRecordStatus con ID: $recordId y estado: $result',
+        '📝 Seguimiento $seguimientoId actualizado con estado: $result',
       );
-      updateRecordStatus(recordId, result);
-    } else {
-      debugPrint('⚠️ El resultado es null, no se actualiza el estado');
+      // TODO: Update seguimiento status in list
+      notifyListeners();
     }
   }
 

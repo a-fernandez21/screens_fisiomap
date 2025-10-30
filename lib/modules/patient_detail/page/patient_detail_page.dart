@@ -37,8 +37,9 @@ class PatientDetailPage extends StatelessWidget {
                       children: [
                         const SizedBox(height: 16),
                         SectionTitleWidget(
-                          title: 'Historial Clínico',
-                          subtitle: '${model.medicalRecords.length} registros',
+                          title: 'Anamnesis',
+                          subtitle:
+                              '${model.anamnesisRecords.length} registros',
                         ),
                         const SizedBox(height: 8),
                         // Display loading, empty state, or records list
@@ -50,9 +51,9 @@ class PatientDetailPage extends StatelessWidget {
                           const Expanded(child: EmptyMedicalRecordsWidget())
                         else
                           MedicalRecordsListWidget(
-                            medicalRecords: model.medicalRecords,
+                            anamnesisRecords: model.anamnesisRecords,
                             onRecordTap: (record) async {
-                              model.logRecordTap(record);
+                              model.logAnamnesisRecordTap(record);
                               final String? result =
                                   await Navigator.push<String>(
                                     context,
@@ -60,12 +61,12 @@ class PatientDetailPage extends StatelessWidget {
                                       builder:
                                           (context) => RecordSessionPage(
                                             patient: model.patient,
-                                            sessionType: record.type,
+                                            sessionType: 'Anamnesis',
                                             recordId: record.id,
                                           ),
                                     ),
                                   );
-                              model.handleRecordSessionResult(
+                              model.handleAnamnesisSessionResult(
                                 record.id,
                                 result,
                               );
@@ -83,6 +84,27 @@ class PatientDetailPage extends StatelessWidget {
                                     ),
                                   );
                               model.handleNewFollowUpResult(result);
+                            },
+                            onSeguimientoTap: (seguimiento) async {
+                              debugPrint(
+                                'Seguimiento tapped: ${seguimiento.id}',
+                              );
+                              final String? result =
+                                  await Navigator.push<String>(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => RecordSessionPage(
+                                            patient: model.patient,
+                                            sessionType: 'Seguimiento',
+                                            recordId: seguimiento.id,
+                                          ),
+                                    ),
+                                  );
+                              model.handleSeguimientoSessionResult(
+                                seguimiento.id,
+                                result,
+                              );
                             },
                           ),
                       ],

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:screens_fisiomap/models/medical_record.dart';
+import 'package:screens_fisiomap/models/anamnesis_record.dart';
 
-/// Header displaying record type badge and date
+/// Header displaying anamnesis icon and date
 class MedicalRecordHeader extends StatelessWidget {
-  final MedicalRecord record;
+  final AnamnesisRecord record;
 
   const MedicalRecordHeader({super.key, required this.record});
 
@@ -11,7 +11,7 @@ class MedicalRecordHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(record.typeIcon, size: 20, color: record.typeColor),
+        Icon(record.typeIcon, size: 20, color: Colors.teal[700]),
         const SizedBox(width: 8),
         Text(
           record.date,
