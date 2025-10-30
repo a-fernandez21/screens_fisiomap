@@ -2,7 +2,21 @@ import 'package:flutter/material.dart';
 
 /// Timeline displaying current and total duration
 class TimelineRow extends StatelessWidget {
-  const TimelineRow({super.key});
+  final Duration currentPosition;
+  final Duration totalDuration;
+
+  const TimelineRow({
+    super.key,
+    required this.currentPosition,
+    required this.totalDuration,
+  });
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$minutes:$seconds';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +24,7 @@ class TimelineRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          '0:00',
+          _formatDuration(currentPosition),
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey[400],
@@ -18,7 +32,7 @@ class TimelineRow extends StatelessWidget {
           ),
         ),
         Text(
-          '3:45',
+          _formatDuration(totalDuration),
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey[400],

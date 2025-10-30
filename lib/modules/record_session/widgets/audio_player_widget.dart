@@ -94,7 +94,10 @@ class AudioPlayerWidget extends StatelessWidget {
   Widget _buildNormalLayout() {
     return Column(
       children: [
-        const TimelineRow(),
+        TimelineRow(
+          currentPosition: currentPosition,
+          totalDuration: totalDuration,
+        ),
         const SizedBox(height: 8),
         AudioProgressBar(
           isPlaying: isPlaying,
