@@ -8,12 +8,16 @@ class AudioPlayerWidget extends StatelessWidget {
   final bool isPlaying;
   final VoidCallback onPlayPause;
   final bool isCompact;
+  final Duration currentPosition;
+  final Duration totalDuration;
 
   const AudioPlayerWidget({
     super.key,
     required this.isPlaying,
     required this.onPlayPause,
     this.isCompact = false,
+    required this.currentPosition,
+    required this.totalDuration,
   });
 
   @override
@@ -75,7 +79,13 @@ class AudioPlayerWidget extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         // Progress bar
-        Expanded(child: AudioProgressBar(isPlaying: isPlaying)),
+        Expanded(
+          child: AudioProgressBar(
+            isPlaying: isPlaying,
+            currentPosition: currentPosition,
+            totalDuration: totalDuration,
+          ),
+        ),
       ],
     );
   }
@@ -86,7 +96,11 @@ class AudioPlayerWidget extends StatelessWidget {
       children: [
         const TimelineRow(),
         const SizedBox(height: 8),
-        AudioProgressBar(isPlaying: isPlaying),
+        AudioProgressBar(
+          isPlaying: isPlaying,
+          currentPosition: currentPosition,
+          totalDuration: totalDuration,
+        ),
         const SizedBox(height: 20),
         PlaybackControls(isPlaying: isPlaying, onPlayPause: onPlayPause),
       ],

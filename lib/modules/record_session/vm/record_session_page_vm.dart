@@ -91,7 +91,7 @@ class RecordSessionPageViewModel extends BaseVM {
   Future<void> onInit() async {
     textController.text =
         'Haz clic aquí para empezar a escribir las notas de la sesión...';
-    
+
     // Initialize audio player
     await _initializeAudioPlayer();
   }
@@ -100,22 +100,23 @@ class RecordSessionPageViewModel extends BaseVM {
   Future<void> _initializeAudioPlayer() async {
     try {
       // Load audio from assets (path relative to pubspec assets declaration)
-      await _audioPlayer.setSource(AssetSource('lib/data/audio-prueba-hc.mp3'));
+      await _audioPlayer.setSource(AssetSource('audio-prueba-hc.mp3'));
       debugPrint('🎵 Audio source set');
-      
+
       // Listen to player state changes
       _audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
         if (!disposed) {
           isPlaying = state == PlayerState.playing;
-          audioStatus = state == PlayerState.playing 
-              ? 'Reproduciendo...' 
-              : state == PlayerState.paused 
-                  ? 'Pausado' 
+          audioStatus =
+              state == PlayerState.playing
+                  ? 'Reproduciendo...'
+                  : state == PlayerState.paused
+                  ? 'Pausado'
                   : 'Detenido';
           debugPrint('🎵 Player state changed: $state, isPlaying: $isPlaying');
         }
       });
-      
+
       // Listen to duration changes
       _audioPlayer.onDurationChanged.listen((Duration duration) {
         if (!disposed) {
@@ -123,14 +124,14 @@ class RecordSessionPageViewModel extends BaseVM {
           debugPrint('📊 Audio duration: ${duration.inSeconds}s');
         }
       });
-      
+
       // Listen to position changes
       _audioPlayer.onPositionChanged.listen((Duration position) {
         if (!disposed) {
           currentPosition = position;
         }
       });
-      
+
       audioStatus = 'Audio cargado';
       debugPrint('🎵 Audio player initialized successfully');
     } catch (e) {
@@ -148,7 +149,7 @@ class RecordSessionPageViewModel extends BaseVM {
         debugPrint('⏸️ Audio paused');
       } else {
         // Use play() to start or resume playback
-        await _audioPlayer.play(AssetSource('lib/data/audio-prueba-hc.mp3'));
+        await _audioPlayer.play(AssetSource('audio-prueba-hc.mp3'));
         debugPrint('▶️ Audio playing');
       }
     } catch (e) {

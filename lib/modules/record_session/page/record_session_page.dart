@@ -49,6 +49,8 @@ class RecordSessionPage extends StatelessWidget {
                     isPlaying: model.isPlaying,
                     onPlayPause: model.togglePlayPause,
                     isCompact: isKeyboardVisible,
+                    currentPosition: model.currentPosition,
+                    totalDuration: model.totalDuration,
                   ),
                   const SizedBox(height: 16),
                   // HTML Editor widget for session notes
