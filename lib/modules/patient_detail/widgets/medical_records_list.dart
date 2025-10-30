@@ -6,11 +6,13 @@ import 'medical_record_card.dart';
 class MedicalRecordsListWidget extends StatelessWidget {
   final List<MedicalRecord> medicalRecords;
   final Function(MedicalRecord) onRecordTap;
+  final Function(MedicalRecord)? onNewFollowUp;
 
   const MedicalRecordsListWidget({
     super.key,
     required this.medicalRecords,
     required this.onRecordTap,
+    this.onNewFollowUp,
   });
 
   @override
@@ -25,6 +27,8 @@ class MedicalRecordsListWidget extends StatelessWidget {
             child: MedicalRecordCard(
               record: record,
               onTap: () => onRecordTap(record),
+              onNewFollowUp:
+                  onNewFollowUp != null ? () => onNewFollowUp!(record) : null,
             ),
           );
         },

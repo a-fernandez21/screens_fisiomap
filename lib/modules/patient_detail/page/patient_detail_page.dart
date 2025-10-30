@@ -70,6 +70,20 @@ class PatientDetailPage extends StatelessWidget {
                                 result,
                               );
                             },
+                            onNewFollowUp: (record) async {
+                              final String? result =
+                                  await Navigator.push<String>(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => RecordSessionPage(
+                                            patient: model.patient,
+                                            sessionType: 'Seguimiento',
+                                          ),
+                                    ),
+                                  );
+                              model.handleNewFollowUpResult(result);
+                            },
                           ),
                       ],
                     ),
