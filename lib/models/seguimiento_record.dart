@@ -8,9 +8,6 @@ class SeguimientoRecord {
   /// Date in String format
   final String date;
 
-  /// Brief description of the follow-up
-  final String description;
-
   /// Professional's name who attended
   final String doctor;
 
@@ -23,7 +20,6 @@ class SeguimientoRecord {
   SeguimientoRecord({
     required this.id,
     required this.date,
-    required this.description,
     required this.doctor,
     required this.status,
     required this.anamnesisId,

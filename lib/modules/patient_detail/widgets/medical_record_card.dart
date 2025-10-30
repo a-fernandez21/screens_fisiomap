@@ -231,27 +231,13 @@ class _MedicalRecordCardState extends State<MedicalRecordCard>
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      seguimiento.date,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF2D3142),
-                      ),
-                    ),
-                    if (seguimiento.description.isNotEmpty) ...[
-                      const SizedBox(height: 4),
-                      Text(
-                        seguimiento.description,
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ],
+                child: Text(
+                  seguimiento.date,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF2D3142),
+                  ),
                 ),
               ),
               Icon(Icons.chevron_right, size: 20, color: Colors.grey[400]),

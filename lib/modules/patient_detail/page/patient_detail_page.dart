@@ -37,7 +37,7 @@ class PatientDetailPage extends StatelessWidget {
                       children: [
                         const SizedBox(height: 16),
                         SectionTitleWidget(
-                          title: 'Anamnesis',
+                          title: 'Historial Clínico',
                           subtitle:
                               '${model.anamnesisRecords.length} registros',
                         ),
