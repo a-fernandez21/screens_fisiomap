@@ -65,20 +65,43 @@ class _MedicalRecordCardState extends State<MedicalRecordCard>
       child: Column(
         children: [
           // Header - clickable to expand/collapse
-          InkWell(
-            onTap: _toggleExpanded,
-            borderRadius: BorderRadius.circular(12),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Expanded(child: MedicalRecordHeader(record: widget.record)),
-                  Icon(
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: _toggleExpanded,
+                    borderRadius: BorderRadius.circular(8),
+                    child: MedicalRecordHeader(record: widget.record),
+                  ),
+                ),
+                // View button - opens record session
+                IconButton(
+                  icon: Icon(
+                    Icons.visibility_outlined,
+                    color: Colors.grey[600],
+                    size: 22,
+                  ),
+                  onPressed: widget.onTap,
+                  tooltip: 'Ver anamnesis',
+                  padding: const EdgeInsets.all(8),
+                  constraints: const BoxConstraints(),
+                ),
+                const SizedBox(width: 4),
+                // Expand/collapse button
+                IconButton(
+                  icon: Icon(
                     _isExpanded ? Icons.expand_less : Icons.expand_more,
                     color: Colors.grey[600],
+                    size: 22,
                   ),
-                ],
-              ),
+                  onPressed: _toggleExpanded,
+                  tooltip: _isExpanded ? 'Colapsar' : 'Expandir',
+                  padding: const EdgeInsets.all(8),
+                  constraints: const BoxConstraints(),
+                ),
+              ],
             ),
           ),
           // Expandable content - Follow-ups list
