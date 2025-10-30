@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pumpun_core/view/base_widget.dart';
-import 'package:screens_fisiomap/modules/patient_detail/widgets/bottom_action_bar.dart';
 import 'package:screens_fisiomap/modules/patient_detail/vm/patient_detail_page_vm.dart';
 import 'package:screens_fisiomap/modules/patient_detail/widgets/patient_detail_widgets.dart';
 import 'package:screens_fisiomap/models/patient.dart';
@@ -17,7 +16,8 @@ class PatientDetailPage extends StatelessWidget {
     return BaseWidget<PatientDetailPageViewModel>(
       model: PatientDetailPageViewModel(patient: patient),
       onModelReady: (model) => model.onInit(),
-      builder: (context, model, child) => Scaffold(
+      builder:
+          (context, model, child) => Scaffold(
             backgroundColor: Colors.grey[50],
             appBar: PatientDetailAppBar(patientName: model.patient.name),
             body: Column(
@@ -53,17 +53,22 @@ class PatientDetailPage extends StatelessWidget {
                             medicalRecords: model.medicalRecords,
                             onRecordTap: (record) async {
                               model.logRecordTap(record);
-                              final String? result = await Navigator.push<String>(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RecordSessionPage(
-                                    patient: model.patient,
-                                    sessionType: record.type,
-                                    recordId: record.id,
-                                  ),
-                                ),
+                              final String? result =
+                                  await Navigator.push<String>(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => RecordSessionPage(
+                                            patient: model.patient,
+                                            sessionType: record.type,
+                                            recordId: record.id,
+                                          ),
+                                    ),
+                                  );
+                              model.handleRecordSessionResult(
+                                record.id,
+                                result,
                               );
-                              model.handleRecordSessionResult(record.id, result);
                             },
                           ),
                       ],
@@ -72,31 +77,22 @@ class PatientDetailPage extends StatelessWidget {
                 ),
               ],
             ),
-            bottomNavigationBar: BottomActionBar(
-              onNewFollowUp: () async {
+            floatingActionButton: FloatingActionButton(
+              onPressed: () async {
                 final String? result = await Navigator.push<String>(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => RecordSessionPage(
-                      patient: model.patient,
-                      sessionType: 'Seguimiento',
-                    ),
-                  ),
-                );
-                model.handleNewFollowUpResult(result);
-              },
-              onNewAnamnesis: () async {
-                final String? result = await Navigator.push<String>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RecordSessionPage(
-                      patient: model.patient,
-                      sessionType: 'Anamnesis',
-                    ),
+                    builder:
+                        (context) => RecordSessionPage(
+                          patient: model.patient,
+                          sessionType: 'Anamnesis',
+                        ),
                   ),
                 );
                 model.handleNewAnamnesisResult(result);
               },
+              backgroundColor: const Color.fromARGB(255, 13, 175, 229),
+              child: const Icon(Icons.add, color: Colors.white),
             ),
           ),
     );
