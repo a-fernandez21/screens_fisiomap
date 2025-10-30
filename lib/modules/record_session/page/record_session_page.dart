@@ -48,6 +48,10 @@ class RecordSessionPage extends StatelessWidget {
                   AudioPlayerWidget(
                     isPlaying: model.isPlaying,
                     onPlayPause: model.togglePlayPause,
+                    onRewind10: model.rewind10Seconds,
+                    onForward10: model.forward10Seconds,
+                    onSkipPrevious: model.skipToPrevious,
+                    onSkipNext: model.skipToNext,
                     isCompact: isKeyboardVisible,
                     currentPosition: model.currentPosition,
                     totalDuration: model.totalDuration,

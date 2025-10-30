@@ -158,6 +158,52 @@ class RecordSessionPageViewModel extends BaseVM {
     }
   }
 
+  /// Rewind audio by 10 seconds
+  void rewind10Seconds() async {
+    try {
+      final newPosition = currentPosition - const Duration(seconds: 10);
+      await _audioPlayer.seek(
+        newPosition < Duration.zero ? Duration.zero : newPosition,
+      );
+      debugPrint('⏪ Rewound 10 seconds');
+    } catch (e) {
+      debugPrint('❌ Error rewinding: $e');
+    }
+  }
+
+  /// Forward audio by 10 seconds
+  void forward10Seconds() async {
+    try {
+      final newPosition = currentPosition + const Duration(seconds: 10);
+      await _audioPlayer.seek(
+        newPosition > totalDuration ? totalDuration : newPosition,
+      );
+      debugPrint('⏩ Forwarded 10 seconds');
+    } catch (e) {
+      debugPrint('❌ Error forwarding: $e');
+    }
+  }
+
+  /// Skip to previous track (restart current audio)
+  void skipToPrevious() async {
+    try {
+      await _audioPlayer.seek(Duration.zero);
+      debugPrint('⏮️ Skipped to start');
+    } catch (e) {
+      debugPrint('❌ Error skipping to previous: $e');
+    }
+  }
+
+  /// Skip to next track (restart current audio for now)
+  void skipToNext() async {
+    try {
+      await _audioPlayer.seek(Duration.zero);
+      debugPrint('⏭️ Skipped to next (restart)');
+    } catch (e) {
+      debugPrint('❌ Error skipping to next: $e');
+    }
+  }
+
   /// Handle text field tap to start editing.
   void onTextFieldTap() {
     isEditing = true;

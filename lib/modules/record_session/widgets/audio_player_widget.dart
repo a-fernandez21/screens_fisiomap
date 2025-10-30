@@ -7,6 +7,10 @@ import 'playback_controls.dart';
 class AudioPlayerWidget extends StatelessWidget {
   final bool isPlaying;
   final VoidCallback onPlayPause;
+  final VoidCallback onRewind10;
+  final VoidCallback onForward10;
+  final VoidCallback onSkipPrevious;
+  final VoidCallback onSkipNext;
   final bool isCompact;
   final Duration currentPosition;
   final Duration totalDuration;
@@ -15,6 +19,10 @@ class AudioPlayerWidget extends StatelessWidget {
     super.key,
     required this.isPlaying,
     required this.onPlayPause,
+    required this.onRewind10,
+    required this.onForward10,
+    required this.onSkipPrevious,
+    required this.onSkipNext,
     this.isCompact = false,
     required this.currentPosition,
     required this.totalDuration,
@@ -105,7 +113,14 @@ class AudioPlayerWidget extends StatelessWidget {
           totalDuration: totalDuration,
         ),
         const SizedBox(height: 20),
-        PlaybackControls(isPlaying: isPlaying, onPlayPause: onPlayPause),
+        PlaybackControls(
+          isPlaying: isPlaying,
+          onPlayPause: onPlayPause,
+          onRewind10: onRewind10,
+          onForward10: onForward10,
+          onSkipPrevious: onSkipPrevious,
+          onSkipNext: onSkipNext,
+        ),
       ],
     );
   }
