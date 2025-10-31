@@ -4,8 +4,17 @@ import 'package:screens_fisiomap/models/patient.dart';
 /// Collapsible patient information card with animated expansion
 class PatientInfoContainer extends StatefulWidget {
   final Patient patient;
+  final VoidCallback? onEditNotes;
+  final void Function(VoidCallback)? onExpandCallbackReady;
+  final String? currentNotes;
 
-  const PatientInfoContainer({super.key, required this.patient});
+  const PatientInfoContainer({
+    super.key,
+    required this.patient,
+    this.onEditNotes,
+    this.onExpandCallbackReady,
+    this.currentNotes,
+  });
 
   @override
   State<PatientInfoContainer> createState() => _PatientInfoContainerState();
@@ -26,6 +35,8 @@ class _PatientInfoContainerState extends State<PatientInfoContainer>
     );
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
     _controller.forward();
+    // Register expand callback with parent
+    widget.onExpandCallbackReady?.call(expandContainer);
   }
 
   @override
@@ -41,6 +52,37 @@ class _PatientInfoContainerState extends State<PatientInfoContainer>
         _controller.forward();
       } else {
         _controller.reverse();
+      }
+    });
+  }
+
+  // Method to collapse the container programmatically
+  void _collapseContainer() {
+    if (_isExpanded) {
+      setState(() {
+        _isExpanded = false;
+        _controller.reverse();
+      });
+    }
+  }
+
+  // Method to expand the container programmatically
+  void expandContainer() {
+    if (!_isExpanded) {
+      setState(() {
+        _isExpanded = true;
+        _controller.forward();
+      });
+    }
+  }
+
+  // Handle edit notes callback
+  void _handleEditNotes() {
+    _collapseContainer();
+    // Wait for animation to complete before showing dialog
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (widget.onEditNotes != null) {
+        widget.onEditNotes!();
       }
     });
   }
@@ -130,6 +172,84 @@ class _PatientInfoContainerState extends State<PatientInfoContainer>
                       'Dirección',
                       widget.patient.address!,
                     ),
+                  // Add notes button if callback is provided
+                  if (widget.onEditNotes != null) ...[
+                    const SizedBox(height: 8),
+                    const Divider(),
+                    const SizedBox(height: 8),
+                    InkWell(
+                      onTap: _handleEditNotes,
+                      borderRadius: BorderRadius.circular(8),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.amber[50],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: Colors.amber[200]!,
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.note_alt_outlined,
+                                  size: 20,
+                                  color: Colors.amber[800],
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    'Anotaciones importantes',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey[800],
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.edit_outlined,
+                                  size: 18,
+                                  color: Colors.amber[800],
+                                ),
+                              ],
+                            ),
+                            if (widget.currentNotes != null &&
+                                widget.currentNotes!.isNotEmpty) ...[
+                              const SizedBox(height: 8),
+                              Text(
+                                widget.currentNotes!,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.grey[700],
+                                  height: 1.4,
+                                ),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ] else ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                'Sin anotaciones',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[500],
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

@@ -2,20 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:pumpun_core/view/base_widget.dart';
 import 'package:screens_fisiomap/modules/patient_detail/vm/patient_detail_page_vm.dart';
 import 'package:screens_fisiomap/modules/patient_detail/widgets/patient_detail_widgets.dart';
+import 'package:screens_fisiomap/modules/patient_detail/widgets/edit_notes_dialog.dart';
 import 'package:screens_fisiomap/models/patient.dart';
 import 'package:screens_fisiomap/modules/record_session/page/record_session_page.dart';
 import 'package:screens_fisiomap/modules/voice_recorder/page/voice_recorder_page.dart';
 
 /// Patient Detail Page - Shows patient info and medical history
-class PatientDetailPage extends StatelessWidget {
+class PatientDetailPage extends StatefulWidget {
   final Patient patient;
 
   const PatientDetailPage({super.key, required this.patient});
 
   @override
+  State<PatientDetailPage> createState() => _PatientDetailPageState();
+}
+
+class _PatientDetailPageState extends State<PatientDetailPage> {
+  String? _patientNotes;
+  VoidCallback? _expandPatientInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize notes from patient data if available
+    _patientNotes = null; // Start with no notes
+  }
+
+  void _setExpandCallback(VoidCallback callback) {
+    _expandPatientInfo = callback;
+  }
+
+  Future<void> _editNotes() async {
+    final String? newNotes = await showDialog<String>(
+      context: context,
+      builder: (context) => EditNotesDialog(initialNotes: _patientNotes),
+    );
+
+    if (newNotes != null) {
+      setState(() {
+        _patientNotes = newNotes.isEmpty ? null : newNotes;
+      });
+      // Expand the patient info container to show the saved note
+      _expandPatientInfo?.call();
+      // TODO: Save notes to database or state management
+      debugPrint('Notes updated for ${widget.patient.name}: $_patientNotes');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BaseWidget<PatientDetailPageViewModel>(
-      model: PatientDetailPageViewModel(patient: patient),
+      model: PatientDetailPageViewModel(patient: widget.patient),
       onModelReady: (model) => model.onInit(),
       builder:
           (context, model, child) => Scaffold(
@@ -27,7 +64,12 @@ class PatientDetailPage extends StatelessWidget {
                 Container(
                   color: Colors.grey[50],
                   padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-                  child: PatientInfoContainer(patient: model.patient),
+                  child: PatientInfoContainer(
+                    patient: model.patient,
+                    onEditNotes: _editNotes,
+                    onExpandCallbackReady: _setExpandCallback,
+                    currentNotes: _patientNotes,
+                  ),
                 ),
                 // Medical history section
                 Expanded(
