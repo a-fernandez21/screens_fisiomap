@@ -132,7 +132,7 @@ class _MedicalRecordCardState extends State<MedicalRecordCard>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Seguimientos',
+                            'Curso Clínico',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
