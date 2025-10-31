@@ -153,7 +153,7 @@ class _PatientInfoContainerState extends State<PatientInfoContainer>
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 16, color: Colors.teal[600]),
+          Icon(icon, size: 16, color: const Color.fromARGB(255, 4, 172, 210)),
           const SizedBox(width: 8),
           Expanded(
             child: RichText(

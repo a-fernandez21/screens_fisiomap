@@ -78,11 +78,7 @@ class _MedicalRecordCardState extends State<MedicalRecordCard>
                 ),
                 // View button - opens record session
                 IconButton(
-                  icon: Icon(
-                    Icons.visibility_outlined,
-                    color: Colors.grey[600],
-                    size: 22,
-                  ),
+                  icon: Icon(Icons.hearing, color: Colors.grey[600], size: 22),
                   onPressed: widget.onTap,
                   tooltip: 'Ver anamnesis',
                   padding: const EdgeInsets.all(8),

@@ -38,7 +38,7 @@ class PatientDetailPage extends StatelessWidget {
                       children: [
                         const SizedBox(height: 16),
                         SectionTitleWidget(
-                          title: 'Historial Clínico',
+                          title: 'Historia Clínica',
                           subtitle:
                               '${model.anamnesisRecords.length} registros',
                         ),
@@ -129,6 +129,7 @@ class PatientDetailPage extends StatelessWidget {
                 }
               },
               backgroundColor: const Color.fromARGB(255, 13, 175, 229),
+
               child: const Icon(Icons.add, color: Colors.white),
             ),
           ),

@@ -96,7 +96,7 @@ class RecordSessionPageViewModel extends BaseVM {
     debugPrint('📍 audioPath received: $audioPath');
     debugPrint('📍 recordId: $recordId');
     debugPrint('📍 sessionType: $sessionType');
-    
+
     textController.text =
         'Haz clic aquí para empezar a escribir las notas de la sesión...';
 
@@ -114,7 +114,7 @@ class RecordSessionPageViewModel extends BaseVM {
         final fileExists = await audioFile.exists();
         debugPrint('🎵 Checking audio file: $audioPath');
         debugPrint('🎵 File exists: $fileExists');
-        
+
         if (fileExists) {
           // Load recorded audio from device path
           await _audioPlayer.setSourceDeviceFile(audioPath!);

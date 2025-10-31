@@ -121,12 +121,15 @@ class PatientDetailPageViewModel extends BaseVM {
   /// Create a new anamnesis record with audio recording.
   void createAnamnesisWithAudio({required String audioPath}) {
     debugPrint('🎤 createAnamnesisWithAudio called with path: $audioPath');
-    
+
     // Generate new ID (max current ID + 1)
-    final int newId = _anamnesisRecords.isEmpty
-        ? 1
-        : _anamnesisRecords.map((a) => a.id).reduce((a, b) => a > b ? a : b) +
-            1;
+    final int newId =
+        _anamnesisRecords.isEmpty
+            ? 1
+            : _anamnesisRecords
+                    .map((a) => a.id)
+                    .reduce((a, b) => a > b ? a : b) +
+                1;
 
     // Get current date
     final now = DateTime.now();
@@ -143,7 +146,7 @@ class PatientDetailPageViewModel extends BaseVM {
       seguimientosIds: [],
       audioPath: audioPath,
     );
-    
+
     debugPrint('📋 New anamnesis created:');
     debugPrint('   - ID: $newId');
     debugPrint('   - Date: $formattedDate');
@@ -175,7 +178,7 @@ class PatientDetailPageViewModel extends BaseVM {
       'Sep',
       'Oct',
       'Nov',
-      'Dic'
+      'Dic',
     ];
     return months[month - 1];
   }
