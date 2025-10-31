@@ -74,18 +74,42 @@ class PatientDetailPage extends StatelessWidget {
                               );
                             },
                             onNewFollowUp: (record) async {
-                              final String? result =
-                                  await Navigator.push<String>(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (context) => RecordSessionPage(
-                                            patient: model.patient,
-                                            sessionType: 'Seguimiento',
-                                          ),
-                                    ),
+                              // Show consultation type selection dialog
+                              final String? consultationType =
+                                  await showDialog<String>(
+                                    context: context,
+                                    builder:
+                                        (context) =>
+                                            const ConsultationTypeDialog(),
                                   );
-                              model.handleNewFollowUpResult(result);
+
+                              // If user selected a consultation type, create seguimiento and navigate
+                              if (consultationType != null &&
+                                  context.mounted) {
+                                // Create new seguimiento record
+                                final int seguimientoId =
+                                    model.createNewSeguimiento(
+                                  anamnesisId: record.id,
+                                  consultationType: consultationType,
+                                );
+
+                                // Navigate to record session with the new seguimiento
+                                final String? result =
+                                    await Navigator.push<String>(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => RecordSessionPage(
+                                              patient: model.patient,
+                                              sessionType: 'Seguimiento',
+                                              recordId: seguimientoId,
+                                              consultationType:
+                                                  consultationType,
+                                            ),
+                                      ),
+                                    );
+                                model.handleNewFollowUpResult(result);
+                              }
                             },
                             onSeguimientoTap: (seguimiento) async {
                               debugPrint(
@@ -117,14 +141,13 @@ class PatientDetailPage extends StatelessWidget {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
-                final String? audioPath = await Navigator.push<String>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const VoiceRecorderPage(),
-                  ),
-                );
-
-                if (audioPath != null) {
+              // Navigate to VoiceRecorderPage
+              final audioPath = await Navigator.push<String>(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => VoiceRecorderPage(patient: model.patient),
+                ),
+              );                if (audioPath != null) {
                   model.createAnamnesisWithAudio(audioPath: audioPath);
                 }
               },

@@ -42,14 +42,6 @@ class AudioPlayerWidget extends StatelessWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(isCompact ? 12 : 20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: isCompact ? _buildCompactLayout() : _buildNormalLayout(),
     );
@@ -66,14 +58,6 @@ class AudioPlayerWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
           ),
           child: IconButton(
             padding: EdgeInsets.zero,

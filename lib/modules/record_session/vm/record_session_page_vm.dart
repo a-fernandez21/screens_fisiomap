@@ -17,6 +17,7 @@ class RecordSessionPageViewModel extends BaseVM {
   final String sessionType;
   final int? recordId;
   final String? audioPath;
+  final String? consultationType;
 
   // Text controller for editable notes
   final TextEditingController textController = TextEditingController();
@@ -87,6 +88,7 @@ class RecordSessionPageViewModel extends BaseVM {
     required this.sessionType,
     this.recordId,
     this.audioPath,
+    this.consultationType,
   });
 
   /// Initialize the ViewModel with default text.
@@ -96,9 +98,15 @@ class RecordSessionPageViewModel extends BaseVM {
     debugPrint('📍 audioPath received: $audioPath');
     debugPrint('📍 recordId: $recordId');
     debugPrint('📍 sessionType: $sessionType');
+    debugPrint('📍 consultationType: $consultationType');
 
-    textController.text =
+    // Build initial text with consultation type if provided
+    String initialText =
         'Haz clic aquí para empezar a escribir las notas de la sesión...';
+    if (consultationType != null && sessionType == 'Seguimiento') {
+      initialText = 'Tipo de consulta: $consultationType\n\n$initialText';
+    }
+    textController.text = initialText;
 
     // Initialize audio player
     await _initializeAudioPlayer();

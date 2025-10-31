@@ -1,30 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:pumpun_core/view/base_widget.dart';
 import 'package:screens_fisiomap/modules/voice_recorder/vm/voice_recorder_page_vm.dart';
+import 'package:screens_fisiomap/models/patient.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /// Voice Recorder Page - Record audio for anamnesis
 class VoiceRecorderPage extends StatelessWidget {
-  const VoiceRecorderPage({super.key});
+  final Patient patient;
+
+  const VoiceRecorderPage({super.key, required this.patient});
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget<VoiceRecorderPageViewModel>(
-      model: VoiceRecorderPageViewModel(),
+      model: VoiceRecorderPageViewModel(patient: patient),
       onModelReady: (model) => model.onInit(),
       builder:
           (context, model, child) => Scaffold(
             backgroundColor: Colors.grey[50],
-            appBar: AppBar(
-              title: const Text('Grabar Audio'),
-              backgroundColor: Colors.white,
-              elevation: 1,
-            ),
+            appBar: _buildAppBar(model),
             body:
                 model.busy
                     ? const Center(child: CircularProgressIndicator())
                     : _buildRecorderContent(context, model),
           ),
+    );
+  }
+
+  // Build animated AppBar with recording indicator
+  PreferredSizeWidget _buildAppBar(VoiceRecorderPageViewModel model) {
+    return AppBar(
+      title: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Patient name
+          Text(
+            patient.name,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 2),
+          // Recording status
+          if (model.isRecording && !model.isPaused)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Pulsing red dot
+                _PulsingRecordingIndicator(),
+                const SizedBox(width: 6),
+                Text(
+                  'Grabando',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            )
+          else
+            Text(
+              'Grabar Anamnesis',
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+        ],
+      ),
+      backgroundColor: Colors.white,
+      elevation: 0,
+      centerTitle: true,
     );
   }
 
@@ -102,13 +152,6 @@ class VoiceRecorderPage extends StatelessWidget {
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, -2),
-              ),
-            ],
           ),
           child: SafeArea(
             child:
@@ -257,6 +300,61 @@ class VoiceRecorderPage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Pulsing red dot indicator for active recording
+class _PulsingRecordingIndicator extends StatefulWidget {
+  const _PulsingRecordingIndicator();
+
+  @override
+  State<_PulsingRecordingIndicator> createState() =>
+      _PulsingRecordingIndicatorState();
+}
+
+class _PulsingRecordingIndicatorState
+    extends State<_PulsingRecordingIndicator>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _pulseAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _pulseAnimation = Tween<double>(begin: 0.6, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _pulseAnimation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _pulseAnimation.value,
+          child: Container(
+            width: 8,
+            height: 8,
+            decoration: const BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
+          ),
+        );
+      },
     );
   }
 }

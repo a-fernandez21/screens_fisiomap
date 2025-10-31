@@ -20,7 +20,7 @@ class PatientListAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
       ),
       backgroundColor: const Color.fromARGB(255, 45, 183, 221),
-      elevation: 4,
+      elevation: 0,
       actions: [
         if (filterButton != null) filterButton!,
       ],

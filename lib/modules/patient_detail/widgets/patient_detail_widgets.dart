@@ -9,3 +9,4 @@ export 'medical_record_footer.dart';
 export 'empty_medical_records.dart';
 export 'bottom_action_button.dart';
 export 'section_title.dart';
+export 'consultation_type_dialog.dart';

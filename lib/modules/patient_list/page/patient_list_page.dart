@@ -100,7 +100,7 @@ class PatientListPage extends StatelessWidget {
         return Align(
           alignment: Alignment.centerRight,
           child: Material(
-            elevation: 16,
+            elevation: 0,
             child: FilterBottomSheet(viewModel: model),
           ),
         );

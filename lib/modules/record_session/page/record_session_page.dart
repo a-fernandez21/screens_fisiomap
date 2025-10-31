@@ -10,6 +10,7 @@ class RecordSessionPage extends StatelessWidget {
   final String sessionType;
   final int? recordId;
   final String? audioPath;
+  final String? consultationType;
 
   const RecordSessionPage({
     super.key,
@@ -17,6 +18,7 @@ class RecordSessionPage extends StatelessWidget {
     required this.sessionType,
     this.recordId,
     this.audioPath,
+    this.consultationType,
   });
 
   @override
@@ -30,13 +32,17 @@ class RecordSessionPage extends StatelessWidget {
         sessionType: sessionType,
         recordId: recordId,
         audioPath: audioPath,
+        consultationType: consultationType,
       ),
       onModelReady: (model) => model.onInit(),
       builder:
           (context, model, child) => Scaffold(
             resizeToAvoidBottomInset: true,
             backgroundColor: Colors.grey[100],
-            appBar: RecordSessionAppBar(sessionType: model.sessionType),
+            appBar: RecordSessionAppBar(
+              sessionType: model.sessionType,
+              consultationType: model.consultationType,
+            ),
             body: Padding(
               padding: EdgeInsets.only(
                 left: 16.0,

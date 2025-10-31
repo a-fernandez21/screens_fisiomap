@@ -111,6 +111,62 @@ class PatientDetailPageViewModel extends BaseVM {
     }
   }
 
+  /// Create a new seguimiento record for an anamnesis
+  int createNewSeguimiento({
+    required int anamnesisId,
+    required String consultationType,
+  }) {
+    debugPrint(
+      '🆕 Creating new seguimiento for anamnesis $anamnesisId with type: $consultationType',
+    );
+
+    // Generate new ID (max current ID + 1)
+    final int newId =
+        _allSeguimientos.isEmpty
+            ? 1
+            : _allSeguimientos.map((s) => s.id).reduce((a, b) => a > b ? a : b) +
+                1;
+
+    // Get current date
+    final now = DateTime.now();
+    final String formattedDate =
+        '${now.day.toString().padLeft(2, '0')} ${_getMonthAbbreviation(now.month)} ${now.year}';
+
+    // Create new seguimiento record
+    final newSeguimiento = SeguimientoRecord(
+      id: newId,
+      date: formattedDate,
+      doctor: 'Dr. Pendiente',
+      status: 'Pendiente',
+      anamnesisId: anamnesisId,
+      consultationType: consultationType,
+    );
+
+    // Add to list
+    _allSeguimientos.add(newSeguimiento);
+
+    // Update anamnesis seguimientos list
+    final anamnesisIndex =
+        _anamnesisRecords.indexWhere((a) => a.id == anamnesisId);
+    if (anamnesisIndex != -1) {
+      final anamnesis = _anamnesisRecords[anamnesisIndex];
+      final updatedSeguimientos = [...anamnesis.seguimientosIds, newId];
+      _anamnesisRecords[anamnesisIndex] = AnamnesisRecord(
+        id: anamnesis.id,
+        date: anamnesis.date,
+        description: anamnesis.description,
+        doctor: anamnesis.doctor,
+        status: anamnesis.status,
+        seguimientosIds: updatedSeguimientos,
+        audioPath: anamnesis.audioPath,
+      );
+    }
+
+    debugPrint('✅ Seguimiento $newId created successfully');
+    notifyListeners();
+    return newId;
+  }
+
   /// Handle result from new anamnesis session.
   void handleNewAnamnesisResult(String? result) {
     if (result != null) {

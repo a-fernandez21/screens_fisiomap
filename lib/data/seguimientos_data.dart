@@ -9,6 +9,7 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dra. María García',
     status: 'Completado',
     anamnesisId: 1,
+    consultationType: 'Presencial',
   ),
   SeguimientoRecord(
     id: 2,
@@ -16,6 +17,7 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dra. María García',
     status: 'Completado',
     anamnesisId: 1,
+    consultationType: 'Videollamada',
   ),
   SeguimientoRecord(
     id: 3,
@@ -23,6 +25,7 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dra. María García',
     status: 'Completado',
     anamnesisId: 1,
+    consultationType: 'Teléfono',
   ),
 
   // Seguimientos para Anamnesis ID 2 (lesión en hombro)
@@ -32,6 +35,7 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dr. Carlos Ruiz',
     status: 'Completado',
     anamnesisId: 2,
+    consultationType: 'Presencial',
   ),
   SeguimientoRecord(
     id: 5,
@@ -39,6 +43,7 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dr. Carlos Ruiz',
     status: 'Completado',
     anamnesisId: 2,
+    consultationType: 'Presencial',
   ),
 
   // Seguimientos para Anamnesis ID 3 (contractura cervical)
@@ -48,6 +53,7 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dra. Ana Martínez',
     status: 'Pendiente',
     anamnesisId: 3,
+    consultationType: 'Videollamada',
   ),
 
   // Seguimientos para Anamnesis ID 4 (postoperatorio rodilla)
@@ -57,6 +63,7 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dr. Jorge López',
     status: 'Completado',
     anamnesisId: 4,
+    consultationType: 'Presencial',
   ),
   SeguimientoRecord(
     id: 8,
@@ -64,6 +71,7 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dr. Jorge López',
     status: 'Completado',
     anamnesisId: 4,
+    consultationType: 'Presencial',
   ),
   SeguimientoRecord(
     id: 9,
@@ -71,6 +79,7 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dr. Jorge López',
     status: 'Completado',
     anamnesisId: 4,
+    consultationType: 'Teléfono',
   ),
   SeguimientoRecord(
     id: 10,
@@ -78,6 +87,7 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dr. Jorge López',
     status: 'Completado',
     anamnesisId: 4,
+    consultationType: 'Videollamada',
   ),
 
   // Seguimientos para Anamnesis ID 5 (tendinitis de Aquiles)
@@ -87,5 +97,6 @@ final List<SeguimientoRecord> seguimientoRecords = [
     doctor: 'Dra. Laura Sánchez',
     status: 'Completado',
     anamnesisId: 5,
+    consultationType: 'Presencial',
   ),
 ];

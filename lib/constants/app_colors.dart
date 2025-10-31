@@ -50,7 +50,7 @@ class AppColors {
   static final Color avatarBackground = Colors.teal[100]!;
 
   /// Color de texto para avatares.
-  static final Color avatarText = const Color.fromARGB(255, 212, 184, 1)!;
+  static const Color avatarText = Color.fromARGB(255, 212, 184, 1);
 
   /// Color de íconos en gris claro.
   static final Color iconGrey = Colors.grey[400]!;

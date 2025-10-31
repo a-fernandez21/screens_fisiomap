@@ -60,7 +60,7 @@ class _MedicalRecordCardState extends State<MedicalRecordCard>
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+      elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: [
@@ -236,6 +236,22 @@ class _MedicalRecordCardState extends State<MedicalRecordCard>
                   ),
                 ),
               ),
+              // Consultation type icon
+              if (seguimiento.consultationType != null) ...[
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: seguimiento.consultationTypeColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Icon(
+                    seguimiento.consultationTypeIcon,
+                    size: 16,
+                    color: seguimiento.consultationTypeColor,
+                  ),
+                ),
+                const SizedBox(width: 8),
+              ],
               Icon(Icons.chevron_right, size: 20, color: Colors.grey[400]),
             ],
           ),

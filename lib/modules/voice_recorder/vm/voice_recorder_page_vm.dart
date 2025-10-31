@@ -5,11 +5,13 @@ import 'package:pumpun_core/pumpun_core.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:screens_fisiomap/models/patient.dart';
 import 'package:screens_fisiomap/services/native_microphone_service.dart';
 
 /// ViewModel for VoiceRecorderPage
 class VoiceRecorderPageViewModel extends BaseVM {
   final AudioRecorder _audioRecorder = AudioRecorder();
+  final Patient patient;
 
   // Recording state
   bool _isRecording = false;
@@ -28,6 +30,8 @@ class VoiceRecorderPageViewModel extends BaseVM {
   // Permission state
   bool _hasPermission = false;
   bool get hasPermission => _hasPermission;
+
+  VoiceRecorderPageViewModel({required this.patient});
 
   @override
   void dispose() {

@@ -26,14 +26,6 @@ class EditableTextContainer extends StatelessWidget {
           color: isEditing ? Colors.teal : Colors.grey.shade300,
           width: isEditing ? 2 : 1,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -23,14 +23,6 @@ class ClinicHeader extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(AppConstants.borderRadius),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(AppConstants.shadowOpacity),
-            spreadRadius: AppConstants.shadowSpreadRadius,
-            blurRadius: AppConstants.shadowBlurRadius,
-            offset: const Offset(0, 3),
-          ),
-        ],
       ),
       child: const Column(
         children: [
