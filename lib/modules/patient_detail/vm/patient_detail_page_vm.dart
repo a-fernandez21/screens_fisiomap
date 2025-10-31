@@ -72,6 +72,7 @@ class PatientDetailPageViewModel extends BaseVM {
     debugPrint(
       '🎯 Anamnesis clickeada - ID: ${record.id}, Fecha: ${record.date}, Estado: ${record.status}',
     );
+    debugPrint('🎤 AudioPath: ${record.audioPath ?? "Sin audio"}');
   }
 
   /// Log seguimiento tap information.
@@ -115,5 +116,67 @@ class PatientDetailPageViewModel extends BaseVM {
     if (result != null) {
       debugPrint('📝 Nueva sesión de anamnesis creada con estado: $result');
     }
+  }
+
+  /// Create a new anamnesis record with audio recording.
+  void createAnamnesisWithAudio({required String audioPath}) {
+    debugPrint('🎤 createAnamnesisWithAudio called with path: $audioPath');
+    
+    // Generate new ID (max current ID + 1)
+    final int newId = _anamnesisRecords.isEmpty
+        ? 1
+        : _anamnesisRecords.map((a) => a.id).reduce((a, b) => a > b ? a : b) +
+            1;
+
+    // Get current date
+    final now = DateTime.now();
+    final String formattedDate =
+        '${now.day.toString().padLeft(2, '0')} ${_getMonthAbbreviation(now.month)} ${now.year}';
+
+    // Create new anamnesis record
+    final newAnamnesis = AnamnesisRecord(
+      id: newId,
+      date: formattedDate,
+      description: 'Consulta con grabación de audio',
+      doctor: 'Dr. Pendiente', // Can be updated later in the editor
+      status: 'Pendiente',
+      seguimientosIds: [],
+      audioPath: audioPath,
+    );
+    
+    debugPrint('📋 New anamnesis created:');
+    debugPrint('   - ID: $newId');
+    debugPrint('   - Date: $formattedDate');
+    debugPrint('   - AudioPath: $audioPath');
+
+    // Add to beginning of list (most recent first)
+    _anamnesisRecords = [newAnamnesis, ..._anamnesisRecords];
+
+    if (_anamnesisRecords.isNotEmpty) {
+      setEmpty(empty: false);
+    }
+
+    notifyListeners();
+    debugPrint('✅ Nueva anamnesis creada con audio - ID: $newId');
+    debugPrint('🎤 Audio path: $audioPath');
+  }
+
+  /// Get abbreviated month name in Spanish
+  String _getMonthAbbreviation(int month) {
+    const months = [
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dic'
+    ];
+    return months[month - 1];
   }
 }

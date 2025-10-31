@@ -16,7 +16,9 @@ class NativeMicrophoneService {
     }
 
     try {
-      final bool granted = await _channel.invokeMethod('requestMicrophonePermission');
+      final bool granted = await _channel.invokeMethod(
+        'requestMicrophonePermission',
+      );
       return granted;
     } catch (e) {
       debugPrint('🎤 Error requesting native microphone permission: $e');
@@ -32,7 +34,9 @@ class NativeMicrophoneService {
     }
 
     try {
-      final String status = await _channel.invokeMethod('checkMicrophonePermission');
+      final String status = await _channel.invokeMethod(
+        'checkMicrophonePermission',
+      );
       return status;
     } catch (e) {
       debugPrint('🎤 Error checking native microphone permission: $e');

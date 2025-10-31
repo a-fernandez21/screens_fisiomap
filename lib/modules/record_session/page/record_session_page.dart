@@ -9,12 +9,14 @@ class RecordSessionPage extends StatelessWidget {
   final Patient patient;
   final String sessionType;
   final int? recordId;
+  final String? audioPath;
 
   const RecordSessionPage({
     super.key,
     required this.patient,
     required this.sessionType,
     this.recordId,
+    this.audioPath,
   });
 
   @override
@@ -27,6 +29,7 @@ class RecordSessionPage extends StatelessWidget {
         patient: patient,
         sessionType: sessionType,
         recordId: recordId,
+        audioPath: audioPath,
       ),
       onModelReady: (model) => model.onInit(),
       builder:

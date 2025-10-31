@@ -10,21 +10,21 @@ import 'package:screens_fisiomap/services/native_microphone_service.dart';
 /// ViewModel for VoiceRecorderPage
 class VoiceRecorderPageViewModel extends BaseVM {
   final AudioRecorder _audioRecorder = AudioRecorder();
-  
+
   // Recording state
   bool _isRecording = false;
   bool get isRecording => _isRecording;
-  
+
   bool _isPaused = false;
   bool get isPaused => _isPaused;
-  
+
   // Recording duration
   int _recordingDuration = 0;
   int get recordingDuration => _recordingDuration;
-  
+
   Timer? _timer;
   String? _recordingPath;
-  
+
   // Permission state
   bool _hasPermission = false;
   bool get hasPermission => _hasPermission;
@@ -44,7 +44,7 @@ class VoiceRecorderPageViewModel extends BaseVM {
   // Check microphone permission status (don't request yet)
   Future<void> _checkPermission() async {
     setBusy(true);
-    
+
     if (Platform.isIOS) {
       // Use native iOS method for more reliable permission handling
       final nativeStatus = await NativeMicrophoneService.checkPermission();
@@ -56,7 +56,7 @@ class VoiceRecorderPageViewModel extends BaseVM {
       _hasPermission = status.isGranted;
       debugPrint('🎤 Android permission status: $status');
     }
-    
+
     debugPrint('🎤 Has permission: $_hasPermission');
     setBusy(false);
     notifyListeners();
@@ -67,9 +67,9 @@ class VoiceRecorderPageViewModel extends BaseVM {
   Future<PermissionStatus> requestPermission() async {
     debugPrint('🎤 Requesting microphone permission...');
     setBusy(true);
-    
+
     PermissionStatus result;
-    
+
     if (Platform.isIOS) {
       // Use native iOS AVAudioSession for reliable permission prompt
       final granted = await NativeMicrophoneService.requestPermission();
@@ -83,7 +83,7 @@ class VoiceRecorderPageViewModel extends BaseVM {
       debugPrint('🎤 Android permission result: $result');
       _hasPermission = result.isGranted;
     }
-    
+
     setBusy(false);
     notifyListeners();
     return result;
@@ -108,7 +108,7 @@ class VoiceRecorderPageViewModel extends BaseVM {
       _recordingPath = '${directory.path}/recording_$timestamp.m4a';
 
       debugPrint('🎤 Starting recording at: $_recordingPath');
-      
+
       // Start recording
       await _audioRecorder.start(
         const RecordConfig(
@@ -122,10 +122,10 @@ class VoiceRecorderPageViewModel extends BaseVM {
       _isRecording = true;
       _isPaused = false;
       _recordingDuration = 0;
-      
+
       // Start timer
       _startTimer();
-      
+
       notifyListeners();
       debugPrint('🎤 Recording started successfully');
       return null; // Success, no permission issue
@@ -165,22 +165,64 @@ class VoiceRecorderPageViewModel extends BaseVM {
     }
   }
 
-  // Stop recording
+  // Stop recording and save to permanent storage
   Future<String?> stopRecording() async {
     if (!_isRecording) return null;
 
     try {
-      final path = await _audioRecorder.stop();
+      final tempPath = await _audioRecorder.stop();
       _isRecording = false;
       _isPaused = false;
       _timer?.cancel();
       notifyListeners();
-      
-      debugPrint('Recording stopped: $path');
-      return path;
+
+      debugPrint('🎤 Recording stopped at temp path: $tempPath');
+
+      // Move file from temp to permanent Documents directory
+      if (tempPath != null) {
+        final permanentPath = await _saveRecordingPermanently(tempPath);
+        debugPrint('🎤 Recording saved permanently at: $permanentPath');
+        return permanentPath;
+      }
+
+      return tempPath;
     } catch (e) {
-      debugPrint('Error stopping recording: $e');
+      debugPrint('🎤 Error stopping recording: $e');
       return null;
+    }
+  }
+
+  // Save recording from temp to permanent Documents directory
+  Future<String> _saveRecordingPermanently(String tempPath) async {
+    try {
+      // Get Documents directory (permanent storage)
+      final directory = await getApplicationDocumentsDirectory();
+      final recordingsDir = '${directory.path}/recordings';
+
+      // Create recordings subdirectory if it doesn't exist
+      final recordingsDirObj = Directory(recordingsDir);
+      if (!await recordingsDirObj.exists()) {
+        await recordingsDirObj.create(recursive: true);
+        debugPrint('🎤 Created recordings directory: $recordingsDir');
+      }
+
+      // Generate permanent file name
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final permanentPath = '$recordingsDir/recording_$timestamp.m4a';
+
+      // Copy file from temp to permanent location
+      final tempFile = File(tempPath);
+      await tempFile.copy(permanentPath);
+
+      // Delete temp file
+      await tempFile.delete();
+      debugPrint('🎤 Temp file deleted, permanent file saved');
+
+      return permanentPath;
+    } catch (e) {
+      debugPrint('🎤 Error saving permanently: $e');
+      // Return temp path as fallback
+      return tempPath;
     }
   }
 

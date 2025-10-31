@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:pumpun_core/pumpun_core.dart';
@@ -15,6 +16,7 @@ class RecordSessionPageViewModel extends BaseVM {
   final Patient patient;
   final String sessionType;
   final int? recordId;
+  final String? audioPath;
 
   // Text controller for editable notes
   final TextEditingController textController = TextEditingController();
@@ -84,11 +86,17 @@ class RecordSessionPageViewModel extends BaseVM {
     required this.patient,
     required this.sessionType,
     this.recordId,
+    this.audioPath,
   });
 
   /// Initialize the ViewModel with default text.
   /// Called from BaseWidget's onModelReady
   Future<void> onInit() async {
+    debugPrint('🎬 RecordSessionPageViewModel.onInit() called');
+    debugPrint('📍 audioPath received: $audioPath');
+    debugPrint('📍 recordId: $recordId');
+    debugPrint('📍 sessionType: $sessionType');
+    
     textController.text =
         'Haz clic aquí para empezar a escribir las notas de la sesión...';
 
@@ -99,9 +107,27 @@ class RecordSessionPageViewModel extends BaseVM {
   /// Initialize audio player with listeners
   Future<void> _initializeAudioPlayer() async {
     try {
-      // Load audio from assets (path relative to pubspec assets declaration)
-      await _audioPlayer.setSource(AssetSource('audio-prueba-hc.mp3'));
-      debugPrint('🎵 Audio source set');
+      // Load audio from recorded file or default asset
+      if (audioPath != null && audioPath!.isNotEmpty) {
+        // Verify file exists before loading
+        final audioFile = File(audioPath!);
+        final fileExists = await audioFile.exists();
+        debugPrint('🎵 Checking audio file: $audioPath');
+        debugPrint('🎵 File exists: $fileExists');
+        
+        if (fileExists) {
+          // Load recorded audio from device path
+          await _audioPlayer.setSourceDeviceFile(audioPath!);
+          debugPrint('🎵 Recorded audio loaded successfully');
+        } else {
+          debugPrint('❌ Audio file not found, loading default');
+          await _audioPlayer.setSource(AssetSource('audio-prueba-hc.mp3'));
+        }
+      } else {
+        // Load default audio from assets
+        await _audioPlayer.setSource(AssetSource('audio-prueba-hc.mp3'));
+        debugPrint('🎵 No audioPath provided, loading default audio');
+      }
 
       // Listen to player state changes
       _audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
@@ -148,9 +174,9 @@ class RecordSessionPageViewModel extends BaseVM {
         await _audioPlayer.pause();
         debugPrint('⏸️ Audio paused');
       } else {
-        // Use play() to start or resume playback
-        await _audioPlayer.play(AssetSource('audio-prueba-hc.mp3'));
-        debugPrint('▶️ Audio playing');
+        // Resume playback of already loaded audio source
+        await _audioPlayer.resume();
+        debugPrint('▶️ Audio playing (source already loaded)');
       }
     } catch (e) {
       debugPrint('❌ Error toggling audio: $e');

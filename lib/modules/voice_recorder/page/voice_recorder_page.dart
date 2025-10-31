@@ -12,21 +12,21 @@ class VoiceRecorderPage extends StatelessWidget {
     return BaseWidget<VoiceRecorderPageViewModel>(
       model: VoiceRecorderPageViewModel(),
       onModelReady: (model) => model.onInit(),
-      builder: (context, model, child) => Scaffold(
-        backgroundColor: Colors.grey[50],
-        appBar: AppBar(
-          title: const Text('Grabar Audio'),
-          backgroundColor: Colors.white,
-          elevation: 1,
-        ),
-    body: model.busy
-            ? const Center(child: CircularProgressIndicator())
-            : _buildRecorderContent(context, model),
-      ),
+      builder:
+          (context, model, child) => Scaffold(
+            backgroundColor: Colors.grey[50],
+            appBar: AppBar(
+              title: const Text('Grabar Audio'),
+              backgroundColor: Colors.white,
+              elevation: 1,
+            ),
+            body:
+                model.busy
+                    ? const Center(child: CircularProgressIndicator())
+                    : _buildRecorderContent(context, model),
+          ),
     );
   }
-
-
 
   // Build recorder content
   Widget _buildRecorderContent(
@@ -48,22 +48,24 @@ class VoiceRecorderPage extends StatelessWidget {
                   height: 120,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: model.isRecording && !model.isPaused
-                        ? const Color(0xFFFF5252).withOpacity(0.1)
-                        : Colors.grey[200],
+                    color:
+                        model.isRecording && !model.isPaused
+                            ? const Color(0xFFFF5252).withOpacity(0.1)
+                            : Colors.grey[200],
                   ),
                   child: Icon(
                     model.isRecording && !model.isPaused
                         ? Icons.mic
                         : Icons.mic_none,
                     size: 64,
-                    color: model.isRecording && !model.isPaused
-                        ? const Color(0xFFFF5252)
-                        : Colors.grey[600],
+                    color:
+                        model.isRecording && !model.isPaused
+                            ? const Color(0xFFFF5252)
+                            : Colors.grey[600],
                   ),
                 ),
                 const SizedBox(height: 32),
-                
+
                 // Duration display
                 Text(
                   model.formattedDuration,
@@ -74,24 +76,27 @@ class VoiceRecorderPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                
+
                 // Status text
                 Text(
                   model.isRecording
                       ? (model.isPaused ? 'Pausado' : 'Grabando...')
                       : model.hasPermission
-                          ? 'Listo para grabar'
-                          : 'Toca el botón para solicitar permiso',
+                      ? 'Listo para grabar'
+                      : 'Toca el botón para solicitar permiso',
                   style: TextStyle(
                     fontSize: 16,
-                    color: model.hasPermission ? Colors.grey[600] : Colors.orange[700],
+                    color:
+                        model.hasPermission
+                            ? Colors.grey[600]
+                            : Colors.orange[700],
                   ),
                 ),
               ],
             ),
           ),
         ),
-        
+
         // Control buttons
         Container(
           padding: const EdgeInsets.all(24),
@@ -106,9 +111,10 @@ class VoiceRecorderPage extends StatelessWidget {
             ],
           ),
           child: SafeArea(
-            child: model.isRecording
-                ? _buildRecordingControls(context, model)
-                : _buildStartButton(context, model),
+            child:
+                model.isRecording
+                    ? _buildRecordingControls(context, model)
+                    : _buildStartButton(context, model),
           ),
         ),
       ],
@@ -126,36 +132,37 @@ class VoiceRecorderPage extends StatelessWidget {
       child: ElevatedButton.icon(
         onPressed: () async {
           final permissionStatus = await model.startRecording();
-          
+
           // If permission was denied, show dialog
           if (permissionStatus != null && !permissionStatus.isGranted) {
             if (!context.mounted) return;
-            
+
             showDialog<void>(
               context: context,
-              builder: (ctx) => AlertDialog(
-                title: const Text('Permiso de micrófono requerido'),
-                content: Text(
-                  permissionStatus.isPermanentlyDenied
-                      ? 'El permiso de micrófono está denegado permanentemente. '
-                        'Debes activarlo manualmente en los Ajustes del iPhone.\n\n'
-                        'Ve a: Ajustes → Screens Fisiomap → Micrófono → Activar'
-                      : 'Esta app necesita acceso al micrófono para grabar audio de las sesiones clínicas.',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(),
-                    child: const Text('Cancelar'),
+              builder:
+                  (ctx) => AlertDialog(
+                    title: const Text('Permiso de micrófono requerido'),
+                    content: Text(
+                      permissionStatus.isPermanentlyDenied
+                          ? 'El permiso de micrófono está denegado permanentemente. '
+                              'Debes activarlo manualmente en los Ajustes del iPhone.\n\n'
+                              'Ve a: Ajustes → Screens Fisiomap → Micrófono → Activar'
+                          : 'Esta app necesita acceso al micrófono para grabar audio de las sesiones clínicas.',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(ctx).pop(),
+                        child: const Text('Cancelar'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          openAppSettings();
+                          Navigator.of(ctx).pop();
+                        },
+                        child: const Text('Abrir Ajustes'),
+                      ),
+                    ],
                   ),
-                  TextButton(
-                    onPressed: () {
-                      openAppSettings();
-                      Navigator.of(ctx).pop();
-                    },
-                    child: const Text('Abrir Ajustes'),
-                  ),
-                ],
-              ),
             );
           }
         },
@@ -164,7 +171,9 @@ class VoiceRecorderPage extends StatelessWidget {
           size: 24,
         ),
         label: Text(
-          model.hasPermission ? 'Iniciar Grabación' : 'Solicitar Permiso y Grabar',
+          model.hasPermission
+              ? 'Iniciar Grabación'
+              : 'Solicitar Permiso y Grabar',
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         style: ElevatedButton.styleFrom(
@@ -206,7 +215,7 @@ class VoiceRecorderPage extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        
+
         // Pause/Resume button
         Container(
           decoration: BoxDecoration(
@@ -214,9 +223,8 @@ class VoiceRecorderPage extends StatelessWidget {
             color: Colors.grey[200],
           ),
           child: IconButton(
-            onPressed: model.isPaused
-                ? model.resumeRecording
-                : model.pauseRecording,
+            onPressed:
+                model.isPaused ? model.resumeRecording : model.pauseRecording,
             icon: Icon(
               model.isPaused ? Icons.play_arrow : Icons.pause,
               size: 28,
@@ -226,7 +234,7 @@ class VoiceRecorderPage extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        
+
         // Stop button
         Expanded(
           child: ElevatedButton.icon(

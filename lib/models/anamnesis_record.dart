@@ -20,6 +20,9 @@ class AnamnesisRecord {
   /// List of seguimiento IDs associated with this anamnesis
   final List<int> seguimientosIds;
 
+  /// Optional audio file path from voice recording
+  final String? audioPath;
+
   AnamnesisRecord({
     required this.id,
     required this.date,
@@ -27,6 +30,7 @@ class AnamnesisRecord {
     required this.doctor,
     required this.status,
     required this.seguimientosIds,
+    this.audioPath,
   });
 
   IconData get typeIcon {

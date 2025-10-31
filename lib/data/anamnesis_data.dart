@@ -9,6 +9,7 @@ final List<AnamnesisRecord> anamnesisRecords = [
     doctor: 'Dra. María García',
     status: 'Revisado',
     seguimientosIds: [1, 2, 3],
+    audioPath: null,
   ),
   AnamnesisRecord(
     id: 2,
@@ -17,6 +18,7 @@ final List<AnamnesisRecord> anamnesisRecords = [
     doctor: 'Dr. Carlos Ruiz',
     status: 'Revisado',
     seguimientosIds: [4, 5],
+    audioPath: null,
   ),
   AnamnesisRecord(
     id: 3,
@@ -25,6 +27,7 @@ final List<AnamnesisRecord> anamnesisRecords = [
     doctor: 'Dra. Ana Martínez',
     status: 'Pendiente',
     seguimientosIds: [6],
+    audioPath: null,
   ),
   AnamnesisRecord(
     id: 4,
@@ -33,6 +36,7 @@ final List<AnamnesisRecord> anamnesisRecords = [
     doctor: 'Dr. Jorge López',
     status: 'Revisado',
     seguimientosIds: [7, 8, 9, 10],
+    audioPath: null,
   ),
   AnamnesisRecord(
     id: 5,
@@ -41,5 +45,6 @@ final List<AnamnesisRecord> anamnesisRecords = [
     doctor: 'Dra. Laura Sánchez',
     status: 'Revisado',
     seguimientosIds: [11],
+    audioPath: null,
   ),
 ];

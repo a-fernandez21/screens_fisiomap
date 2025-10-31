@@ -64,6 +64,7 @@ class PatientDetailPage extends StatelessWidget {
                                             patient: model.patient,
                                             sessionType: 'Anamnesis',
                                             recordId: record.id,
+                                            audioPath: record.audioPath,
                                           ),
                                     ),
                                   );
@@ -122,10 +123,9 @@ class PatientDetailPage extends StatelessWidget {
                     builder: (context) => const VoiceRecorderPage(),
                   ),
                 );
-                
+
                 if (audioPath != null) {
-                  debugPrint('Audio saved at: $audioPath');
-                  // TODO: Save audio path to anamnesis record
+                  model.createAnamnesisWithAudio(audioPath: audioPath);
                 }
               },
               backgroundColor: const Color.fromARGB(255, 13, 175, 229),
